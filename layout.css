@@ -1,0 +1,77 @@
+
+body {
+    font-family: "Roboto Mono", monospace;
+    font-size: medium;
+    margin: 0;
+    padding: 0;
+}
+
+div {
+    padding: 3px;
+}
+
+.container {
+    display: flex;
+    max-width: 95%; 
+    min-width: 800px; 
+    margin: 0 auto; /* Center the container horizontally */
+    background-color: #fff; 
+}
+
+.left-column {
+    flex: 70%;
+    background-color: #f2f2f2;
+    padding: 20px;
+}
+
+.right-column {
+    flex: 30%;
+    background-color: #e5e5e5;
+    padding: 20px;
+}
+
+.status-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: small;
+}
+
+.image-container {
+    display: flex;
+    max-width: 95%; 
+    background-color: #96a09b;
+    margin: 0 auto; /* Center the container horizontally */
+    padding: 40px;
+}
+
+.item-labels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 50px;    
+} 
+
+.label-level {
+    width: 20%; 
+}
+.label-key {
+    width: 10%; 
+}
+.label-name {
+    width: 40%; 
+}
+.label-mod {
+    width: 30%; 
+}
+.label-level, .label-key, .label-name, .label-mod {
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    padding: 0px;
+}
+
+img.observing {
+    margin: 0 auto; /* Center horizontally */
+}

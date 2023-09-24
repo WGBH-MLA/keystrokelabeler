@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="layout.css" />
+    <title>Keystroke Labeler</title>
+</head>
+<body>
+    <div class="container">
+        <div class="left-column">
+            <div class="status-line">
+                <div><span id='img-num'>X</span> / <span id='img-cnt'>X</span></div>
+                <div>Jump factor: <span id="jump-factor">X</span></div>
+            </div>
+            <div class="image-container">
+                <img id='item-image' class="observing" src="kslface.jpg" /> 
+            </div>
+
+            <div class="status-line">
+                <div><span id='filename'>X</span></div>
+                <div><span id="seen">X</span></div>               
+            </div>
+
+            <div class="item-labels">
+                <div class="label-level">Type:</div>
+                <div class="label-key" id="itemtypetype">X</div>
+                <div class="label-name" id="item">X</div>
+                <div class="label-mod">X</div>
+            
+                <div class="label-level">Subtype:</div>
+                <div class="label-key">X</div>
+                <div class="label-name">X</div>
+                <div class="label-mod"></div>
+            </div>
+
+            <div class="button-container">
+                [button container]
+            </div>
+        </div>
+        <div class="right-column">
+            <div class="help">
+                [interaction instructions]
+            </div>
+            <div class="help">
+                [keystroke codes]
+            </div>
+        </div>
+    </div>
+
+    <script src="conf.js"></script>
+    <script src="images.js"></script>
+    <script src="ksllogic.js"></script>
+</body>
+</html>
