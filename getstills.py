@@ -12,13 +12,17 @@ $ python getstills.py <filename> [period]
 
 The period is expressed in milliseconds.
 
+If no period is specified, the default is 1000 ms.
+To extract every frame as a still, specify a period of 0 ms.
+
 # Output
 
 The application creates a directory based on the filename of the media file, 
-and adds the stillto that directory.
+and adds each still to that directory.
 
-Filenames include the base filename (without the extension) of the media file, the 
-timestamp (expressed in milliseconds), and the total length of the video, in milliseconds. 
+Filenames include the base filename (without the extension) of the media 
+file, the timestamp (expressed in milliseconds), and the total length of 
+the video (in milliseconds). 
 
 
 """
@@ -89,13 +93,13 @@ def extract(video_path, period, first_time, last_time, max_stills):
         if (( max_stills == -1 or stills_count < max_stills ) and
             ( last_time == -1 or ftime <= last_time ) and 
             ftime >= next_target_time ): 
-            frame.to_image().save(f'{stills_dir}{name}_{ftime:08}_{length:08}.jpg')
+            frame.to_image().save(f'{stills_dir}{name}_{length:08}_{ftime:08}.jpg')
             next_target_time += period
             stills_count += 1
 
         fcount += 1
     
-    print("Extracted", stills_count, "stills out of", fcount, "frames.") 
+    print("Extracted", stills_count, "stills out of", fcount, "video frames.") 
 
     container.close()
 
@@ -104,7 +108,8 @@ def extract(video_path, period, first_time, last_time, max_stills):
 def main(): 
 
     usage = """Usage: python getstills.py <filename> [period in milliseconds]
-    If no period is specified, the default is 1000 ms."
+    If no period is specified, the default is 1000 ms.
+    To extract every frame, set a period of 0 ms."
     """
 
     if len(sys.argv) < 2 or len(sys.argv) > 3 :
@@ -125,7 +130,7 @@ def main():
             print("Error:  The second argument must be an integer.")
             print(usage)
         
-        if not ( period > 0 and period <= 86400000 ) :
+        if not ( period >= 0 and period <= 86400000 ) :
             print("Error:  Please enter a sensible value for the period in milliseconds.")
             print(usage)
             sys.exit(1)
