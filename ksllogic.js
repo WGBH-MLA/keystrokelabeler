@@ -50,8 +50,51 @@ function handleKeydown(event) {
 
 function updateItemDisplay() {
     document.getElementById("item-image").src = stillsDir + imgArray[cur][0];
+
+    // set text of the status bar
     document.getElementById("filename").innerText = imgArray[cur][0];
     document.getElementById("seen").innerText = imgArray[cur][1]? "SEEN" : "UNSEEN" ;
+
+    // add visual emphasis to seen elements
+    if (imgArray[cur][1]) {
+        document.getElementById("filename").classList.remove("unseen");
+        document.getElementById("seen").classList.remove("unseen");
+        document.getElementById("filename").classList.add("seen");
+        document.getElementById("seen").classList.add("seen");
+    } else {
+        document.getElementById("filename").classList.remove("seen");
+        document.getElementById("seen").classList.remove("seen");
+        document.getElementById("filename").classList.add("unseen");
+        document.getElementById("seen").classList.add("unseen");
+    }
+
+    // Display type-level labels
+    if (imgArray[cur][2].length === 1) {
+        document.getElementById("item-type-key").innerText = cats[imgArray[cur][2]]["key"];
+        document.getElementById("item-type-name").innerText = cats[imgArray[cur][2]]["name"];
+    } else {
+        document.getElementById("item-type-key").innerText = "-";
+        document.getElementById("item-type-name").innerText = "-";
+    }
+    // Display subtype-level labels
+    if (imgArray[cur][3].length === 1) {
+        document.getElementById("item-subtype-key").innerText =
+            cats[imgArray[cur][2]]["subtypes"][imgArray[cur][3]]["key"];
+        document.getElementById("item-subtype-name").innerText = 
+            cats[imgArray[cur][2]]["subtypes"][imgArray[cur][3]]["name"];
+    } else {
+        document.getElementById("item-subtype-key").innerText = "-";
+        document.getElementById("item-subtype-name").innerText = "-";
+    }
+    // Display modifer
+    if (imgArray[cur][4]) {
+        document.getElementById("item-mod-code").innerText = "(" + modCode + ")";
+        document.getElementById("item-mod-name").innerText = "(" + modName + ")";
+    } else {
+        document.getElementById("item-mod-code").innerText = "";
+        document.getElementById("item-mod-name").innerText = "";
+    }
+
 }
 
 function updateStatusDisplay() {

@@ -45,33 +45,52 @@ div {
     padding: 40px;
 }
 
-.item-labels {
+.item-type-label {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: 100%;
-    margin-top: 30px;
-    margin-bottom: 50px;    
+    margin-top: 10px;
+    margin-bottom: 10px; 
+    font-size: large;
+} 
+.item-subtype-label {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 50px; 
+    font-size: medium;
+    color: gray;
 } 
 
 .label-level {
     width: 20%; 
 }
 .label-key {
-    width: 10%; 
+    width: 15%; 
 }
 .label-name {
-    width: 40%; 
+    width: 65%; 
 }
-.label-mod {
-    width: 30%; 
-}
-.label-level, .label-key, .label-name, .label-mod {
+.label-level, .label-key, .label-name {
     box-sizing: border-box;
     background-color: #f2f2f2;
     padding: 0px;
+    margin-bottom: 10px;
 }
 
 img.observing {
     margin: 0 auto; /* Center horizontally */
+}
+
+ /* Minor visual tweaks */
+ .seen {
+    color: #007a2f;
+    font-weight: bold;
+}
+.unseen {
+    color: gray;
+    font-weight: normal;
 }
