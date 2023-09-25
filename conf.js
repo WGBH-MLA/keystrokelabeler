@@ -45,16 +45,83 @@ cats =
     },
     "W": {
         "key": "W",
-        "name": "Audience or content warning",
+        "name": "Warning for audience",
         "desc": "Frame displaying information about audience level of sensitive content",
-        "subtypes:": {}
+        "subtypes": {}
     },
     "L": {
         "key": "L",
-        "name": "Organization logo",
+        "name": "Logo of an organization",
         "desc": "Logo of an organization involved in the production of the program",
-        "subtypes:": {}
+        "subtypes": {}
+    },
+    "O": {
+        "key": "O",
+        "name": "Opening sequence text",
+        "desc": "",
+        "subtypes": {}
+    },
+    "T": {
+        "key": "T",
+        "name": "Main title card",
+        "desc": "",
+        "subtypes": {}
+    },
+    "I": {
+        "key": "I",
+        "name": "Chyron for speaker ID",
+        "desc": "",
+        "subtypes": {}
+    },
+    "N": {
+        "key": "N",
+        "name": "Chyron and person, without speaker ID",
+        "desc": "",
+        "subtypes": {}
+    },
+    "P": {
+        "key": "P",
+        "name": "Person centered without Chyron",
+        "desc": "",
+        "subtypes": {}
+    },
+    "Y": {
+        "key": "Y",
+        "name": "Chyron with no single person",
+        "desc": "",
+        "subtypes": {}
+    },
+    "K": {
+        "key": "K",
+        "name": "Ticker without Chyron",
+        "desc": "",
+        "subtypes": {}
+    },
+    "G": {
+        "key": "G",
+        "name": "Graphical text",
+        "desc": "",
+        "subtypes": {}
+    },
+    "M": {
+        "key": "M",
+        "name": "Miscellaneous text",
+        "desc": "",
+        "subtypes": {}
+    },
+    "C": {
+        "key": "C",
+        "name": "Closing credits",
+        "desc": "",
+        "subtypes": {}
+    },
+    "R": {
+        "key": "R",
+        "name": "Copyright statement",
+        "desc": "",
+        "subtypes": {}
     }
+
 }
 ;
 
