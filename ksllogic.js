@@ -1,28 +1,48 @@
-console.log("ksl logic running...");
+/**
+ * ksllogic.js
+ * 
+ * This file contains Javascript commands and function for implementing display
+ * logic and user interaction for the KeyStroke Labeler tool.
+ * 
+ * It is intended to be referenced at the bottom of `labeler.html`.
+ * 
+ */
 
-// Attach the event listener to the  HTML document
-document.addEventListener('keydown', handleKeydown);
+
+/***************************************************************************
+ * Initialization steps
+ * *************************************************************************/
+
+console.log("ksl logic now running...");
 
 // Initialize global variables
 
 // total number of images in the set
 count = imgArray.length;
-
 // index of the current image in the array
 cur = 0
-
 // index of the last image in the array
 last = count - 1
-
 // set the index for the inital jump factor
 jfi = 0
 
+
+// Attach the key press event listener to the HTML document
+document.addEventListener("keydown", handleKeydown);
+
+// Attach functions to buttons
+document.getElementById("export-array").addEventListener("click", exportArray);
+document.getElementById("export-CSV").addEventListener("click", exportCSV);
 
 // Initialize display elements
 document.getElementById("img-cnt").innerText = count;
 updateStatusDisplay();
 updateItemDisplay();
 
+
+/***************************************************************************
+ * Function definitions
+ * *************************************************************************/
 
 function handleKeydown(event) {
     console.log("key pressed: " + event.key);
@@ -36,8 +56,8 @@ function handleKeydown(event) {
         },
         "ArrowDown": {
         },
-        " ":  {
-        },  // spacebar
+        " ":  {   // spacebar
+        },  
         "Delete": {
         },
         "Backspace": {
@@ -88,6 +108,12 @@ function handleKeydown(event) {
 
 }
 
+/**
+ * Performs basic navigation through the image array.
+ * 
+ * @param {string} dir - The direction of navigation; must be either "L" or "R".
+ * 
+ */
 function nav(dir) {
 
     // navigate by adjusting current image according to navigation factor
@@ -174,6 +200,16 @@ function labelItem( key ) {
     setTimeout(nav, feedbackPause, "R");
 }
 
+function cmdIndicator(status, msg = " ") {
+    if (status === "off") {
+        document.getElementById("indicator-msg").innerText = " ";
+    } else if (status === "on" ) {
+        document.getElementById("indicator-msg").innerText = msg;
+    } else {
+        console.error("Bad `status` argument passed to cmdIndicator.")
+    }
+}
+
 
 function changeJump(dir) {
     if (dir == "up") {
@@ -186,23 +222,13 @@ function changeJump(dir) {
     updateStatusDisplay()
 }
 
-function cmdIndicator(status, msg = " ") {
-    if (status === "off") {
-        document.getElementById("indicator-msg").innerText = " ";
-    } else if (status === "on" ) {
-        document.getElementById("indicator-msg").innerText = msg;
-    } else {
-        console.error("Bad `status` argument passed to cmdIndicator.")
-    }
-}
-
 function updateStatusDisplay() {
     document.getElementById("img-num").innerText = cur + 1;
     document.getElementById("jump-factor").innerText = jumpFactors[jfi];
 }
 
 function updateItemDisplay() {
-    document.getElementById("item-image").src = stillsDir + imgArray[cur][0];
+    document.getElementById("item-image").src = imgDir + imgArray[cur][0];
 
     // set text of the status bar
     document.getElementById("filename").innerText = imgArray[cur][0];
@@ -252,7 +278,81 @@ function updateItemDisplay() {
 
 function exportArray() {
 
+    // convert image array to a JSON string
+    var imgArrayJSON = JSON.stringify(imgArray);
+
+    // Prettify JSON string, to have one row per line
+    imgArrayJSON = imgArrayJSON.replace(/\[\[/g, "[\n[");   
+    imgArrayJSON = imgArrayJSON.replace(/\],\[/g, "],\n[");
+    imgArrayJSON = imgArrayJSON.replace(/\]\]/g, "]\n]");
+
+    // console.log(imgArrayJSON);
+
+    // From the string, create a Blob for downloading
+    const filedata = new Blob([imgArrayJSON], {type: "application/json" });
+
+    // Create URL, on the fly, for the Blob object
+    const url = window.URL.createObjectURL(filedata);
+
+    // Construct a filename based on the image directory name
+    var pathArray = imgDir.split("/");
+    var baseFilename = pathArray.pop();
+    // handle case where the path itself ends with a slash
+    if (baseFilename === "")
+        baseFilename = pathArray.pop();
+
+    const filename = baseFilename + ".json";
+    console.log("filename for 'Export array': " + filename);
+
+    // 
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+
+    // clean up by removing access to the object created.
+    window.URL.revokeObjectURL(url);
 }
 
+function exportCSV() {
+    // convert image array to a JSON string
+    var imgArrayJSON = JSON.stringify(imgArray);
 
+    // add line breaks
+    var csvBody = imgArrayJSON.replace(/\],\[/g, "],\n[");
+    
+    // remove square brackets and commas between rows
+    csvBody = csvBody.replace(/\[/g, "");   
+    csvBody = csvBody.replace(/\],/g, "");
+    csvBody = csvBody.replace(/\]/g, "");
+
+    // construct CSV-formatted string
+    var csvHeader = '"filename","seen","type label","subtype label","modifier","note"\n';
+    var imgArrayCSV = csvHeader + csvBody;
+
+    // From the string, create a Blob for downloading
+    const filedata = new Blob([imgArrayCSV], {type: "text/csv" });
+
+    // Create URL, on the fly, for the Blob object
+    const url = window.URL.createObjectURL(filedata);
+
+    // Construct a filename based on the image directory name
+    var pathArray = imgDir.split("/");
+    var baseFilename = pathArray.pop();
+    // handle case where the path itself ends with a slash
+    if (baseFilename === "")
+        baseFilename = pathArray.pop();
+
+    const filename = baseFilename + ".csv";
+    console.log("filename for 'Export CSV': " + filename);
+
+    // 
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+
+    // clean up by removing access to the object created.
+    window.URL.revokeObjectURL(url);
+}
 
