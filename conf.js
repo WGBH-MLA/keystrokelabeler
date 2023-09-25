@@ -1,3 +1,8 @@
+jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
+
+feedbackPause = 700 ;
+
+// Each top-level key in the `cats` object must be a single uppercase letter.
 cats = 
 {
     "B": {
@@ -21,7 +26,7 @@ cats =
                 "name": "Clapperboard",
                 "desc": "Slate information displayed on a clapperboard"
             },
-            "S": {
+            "D": {
                 "key": "D",
                 "name": "Digital text",
                 "desc": "Slate appearing as text on a digital display"
@@ -53,8 +58,6 @@ cats =
 }
 ;
 
-modCode = "T"
-modName = "transitional"
-modDesc = "The frame occurs during an interval of transition between frame types."
-
-jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
+modCode = "T" ; 
+modName = "transitional" ;
+modDesc = "The frame occurs during an interval of transition between frame types." ;

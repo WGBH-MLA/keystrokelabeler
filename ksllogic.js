@@ -1,5 +1,8 @@
 console.log("ksl logic running...");
 
+// Attach the event listener to the  HTML document
+document.addEventListener('keydown', handleKeydown);
+
 // Initialize global variables
 
 // total number of images in the set
@@ -22,30 +25,180 @@ updateItemDisplay();
 
 
 function handleKeydown(event) {
-    console.log("key pressed: " + event.key)
+    console.log("key pressed: " + event.key);
 
-    switch (event.key) {
+    specialKeys = {
+        "ArrowRight": {
+        },
+        "ArrowLeft": {
+        },
+        "ArrowUp": {
+        },
+        "ArrowDown": {
+        },
+        " ":  {
+        },  // spacebar
+        "Delete": {
+        },
+        "Backspace": {
+        }
+    };
 
-        case "ArrowRight":
-            nav("R");
-            break;
+    if (event.key in specialKeys) {
+        switch (event.key) {
 
-        case "ArrowLeft":
-            nav("L");
-            break;
+            case "ArrowRight":
+                nav("R");
+                break;
 
-        case "ArrowUp":
-            changeJump("up");
-            break;
+            case "ArrowLeft":
+                nav("L");
+                break;
 
-        case "ArrowDown":
-            changeJump("down");
-            break;
-        
-        default:
-            console.log("no actions set for that key")
+            case "ArrowUp":
+                changeJump("up");
+                break;
+
+            case "ArrowDown":
+                changeJump("down");
+                break;
+
+            case " " :  // spacebar
+                see();
+                break;
+            
+            case "Delete":
+                forgetMoveOn();
+                break;
+
+            case "Backspace":
+                forgetStay();
+                break;
+
+            default:
+                console.error("That special key that is not implemented.");
+        }
+    } 
+    else if (event.key.toUpperCase() in cats) {
+        labelItem(event.key)
+    } 
+    else {
+        console.log("no actions set for that key");
     }
 
+}
+
+function nav(dir) {
+
+    // navigate by adjusting current image according to navigation factor
+    if (dir === "R" && ((cur + jumpFactors[jfi]) <= last)) {
+        console.log("navigating right");
+        cur += jumpFactors[jfi];
+    } else if (dir === "L" && ((cur - jumpFactors[jfi]) >= 0)) {
+        console.log("navigating left");
+        cur -= jumpFactors[jfi];
+    } else {
+        console.warn("Warning: tried to navigate out of range.");
+    }
+
+    // turn off command indicator
+    cmdIndicator("off")
+
+    updateItemDisplay();
+    updateStatusDisplay();
+}
+
+function see() {
+    imgArray[cur][1] = true;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+    imgArray[cur][4] = false;
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // light up command indicator
+    cmdIndicator("on", "Seen,  not labeled.")
+
+    // after a delay, move to the next image.
+    setTimeout(nav, feedbackPause, "R");
+}
+
+function forgetMoveOn() {
+    imgArray[cur][1] = imgArray[cur][4] = false;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // light up command indicator
+    cmdIndicator("on", "Unseen")
+
+    // after a delay, move to the next image.
+    setTimeout(nav, feedbackPause, "R");
+}
+
+function forgetStay() {
+    imgArray[cur][1] = imgArray[cur][4] = false;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // light up command indicator
+    cmdIndicator("on", "Unseen")
+}
+
+function labelItem( key ) {
+    imgArray[cur][1] = true;
+    imgArray[cur][2] = key.toUpperCase();
+    imgArray[cur][3] = imgArray[cur][5] = "";
+
+    // set the modifier, if appropriate
+    if ( key === key.toUpperCase() )
+        imgArray[cur][4] = true;
+    else 
+        imgArray[cur][4] = false;
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // light up command indicator
+    var modNameStr = "";
+    if (imgArray[cur][4]) {
+        modNameStr = " (" + modCode + ")";
+    }
+    var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
+    cmdIndicator("on", msg)
+
+    // after a delay, move to the next image.
+    setTimeout(nav, feedbackPause, "R");
+}
+
+
+function changeJump(dir) {
+    if (dir == "up") {
+        console.log("trying to increase jump factor");
+        if (jfi < (jumpFactors.length - 1)) jfi++;
+    } else if (dir == "down") {
+        console.log("trying to decrease jump factor");
+        if (jfi > 0) jfi--;
+    }
+    updateStatusDisplay()
+}
+
+function cmdIndicator(status, msg = " ") {
+    if (status === "off") {
+        document.getElementById("indicator-msg").innerText = " ";
+    } else if (status === "on" ) {
+        document.getElementById("indicator-msg").innerText = msg;
+    } else {
+        console.error("Bad `status` argument passed to cmdIndicator.")
+    }
+}
+
+function updateStatusDisplay() {
+    document.getElementById("img-num").innerText = cur + 1;
+    document.getElementById("jump-factor").innerText = jumpFactors[jfi];
 }
 
 function updateItemDisplay() {
@@ -97,44 +250,9 @@ function updateItemDisplay() {
 
 }
 
-function updateStatusDisplay() {
-    document.getElementById("img-num").innerText = cur + 1;
-    document.getElementById("jump-factor").innerText = jumpFactors[jfi];
+function exportArray() {
+
 }
 
-function nav(dir) {
-    if (dir === "R" && cur < last) {
-        console.log("navigating right");
-        cur++;
-    } else if (dir === "L" && cur > 0 ) {
-        console.log("navigating left");
-        cur--;
-    } else {
-        console.error("Error: tried to navigate out of range.");
-    }
-
-    updateItemDisplay();
-    updateStatusDisplay();
-}
-
-function changeJump(dir) {
-    if (dir == "up") {
-        console.log("trying to increase jump multiple");
-        if (jfi < (jumpFactors.length - 1)) jfi++;
-    } else if (dir == "down") {
-        console.log("trying to decrease jump multiple");
-        if (jfi > 0) jfi--;
-    }
-    updateStatusDisplay()
-}
-
-
-
-// Attach the event listener to the whole document
-document.addEventListener('keydown', handleKeydown);
-
-// filename = imgArray[2][0];
-
-// console.log("Filename: " + filename);
 
 

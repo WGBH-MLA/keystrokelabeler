@@ -1,4 +1,6 @@
 
+/* Main elements */
+
 body {
     font-family: "Roboto Mono", monospace;
     font-size: medium;
@@ -12,37 +14,52 @@ div {
 
 .container {
     display: flex;
-    max-width: 95%; 
+    max-width: 1100px; 
     min-width: 800px; 
     margin: 0 auto; /* Center the container horizontally */
     background-color: #fff; 
 }
 
 .left-column {
-    flex: 70%;
+    flex: 75%;
     background-color: #f2f2f2;
-    padding: 20px;
+    padding: 20px 40px 40px 40px;
 }
 
 .right-column {
-    flex: 30%;
-    background-color: #e5e5e5;
+    flex: 25%;
     padding: 20px;
+    background-color: #666472; 
+    color:  #b6aee6;
+    font-size: small;
 }
+
+/* major block elements */
 
 .status-line {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: small;
+    font-size: medium;
+}
+
+.graphical-area {
+    background-color: #96a09b;
+    margin: 0 auto; /* Center the container horizontally */
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
 }
 
 .image-container {
-    display: flex;
-    max-width: 95%; 
-    background-color: #96a09b;
     margin: 0 auto; /* Center the container horizontally */
-    padding: 40px;
+    padding: 40px 60px 20px 40px;
+}
+
+div.cmd-indicator {
+    height: 30px;
+    font-size: large;
+    color: darkgreen;
 }
 
 .item-type-label {
@@ -65,6 +82,8 @@ div {
     color: gray;
 } 
 
+/* Minor block elements */
+
 .label-level {
     width: 20%; 
 }
@@ -81,16 +100,31 @@ div {
     margin-bottom: 10px;
 }
 
-img.observing {
-    margin: 0 auto; /* Center horizontally */
+.button {
+    display: flex;
+    width: 200px;
+    height: 30px;
+    background-color: lightgray;
+    border: none;
+    border-radius: 20px;
+    padding: 6px;
+    margin: 0px 10px 10px 0px;
+    justify-content: center;
+    align-items: center;
 }
 
  /* Minor visual tweaks */
- .seen {
-    color: #007a2f;
+
+ img.observing {
+    margin: 0 auto; /* Center horizontally */
+}
+
+.seen {
+    color: blue;
     font-weight: bold;
 }
 .unseen {
     color: gray;
     font-weight: normal;
 }
+

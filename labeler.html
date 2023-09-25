@@ -4,17 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="layout.css" />
-    <title>Keystroke Labeler</title>
+    <title>KeyStroke Labeler</title>
 </head>
 <body>
     <div class="container">
         <div class="left-column">
+
             <div class="status-line">
                 <div><span id='img-num'>X</span> / <span id='img-cnt'>X</span></div>
                 <div>Jump factor: <span id="jump-factor">X</span></div>
             </div>
-            <div class="image-container">
-                <img id='item-image' class="observing" src="kslface.jpg" /> 
+
+            <div class="graphical-area">
+                <div class="image-container">
+                    <img id='item-image' class="observing" src="kslface.jpg" />
+                </div>
+                <div class="cmd-indicator">
+                    <!--<span>*</span> -->
+                    <span id="indicator-msg"></span>
+                </div>
             </div>
 
             <div class="status-line">
@@ -40,15 +48,28 @@
             </div>
 
             <div class="button-container">
-                [button container]
+                <div class="button">
+                    <a id="export-array">Export array</a>
+                </div>
             </div>
         </div>
+
+
         <div class="right-column">
             <div class="help">
-                [interaction instructions]
+                HELP
             </div>
             <div class="help">
-                [keystroke codes]
+                Command keys:
+                <div class="key list">
+                    -
+                </div>
+            </div>
+            <div class="help">
+                Label keys:
+                <div class="key list">
+                    -
+                </div>
             </div>
         </div>
     </div>
