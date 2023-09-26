@@ -3,7 +3,7 @@ getstills.py
 
 # Overview
 
-Creates periodic stills from a video file, with filenames including 
+Creates periodic stills from a video file, with image filenames including 
 millisecond timestamps.
 
 # Usage
@@ -17,29 +17,29 @@ To extract every frame as a still, specify a period of 0 ms.
 
 # Output
 
-The application creates a directory based on the filename of the media file, 
+The application creates a directory based on the filename of the video file, 
 and adds each still to that directory.
 
-Filenames include the base filename (without the extension) of the media 
-file, the timestamp (expressed in milliseconds), and the total length of 
-the video (in milliseconds). 
-
-
+Image filenames include the base filename (without the extension) of the 
+media file, the timestamp (expressed in milliseconds), and the total length 
+of the video (in milliseconds). 
 """
 
 # %%
 import sys
 import os
 import av
+import json
 
 # %%
 
 def extract(video_path, period, first_time, last_time, max_stills):
-    """Performs extraction of stills from the video"""
-
+    """Performs extraction of stills from the video and creates index of extracted 
+    image files in a JSON array.
+    """
     # %% 
     """Variable assignments for testing/debugging
-    video_path = "./test_videos/cpb-aacip-b45eb62bd60.mp4" #DEBUG
+    video_path = "../ksl_data/test_videos/cpb-aacip-b45eb62bd60.mp4" #DEBUG
     period = 2000 #DEBUG
     first_time = 0 #DEBUG
     #first_time = 34000
@@ -49,9 +49,10 @@ def extract(video_path, period, first_time, last_time, max_stills):
     #max_stills = 9999 #DEBUG
     """
 
-    filename = os.path.basename(video_path)
-    name, ext = os.path.splitext(filename)
-    stills_dir = "./stills_" + name + "/"
+    vfilename = os.path.basename(video_path)
+    fname, ext = os.path.splitext(vfilename)
+    basename = "stills_" + fname + "_" + str(period) + "ms"
+    stills_dir = "../ksl_data/" + basename + "/"
 
     # Create directory for the still based on the filename of the media
     if not os.path.exists(stills_dir):
@@ -63,6 +64,7 @@ def extract(video_path, period, first_time, last_time, max_stills):
     print("Extracting stills from", video_path, "every", period, "ms...") 
 
     # initialize counters for iteration
+    image_list = []
     stills_count = 0
     fcount = 0
     next_target_time = first_time
@@ -71,9 +73,9 @@ def extract(video_path, period, first_time, last_time, max_stills):
     container = av.open(video_path)
     video_stream = next((s for s in container.streams if s.type == 'video'), None)
     if video_stream is None:
-        raise Exception("No video stream found in {}".format(filename) ) 
+        raise Exception("No video stream found in {}".format(vfilename) ) 
 
-    # get technical stats on the video stream
+    # get technical stats on the video stream, and calculate duration in msec
     fps = video_stream.average_rate.numerator / video_stream.average_rate.denominator
     length = int((video_stream.frames / fps) * 1000)
 
@@ -90,10 +92,13 @@ def extract(video_path, period, first_time, last_time, max_stills):
         
         # Grab the first still after the target time index
         # (assuming the limits have not been exceeded.)
-        if (( max_stills == -1 or stills_count < max_stills ) and
-            ( last_time == -1 or ftime <= last_time ) and 
-            ftime >= next_target_time ): 
-            frame.to_image().save(f'{stills_dir}{name}_{length:08}_{ftime:08}.jpg')
+        if ( ( max_stills == -1 or stills_count < max_stills ) and
+             ( last_time == -1 or ftime <= last_time ) and 
+             ( ftime >= next_target_time ) ): 
+            ifilename =  f'{fname}_{length:08}_{ftime:08}.jpg'
+            ipathname = stills_dir + ifilename
+            frame.to_image().save(ipathname)
+            image_list.append(ifilename)
             next_target_time += period
             stills_count += 1
 
@@ -102,6 +107,22 @@ def extract(video_path, period, first_time, last_time, max_stills):
     print("Extracted", stills_count, "stills out of", fcount, "video frames.") 
 
     container.close()
+
+    # Create image index array file
+    print("Creating index...")
+
+    # first, flesh out the list
+    image_array = []
+    for iname in image_list:
+        image_array.append([iname, False, "", "", False, ""])
+
+    # write file
+    array_pathname = stills_dir + basename + ".json"
+    with open(array_pathname, "w") as array_file:
+        json.dump(image_array, array_file)
+
+    print("Done.")
+
 
 
 # %%
