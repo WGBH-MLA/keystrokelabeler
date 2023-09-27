@@ -52,7 +52,7 @@ def extract(video_path, period, first_time, last_time, max_stills):
     vfilename = os.path.basename(video_path)
     fname, ext = os.path.splitext(vfilename)
     basename = "stills_" + fname + "_" + str(period) + "ms"
-    stills_dir = "../ksl_data/" + basename + "/"
+    stills_dir = "./" + basename + "/"
 
     # Create directory for the still based on the filename of the media
     if not os.path.exists(stills_dir):
@@ -109,18 +109,21 @@ def extract(video_path, period, first_time, last_time, max_stills):
     container.close()
 
     # Create image index array file
-    print("Creating index...")
+
+    array_pathname = stills_dir + basename + ".json"
+
+    print("Creating stills index...")
 
     # first, flesh out the list
     image_array = []
     for iname in image_list:
-        image_array.append([iname, False, "", "", False, ""])
+        image_array.append([iname, False, "", "", False, "", ""])
 
     # write file
-    array_pathname = stills_dir + basename + ".json"
     with open(array_pathname, "w") as array_file:
         json.dump(image_array, array_file)
 
+    print("Stills index created at " + array_pathname + ".")
     print("Done.")
 
 
