@@ -1,3 +1,9 @@
+// This value may be overridden if it is also set in img_arr_init.js
+imgDir = "./images/"
+
+// The jump factor is the number of items between the current item and the next
+// or previous item when navigating.
+// This array defines the allowed jump factors.
 jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
 
 feedbackPause = 700 ;
@@ -19,7 +25,7 @@ cats =
             "H": {
                 "key": "H",
                 "name": "Handwritten",
-                "desc": "Slate information written by hand with chalk or marker"
+                "desc": "Slate information written by hand with chalk or marker, but not on clapperboard"
             },
             "C": {
                 "key": "C",
@@ -29,7 +35,7 @@ cats =
             "D": {
                 "key": "D",
                 "name": "Digital text",
-                "desc": "Slate appearing as text on a digital display"
+                "desc": "Slate appearing as text on a digitally-generated display"
             },
             "B": {
                 "key": "B",
@@ -39,7 +45,7 @@ cats =
             "G": {
                 "key": "G",
                 "name": "Graphical",
-                "desc": "Slate information interspersed with graphical elements"
+                "desc": "Slate information digitally interspersed with graphical elements"
             }
         }
     },
@@ -51,8 +57,8 @@ cats =
     },
     "L": {
         "key": "L",
-        "name": "Logo of an organization",
-        "desc": "Logo of an organization involved in the production of the program",
+        "name": "Logo",
+        "desc": "Logo, usually of an organization involved, but not the title card",
         "subtypes": {}
     },
     "O": {
@@ -75,25 +81,25 @@ cats =
     },
     "N": {
         "key": "N",
-        "name": "Chyron and person, without speaker ID",
+        "name": "Chyron + person; No speaker ID",
         "desc": "",
         "subtypes": {}
     },
     "P": {
         "key": "P",
-        "name": "Person centered without Chyron",
+        "name": "Person focused; No Chyron",
         "desc": "",
         "subtypes": {}
     },
     "Y": {
         "key": "Y",
-        "name": "Chyron with no single person",
+        "name": "Chyron; No single person",
         "desc": "",
         "subtypes": {}
     },
     "K": {
         "key": "K",
-        "name": "Ticker without Chyron",
+        "name": "Ticker; No Chyron",
         "desc": "",
         "subtypes": {}
     },
