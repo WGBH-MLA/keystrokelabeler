@@ -25,7 +25,8 @@ cur = 0
 last = count - 1
 // set the index for the inital jump factor
 jfi = 0
-
+// mode
+mode = "ks"
 
 // Attach the key press event listener to the HTML document
 document.addEventListener("keydown", handleKeydown);
@@ -34,10 +35,11 @@ document.addEventListener("keydown", handleKeydown);
 document.getElementById("export-array").addEventListener("click", exportArray);
 document.getElementById("export-CSV").addEventListener("click", exportCSV);
 
-// Initialize display elements
+// Initialize display elements after showing welcome for 1 second
 document.getElementById("img-cnt").innerText = count;
-updateStatusDisplay();
-updateItemDisplay();
+setTimeout(updateStatusDisplay, 1000);  
+setTimeout(updateItemDisplay, 1000);  
+
 
 
 /***************************************************************************
@@ -88,11 +90,11 @@ function handleKeydown(event) {
                 break;
             
             case "Delete":
-                forgetMoveOn();
+                forgetStay();
                 break;
 
             case "Backspace":
-                forgetStay();
+                moveBackForget();
                 break;
 
             default:
@@ -112,7 +114,6 @@ function handleKeydown(event) {
  * Performs basic navigation through the image array.
  * 
  * @param {string} dir - The direction of navigation; must be either "L" or "R".
- * 
  */
 function nav(dir) {
 
@@ -143,21 +144,8 @@ function see() {
     updateItemDisplay();
 
     // light up command indicator
-    cmdIndicator("on", "Seen,  not labeled.")
-
-    // after a delay, move to the next image.
-    setTimeout(nav, feedbackPause, "R");
-}
-
-function forgetMoveOn() {
-    imgArray[cur][1] = imgArray[cur][4] = false;
-    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
-
-    // go ahead an display new values for the current item
-    updateItemDisplay();
-
-    // light up command indicator
-    cmdIndicator("on", "Unseen")
+    //cmdIndicator("on", "&#x1F440;")
+    cmdIndicator("on", "&#x1F441;")
 
     // after a delay, move to the next image.
     setTimeout(nav, feedbackPause, "R");
@@ -171,7 +159,27 @@ function forgetStay() {
     updateItemDisplay();
 
     // light up command indicator
-    cmdIndicator("on", "Unseen")
+    cmdIndicator("on", "&empty;")
+
+    // after a delay, turn off the command indicator.
+    setTimeout(cmdIndicator, feedbackPause, "off");
+}
+
+function moveBackForget() {
+    
+    nav("L");
+
+    imgArray[cur][1] = imgArray[cur][4] = false;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+
+    // light up command indicator
+    cmdIndicator("on", "&empty; &#x23F4;");
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // after a delay, turn off the command indicator.
+    setTimeout(cmdIndicator,  feedbackPause, "off");
 }
 
 function labelItem( key ) {
@@ -191,7 +199,7 @@ function labelItem( key ) {
     // light up command indicator
     var modNameStr = "";
     if (imgArray[cur][4]) {
-        modNameStr = " (" + modCode + ")";
+        modNameStr = " (" + modName + ")";
     }
     var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
     cmdIndicator("on", msg)
@@ -202,14 +210,13 @@ function labelItem( key ) {
 
 function cmdIndicator(status, msg = " ") {
     if (status === "off") {
-        document.getElementById("indicator-msg").innerText = " ";
+        document.getElementById("indicator-msg").innerHTML = " ";
     } else if (status === "on" ) {
-        document.getElementById("indicator-msg").innerText = msg;
+        document.getElementById("indicator-msg").innerHTML = msg;
     } else {
         console.error("Bad `status` argument passed to cmdIndicator.")
     }
 }
-
 
 function changeJump(dir) {
     if (dir == "up") {
@@ -225,6 +232,14 @@ function changeJump(dir) {
 function updateStatusDisplay() {
     document.getElementById("img-num").innerText = cur + 1;
     document.getElementById("jump-factor").innerText = jumpFactors[jfi];
+
+    if (mode === "ks") {
+        document.getElementById("input-mode").innerText = "Keystroke mode";
+    } else if (mode === "ed") {
+        document.getElementById("input-mode").innerText = "Item editor mode";
+    } else {
+        console.error("Invalid input mode.")
+    }
 }
 
 function updateItemDisplay() {
@@ -267,7 +282,7 @@ function updateItemDisplay() {
     }
     // Display modifer
     if (imgArray[cur][4]) {
-        document.getElementById("item-mod-code").innerText = "(" + modCode + ")";
+        document.getElementById("item-mod-code").innerText = "*";
         document.getElementById("item-mod-name").innerText = "(" + modName + ")";
     } else {
         document.getElementById("item-mod-code").innerText = "";
@@ -327,7 +342,7 @@ function exportCSV() {
     csvBody = csvBody.replace(/\]/g, "");
 
     // construct CSV-formatted string
-    var csvHeader = '"filename","seen","type label","subtype label","modifier","note"\n';
+    var csvHeader = '"filename","seen","type label","subtype label","modifier","transcript","note"\n';
     var imgArrayCSV = csvHeader + csvBody;
 
     // From the string, create a Blob for downloading
