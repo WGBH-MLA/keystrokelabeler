@@ -1,3 +1,5 @@
 test_*
 stills_*
+images/
 kslvenv/
+.tmp*
