@@ -2,10 +2,11 @@
 /* Main elements */
 
 body {
-    font-family: "Roboto Mono", monospace;
-    font-size: medium;
     margin: 0;
     padding: 0;
+    overflow: hidden;  /* prevent scrolling of the web page */
+    font-family: "PT Mono", "Noto Sans Mono", "Roboto Mono", "Liberation Mono", "Cascadia Mono", "Consolas", monospace; 
+    font-size: medium;
 }
 
 div {
@@ -23,12 +24,12 @@ div {
 .left-column {
     flex: 75%;
     background-color: #f2f2f2;
-    padding: 20px 40px 40px 40px;
+    padding: 10px 20px 10px 20px;
 }
 
 .right-column {
     flex: 25%;
-    padding: 20px;
+    padding: 10px;
     background-color: #666472; 
     color:  #b6aee6;
     font-size: small;
@@ -44,7 +45,7 @@ div {
 }
 
 .graphical-area {
-    background-color: #96a09b;
+    background-color: #b8c5bf;
     margin: 0 auto; /* Center the container horizontally */
     justify-content: center;
     text-align: center;
@@ -53,13 +54,14 @@ div {
 
 .image-container {
     margin: 0 auto; /* Center the container horizontally */
-    padding: 40px 60px 20px 40px;
+    padding: 20px 20px 20px 20px;
 }
 
 div.cmd-indicator {
-    height: 30px;
-    font-size: large;
+    height: 25px;
+    font-size: x-large;
     color: darkgreen;
+    font-weight: bold;
 }
 
 .item-type-label {
@@ -68,7 +70,7 @@ div.cmd-indicator {
     justify-content: space-between;
     width: 100%;
     margin-top: 10px;
-    margin-bottom: 10px; 
+    margin-bottom: 0px; 
     font-size: large;
 } 
 .item-subtype-label {
@@ -77,10 +79,18 @@ div.cmd-indicator {
     justify-content: space-between;
     width: 100%;
     margin-top: 10px;
-    margin-bottom: 50px; 
+    margin-bottom: 0px; 
     font-size: medium;
     color: gray;
 } 
+
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 20px;    
+}
+
 
 /* Minor block elements */
 
@@ -100,21 +110,18 @@ div.cmd-indicator {
     margin-bottom: 10px;
 }
 
-.button-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-}
+
 
 .button {
     display: flex;
-    width: 200px;
-    height: 30px;
+    font-size: small;
+    width: 170px;
+    height: 20px;
     background-color: lightgray;
     border: none;
-    border-radius: 20px;
-    padding: 6px;
-    margin: 0px 10px 10px 0px;
+    border-radius: 16px;
+    padding: 4px;
+    margin: 0px 8px 8px 0px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
