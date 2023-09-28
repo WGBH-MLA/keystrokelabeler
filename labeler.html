@@ -9,18 +9,17 @@
 <body>
     <div class="container">
         <div class="left-column">
-
             <div class="status-line">
+                <div><span id='input-mode'>Keystroke Labeler</span></div>
                 <div><span id='img-num'>X</span> / <span id='img-cnt'>X</span></div>
                 <div>Jump factor: <span id="jump-factor">X</span></div>
             </div>
 
             <div class="graphical-area">
                 <div class="image-container">
-                    <img id='item-image' class="observing" src="kslface.jpg" />
+                    <img id='item-image' class="observing" src="welcome.jpg" />
                 </div>
                 <div class="cmd-indicator">
-                    <!--<span>*</span> -->
                     <span id="indicator-msg"></span>
                 </div>
             </div>
@@ -48,11 +47,14 @@
             </div>
 
             <div class="button-container">
-                <div class="button" id="export-array">
-                    <span>Export array</span>
+                <div class="button" id="export-JSON">
+                    <span>Export JSON</span>
                 </div>
                 <div class="button" id="export-CSV">
                     <span>Export CSV</span>
+                </div>
+                <div class="button" id="export-array">
+                    <span>Export JS array</span>
                 </div>
             </div>
         </div>
@@ -78,7 +80,8 @@
     </div>
 
     <script src="conf.js"></script>
-    <script src="images.js"></script>
+    <script src="img_arr_init.js"></script>
+    <script src="img_arr_prog.js"></script>
     <script src="ksllogic.js"></script>
 </body>
 </html>
