@@ -49,12 +49,19 @@ def extract(video_path, period, first_time, last_time, max_stills):
     #max_stills = 9999 #DEBUG
     """
 
+    # Create directory for the project based on the filename of the media
     vfilename = os.path.basename(video_path)
     fname, ext = os.path.splitext(vfilename)
     basename = "stills_" + fname + "_" + str(period) + "ms"
-    stills_dir = "./" + basename + "/"
+    proj_dir = "./" + basename + "/"
+    stills_dir = proj_dir + "images/"
 
-    # Create directory for the still based on the filename of the media
+    if not os.path.exists(proj_dir):
+        print("Creating directory:", proj_dir)
+        os.mkdir(proj_dir)
+    else:
+        print("Warning: Project directory exists.  Existing data may be overwritten.")
+
     if not os.path.exists(stills_dir):
         print("Creating directory:", stills_dir)
         os.mkdir(stills_dir)
@@ -63,7 +70,7 @@ def extract(video_path, period, first_time, last_time, max_stills):
 
     print("Extracting stills from", video_path, "every", period, "ms...") 
 
-    # initialize counters for iteration
+    # Initialize counters for iteration
     image_list = []
     stills_count = 0
     fcount = 0
@@ -109,9 +116,6 @@ def extract(video_path, period, first_time, last_time, max_stills):
     container.close()
 
     # Create image index array file
-
-    array_pathname = stills_dir + basename + ".json"
-
     print("Creating stills index...")
 
     # first, flesh out the list
@@ -119,9 +123,16 @@ def extract(video_path, period, first_time, last_time, max_stills):
     for iname in image_list:
         image_array.append([iname, False, "", "", False, "", ""])
 
-    # write file
+    # convert array to a JSON string and prettify with line breaks
+    image_array_j = json.dumps(image_array)
+    image_array_j = image_array_j.replace("[[", "[\n[")
+    image_array_j = image_array_j.replace("], [", "], \n[")
+    image_array_j = image_array_j.replace("]]", "]\n]")
+
+    # write JSON file in current directory
+    array_pathname = proj_dir + "img_data_init.json"
     with open(array_pathname, "w") as array_file:
-        json.dump(image_array, array_file)
+        array_file.write(image_array_j)
 
     print("Stills index created at " + array_pathname + ".")
     print("Done.")
