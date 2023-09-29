@@ -44,9 +44,8 @@ setTimeout(updateItemDisplay, 1000);
 
 
 /***************************************************************************
- * Function definitions
+ * Branching and execution flow function definitions
  * *************************************************************************/
-
 
 /**
  * Controls branching execution folow depending on user keypress.
@@ -64,55 +63,110 @@ function handleKeydown(event) {
         "ArrowDown": {},
         " ":  {},   // spacebar
         "Delete": {},
-        "Backspace": {}
+        "Backspace": {},
+        "1": {},
+        "2": {}
     };
 
     const edModeCmdKeys = {
         "Escape": {},
         " ":  {},   // spacebar
-        "Delete": {}
+        "Delete": {},
+        "1": {},
+        "2": {}
     };
 
     // prevent browser from doing something else with command keys
     if (event.key in ksModeCmdKeys || event.key in edModeCmdKeys) 
         event.preventDefault();
 
-    // Branching
-    if (event.key in ksModeCmdKeys) {
-        switch (event.key) {
-            case "ArrowRight":
-                nav("R");
-                break;
-            case "ArrowLeft":
-                nav("L");
-                break;
-            case "ArrowUp":
-                changeJump("up");
-                break;
-            case "ArrowDown":
-                changeJump("down");
-                break;
-            case " " :  // spacebar
-                see();
-                break;
-            case "Delete":
-                forgetStay();
-                break;
-            case "Backspace":
-                moveBackForget();
-                break;
-            default:
-                console.error("Error: That special key that is not implemented.");
+    // Execution branching
+
+    // KS mode braching
+    if (mode === "ks") {
+        if (event.key in ksModeCmdKeys) {
+            switch (event.key) {
+                case "Escape":
+                    changeMode("ed1");
+                    break;
+                case "ArrowRight":
+                    nav("R");
+                    break;
+                case "ArrowLeft":
+                    nav("L");
+                    break;
+                case "ArrowUp":
+                    changeJump("up");
+                    break;
+                case "ArrowDown":
+                    changeJump("down");
+                    break;
+                case " " :  // spacebar
+                    see();
+                    break;
+                case "Delete":
+                    forgetStay();
+                    break;
+                case "Backspace":
+                    moveBackForget();
+                    break;
+                case "1":
+                    changeMode("ed1");
+                    break;
+                case "2":
+                    changeMode("ed2");
+                    break;
+                default:
+                    console.error("Error: That special key is listed, but not implemented.");
+            }
+        } 
+        else if (event.key.toUpperCase() in cats) {
+            ksLabelItem(event.key)
+        } 
+        else {
+            console.log("no actions set for that key in keystroke mode");
         }
     } 
-    else if (event.key.toUpperCase() in cats) {
-        ksLabelItem(event.key)
-    } 
+    // Edit mode branching
+    else if ( mode === "ed1" || mode === "ed2" ) {
+        if (event.key in edModeCmdKeys) {
+            switch (event.key) {
+                case "Escape":
+                    changeMode("ks");
+                    break;
+                case " ":  // spacebar
+                    break;
+                case "Delete":
+                    break;
+                case "1":
+                    changeMode("ed1");
+                    break;
+                case "2":
+                    changeMode("ed2");
+                    break;
+                default:
+                    console.error("Error: That special key is listed, but not implemented.");
+            }
+        }
+    }
     else {
-        console.log("no actions set for that key");
+        console.error("Error: Invalid `mode`.");
     }
 
+
 }
+
+
+function changeMode(newMode) {
+    mode = newMode;
+
+    updateStatusDisplay();
+    updateItemDisplay();
+}
+
+/***************************************************************************
+ * Keystroke mode function definitions
+ * *************************************************************************/
 
 /**
  * Performs basic navigation through the image array.
@@ -187,29 +241,35 @@ function moveBackForget() {
 }
 
 function ksLabelItem( key ) {
-    imgArray[cur][1] = true;
-    imgArray[cur][2] = key.toUpperCase();
-    imgArray[cur][3] = imgArray[cur][5] = "";
+    if (key.toUpperCase() in cats) {
 
-    // set the modifier, if appropriate
-    if ( key === key.toUpperCase() )
-        imgArray[cur][4] = true;
-    else 
-        imgArray[cur][4] = false;
+        imgArray[cur][1] = true;
+        imgArray[cur][2] = key.toUpperCase();
+        imgArray[cur][3] = imgArray[cur][5] = "";
 
-    // go ahead an display new values for the current item
-    updateItemDisplay();
+        // set the modifier, if appropriate
+        if ( key === key.toUpperCase() )
+            imgArray[cur][4] = true;
+        else 
+            imgArray[cur][4] = false;
 
-    // light up command indicator
-    var modNameStr = "";
-    if (imgArray[cur][4]) {
-        modNameStr = " (" + modName + ")";
+        // go ahead an display new values for the current item
+        updateItemDisplay();
+
+        // light up command indicator
+        var modNameStr = "";
+        if (imgArray[cur][4]) {
+            modNameStr = " (" + modName + ")";
+        }
+        var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
+        cmdIndicator("on", msg)
+
+        // after a delay, move to the next image.
+        setTimeout(nav, feedbackPause, "R");
     }
-    var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
-    cmdIndicator("on", msg)
-
-    // after a delay, move to the next image.
-    setTimeout(nav, feedbackPause, "R");
+    else {
+        console.error("Error: Invalid label passed to `kslLabelItem`.");
+    }
 }
 
 function cmdIndicator(status, msg = " ") {
@@ -233,13 +293,23 @@ function changeJump(dir) {
     updateStatusDisplay()
 }
 
+/***************************************************************************
+ * Edit mode function definitions
+ * *************************************************************************/
+
+
+
+/***************************************************************************
+ * Display function definitions
+ * *************************************************************************/
+
 function updateStatusDisplay() {
     document.getElementById("img-num").innerText = cur + 1;
     document.getElementById("jump-factor").innerText = jumpFactors[jfi];
 
     if (mode === "ks") {
         document.getElementById("input-mode").innerText = "Keystroke mode";
-    } else if (mode === "ed") {
+    } else if (mode.startsWith("ed")) {
         document.getElementById("input-mode").innerText = "Editor mode";
     } else {
         console.error("Invalid input mode.")
@@ -293,7 +363,24 @@ function updateItemDisplay() {
         document.getElementById("item-mod-name").innerText = "";
     }
 
+    // Focus areas relevant areas, if in editor mode
+    if (mode === "ks") {1
+        document.getElementById("item-type-label").classList.remove("area_focus");
+        document.getElementById("item-subtype-label").classList.remove("area_focus");
+    } else if (mode === "ed1") {
+        document.getElementById("item-type-label").classList.add("area_focus");
+        document.getElementById("item-subtype-label").classList.remove("area_focus");
+    } else if (mode === "ed2") {
+        document.getElementById("item-type-label").classList.remove("area_focus");
+        document.getElementById("item-subtype-label").classList.add("area_focus");
+    }
+   
+
 }
+
+/***************************************************************************
+ * Export function definitions
+ * *************************************************************************/
 
 function exportJSON() {
 
