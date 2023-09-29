@@ -8,16 +8,13 @@
  * 
  */
 
-
-/***************************************************************************
- * Initialization steps
- * *************************************************************************/
 console.log("ksl logic now running...");
 
-// Initialize global variables
+// Define global data structures
 
 ksModeCmdKeys = {
     "Escape": {},
+    "Enter": {},
     "ArrowRight": {},
     "ArrowLeft": {},
     "ArrowUp": {},
@@ -31,12 +28,18 @@ ksModeCmdKeys = {
 
 edModeCmdKeys = {
     "Escape": {},
+    "Enter": {},
     " ":  {},   // spacebar
     "Delete": {},
+    "ArrowUp": {},
+    "ArrowDown": {},
     "1": {},
     "2": {}
 };
 
+/***************************************************************************
+ * Initialization steps
+ * *************************************************************************/
 
 // total number of images in the set
 count = imgArray.length;
@@ -88,6 +91,9 @@ function handleKeydown(event) {
                 case "Escape":
                     changeMode("ed1");
                     break;
+                case "Enter":
+                    nav("R");
+                    break;
                 case "ArrowUp":
                     changeJump("up");
                     break;
@@ -128,16 +134,33 @@ function handleKeydown(event) {
     } 
     // Edit mode branching
     else if ( mode === "ed1" || mode === "ed2" ) {
+        var level;
+        if (mode === "ed1")
+            level = 1;
+        else if (mode === "ed2")
+            level = 2;
+
         if (event.key in edModeCmdKeys) {
             switch (event.key) {
                 case "Escape":
                     changeMode("ks");
                     break;
+                case "Enter":
+                    acceptAndMove();
+                    break;
                 case " ":  // spacebar
+                    removeLabel(level, true);
                     break;
                 case "Delete":
+                    removeLabel(level, false);
                     break;
-                case "1":
+                case "ArrowUp":
+                    changeMode("ed1");
+                    break;
+                case "ArrowDown":
+                    changeMode("ed2");
+                    break;
+                 case "1":
                     changeMode("ed1");
                     break;
                 case "2":
@@ -147,8 +170,8 @@ function handleKeydown(event) {
                     console.error("Error: That special key is listed, but not implemented.");
             }
         }
-        else if ( event.key.length === 1 && /[a-zA-Z]/.test(event.key)) {
-            edLabelItem(event.key);
+        else if ( event.key.length === 1  &&  /[a-zA-Z]/.test(event.key) ) {
+            edLabelItem(event.key, level);
         }
         else {
             console.log("no actions set for that key in edit mode");
@@ -157,7 +180,6 @@ function handleKeydown(event) {
     else {
         console.error("Error: Invalid `mode`.");
     }
-
 
 }
 
@@ -269,70 +291,70 @@ function moveBackForget() {
     setTimeout(cmdIndicator,  feedbackPause, "off");
 }
 
-function ksLabelItem(key) {
-    if (key.toUpperCase() in cats) {
-
-        imgArray[cur][1] = true;
-        imgArray[cur][2] = key.toUpperCase();
-        imgArray[cur][3] = imgArray[cur][5] = "";
-
-        // set the modifier, if appropriate
-        if ( key === key.toUpperCase() )
-            imgArray[cur][4] = true;
-        else 
-            imgArray[cur][4] = false;
-
-        // go ahead an display new values for the current item
-        updateItemDisplay();
-
-        // light up command indicator
-        var modNameStr = "";
-        if (imgArray[cur][4]) {
-            modNameStr = " (" + modName + ")";
-        }
-        var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
-        cmdIndicator("on", msg)
-
-        // after a delay, move to the next image.
-        setTimeout(nav, feedbackPause, "R");
-    }
-    else {
-        console.error("Error: Invalid label passed to `kslLabelItem`.");
+function cmdIndicator(shown, msg=" ") {
+    if (shown === "off") {
+        document.getElementById("indicator-msg").innerHTML = " ";
+    } else if (shown === "on" ) {
+        document.getElementById("indicator-msg").innerHTML = msg;
+    } else {
+        console.error("Bad `shown` argument passed to cmdIndicator.")
     }
 }
 
-function cmdIndicator(status, msg = " ") {
-    if (status === "off") {
-        document.getElementById("indicator-msg").innerHTML = " ";
-    } else if (status === "on" ) {
-        document.getElementById("indicator-msg").innerHTML = msg;
-    } else {
-        console.error("Bad `status` argument passed to cmdIndicator.")
+/***************************************************************************
+ * Editor mode function definitions
+ * *************************************************************************/
+function acceptAndMove() {
+
+    changeMode("ks");
+
+    // light up command indicator for a moment
+    var modNameStr = "";
+    if (imgArray[cur][4]) {
+        modNameStr = " (" + modName + ")";
     }
+    var msg = cats[imgArray[cur][2]]["name"] + modNameStr ;
+
+    if (imgArray[cur][3] in cats[imgArray[cur][2]]["subtypes"]) {
+        msg += ( " / " + cats[imgArray[cur][2]]["subtypes"][imgArray[cur][3]]["name"] );
+    }
+
+    cmdIndicator("on", msg)
+
+    setTimeout(nav, feedbackPause, "R");
+}
+
+
+function removeLabel(level, seen) {
+
+    if (level === 1) {
+        imgArray[cur][1] = seen;
+        imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+        imgArray[cur][4] = false;  
+    } 
+    else if (level === 2) {
+        imgArray[cur][3] = "";
+    }
+    else 
+        console.error("Error: Invalid label level for removal.");
+
+    // Display updated values for the current item
+    updateItemDisplay();
+
 }
 
 
 /***************************************************************************
- * Edit mode function definitions
+ * Labeling functions
  * *************************************************************************/
 
-function edLabelItem(key) {
-    if (key.toUpperCase() in cats) {
+function ksLabelItem(key) {
 
-        imgArray[cur][1] = true;
-        imgArray[cur][2] = key.toUpperCase();
-        imgArray[cur][3] = imgArray[cur][5] = "";
+    var success = labelItem(key, 1);
 
-        // set the modifier, if appropriate
-        if ( key === key.toUpperCase() )
-            imgArray[cur][4] = true;
-        else 
-            imgArray[cur][4] = false;
+    if (success) {
 
-        // go ahead an display new values for the current item
-        updateItemDisplay();
-
-        // light up command indicator
+        // light up command indicator for a moment
         var modNameStr = "";
         if (imgArray[cur][4]) {
             modNameStr = " (" + modName + ")";
@@ -340,13 +362,92 @@ function edLabelItem(key) {
         var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
         cmdIndicator("on", msg)
 
-        // after a delay, move to the next image.
         setTimeout(nav, feedbackPause, "R");
     }
-    else {
-        console.error("Error: Invalid label passed to `kslLabelItem`.");
+    
+}
+
+function edLabelItem(key, level) {
+
+    var success = labelItem(key, level);
+
+    if (success) {
+        // Do nothing; stay in editor mode
     }
 }
+
+/**
+ * Performs the application of a label to the current item and updates display
+ * 
+ * @param {string} key - The key from `cats` to apply 
+ * @param {int} level - The key from `cats` to apply 
+ */
+function labelItem(keyStroke, level) {
+
+    // `key` is the key in `cats` which is always capitalized.
+    // `keyStroke` is capitalized only if the frame has a modifier.
+    var key = keyStroke.toUpperCase();
+
+    if ( level === 1 ) {
+
+        // First check that the type specified is valid
+        if (!(key in cats)) {
+            console.error("Error: Invalid label passed to `labelItem`.");
+            return false;
+        }
+        else {
+            // Check to see if type label and modifiers already set to this value.  
+            // If so, do nothing.
+            if ( key === imgArray[cur][2] &&
+                (  ( keyStroke === key && imgArray[cur][4] === true ) ||
+                    ( keyStroke != key && imgArray[cur][4] === false) ) ) {
+                console.log("Entered label is current label.  Not changing labels.");
+            }
+            else {
+                // set labels    
+                imgArray[cur][1] = true;
+                imgArray[cur][2] = key;
+                imgArray[cur][3] = imgArray[cur][5] = imgArray[cur][6] = "";
+
+                // set the modifier, if appropriate
+                if ( key === keyStroke )
+                    imgArray[cur][4] = true;
+                else 
+                    imgArray[cur][4] = false;
+            
+                // Display updated values for the current item
+                updateItemDisplay();
+            }
+            return true;
+        } 
+    } 
+    else if ( level === 2 ) {
+
+        // First check to make sure we have a Type label at Level 1
+        if (!(imgArray[cur][2] in cats)) {
+            console.Error("Trying to change subtype label without type label set.")
+            return false;
+        }
+        // Then check that subtype specified is valid for the type 
+        else if ( !(key in cats[imgArray[cur][2]]["subtypes"] ) ) {
+            console.warn("Warning: '" + key + "' is not a valid subtype for type '" + imgArray[cur][2] + "'.");
+            return false;
+        }
+        // Set the subtype code
+        else {
+            imgArray[cur][3] = key;
+
+            // Display updated values for the current item
+            updateItemDisplay();
+        }
+
+    } 
+    else {
+        console.error("Error:  Labeling beyond level 2 not implemented.");
+    }
+
+}
+
 
 
 /***************************************************************************
