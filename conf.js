@@ -20,7 +20,7 @@ cats =
     "S": {
         "key": "S",
         "name": "Slate",
-        "desc": "Program slate, typically appearing immediately before a program, displaying basic program information.",
+        "desc": "Program slate, typically appearing immediately before a program, displaying basic program information",
         "subtypes": {
             "H": {
                 "key": "H",
@@ -34,7 +34,7 @@ cats =
             },
             "D": {
                 "key": "D",
-                "name": "Digital text",
+                "name": "Simple digital text",
                 "desc": "Slate appearing as text on a digitally-generated display"
             },
             "B": {
@@ -52,79 +52,79 @@ cats =
     "W": {
         "key": "W",
         "name": "Warning for audience",
-        "desc": "Frame displaying information about audience level of sensitive content",
+        "desc": "A frame displaying information about audience level of sensitive content",
         "subtypes": {}
     },
     "L": {
         "key": "L",
         "name": "Logo",
-        "desc": "Logo, usually of an organization involved, but not the title card",
+        "desc": "Logo, usually of an organization involved, but not a title card",
         "subtypes": {}
     },
     "O": {
         "key": "O",
         "name": "Opening sequence text",
-        "desc": "",
+        "desc": "A frame with text that is part of the opening credits or intro sequence",
         "subtypes": {}
     },
     "T": {
         "key": "T",
         "name": "Main title card",
-        "desc": "",
+        "desc": "Title card dipslaying the title of the main program",
         "subtypes": {}
     },
     "I": {
         "key": "I",
-        "name": "Chyron for speaker ID",
-        "desc": "",
+        "name": "Chyron for person ID",
+        "desc": "Text on the lower third of the screen that identifies the focal person on the screen",
         "subtypes": {}
     },
     "N": {
         "key": "N",
-        "name": "Chyron + person; No speaker ID",
-        "desc": "",
+        "name": "Chyron and person; No ID",
+        "desc": "Text on the lower third of the screen, along with a focal person, but not identifying that person",
         "subtypes": {}
     },
     "P": {
         "key": "P",
-        "name": "Person focused; No Chyron",
-        "desc": "",
+        "name": "Focal person; No Chyron",
+        "desc": "A frame prominently displaying a single person but without a chyron",
         "subtypes": {}
     },
     "Y": {
         "key": "Y",
         "name": "Chyron; No single person",
-        "desc": "",
+        "desc": "Text on the lower third of the screen, but without a single person most prominent",
         "subtypes": {}
     },
     "K": {
         "key": "K",
         "name": "Ticker; No Chyron",
-        "desc": "",
+        "desc": "Text appearing in a ticker or crawler, but without a traditional chyron above it",
         "subtypes": {}
     },
     "G": {
         "key": "G",
         "name": "Graphical text",
-        "desc": "",
+        "desc": "A frame including text arranged or interspersed with graphics",
         "subtypes": {}
     },
     "M": {
         "key": "M",
         "name": "Miscellaneous text",
-        "desc": "",
+        "desc": "An ordinary frame of a video that includes miscellaneous text",
         "subtypes": {}
     },
     "C": {
         "key": "C",
         "name": "Closing credits",
-        "desc": "",
+        "desc": "A frame from the closing credits sequence",
         "subtypes": {}
     },
     "R": {
         "key": "R",
         "name": "Copyright statement",
-        "desc": "",
+        "desc": "A frame displaying the rights holder and the year, along the word 'copyright' or copyright symbol",
         "subtypes": {}
     }
 
