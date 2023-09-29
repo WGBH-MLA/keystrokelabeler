@@ -32,8 +32,9 @@ mode = "ks"
 document.addEventListener("keydown", handleKeydown);
 
 // Attach functions to buttons
-document.getElementById("export-array").addEventListener("click", exportArray);
+document.getElementById("export-JSON").addEventListener("click", exportJSON);
 document.getElementById("export-CSV").addEventListener("click", exportCSV);
+document.getElementById("export-array").addEventListener("click", exportArray);
 
 // Initialize display elements after showing welcome for 1 second
 document.getElementById("img-cnt").innerText = count;
@@ -46,63 +47,66 @@ setTimeout(updateItemDisplay, 1000);
  * Function definitions
  * *************************************************************************/
 
+
+/**
+ * Controls branching execution folow depending on user keypress.
+ * 
+ */
 function handleKeydown(event) {
+
     console.log("key pressed: " + event.key);
 
-    specialKeys = {
-        "ArrowRight": {
-        },
-        "ArrowLeft": {
-        },
-        "ArrowUp": {
-        },
-        "ArrowDown": {
-        },
-        " ":  {   // spacebar
-        },  
-        "Delete": {
-        },
-        "Backspace": {
-        }
+    const ksModeCmdKeys = {
+        "Escape": {},
+        "ArrowRight": {},
+        "ArrowLeft": {},
+        "ArrowUp": {},
+        "ArrowDown": {},
+        " ":  {},   // spacebar
+        "Delete": {},
+        "Backspace": {}
     };
 
-    if (event.key in specialKeys) {
-        switch (event.key) {
+    const edModeCmdKeys = {
+        "Escape": {},
+        " ":  {},   // spacebar
+        "Delete": {}
+    };
 
+    // prevent browser from doing something else with command keys
+    if (event.key in ksModeCmdKeys || event.key in edModeCmdKeys) 
+        event.preventDefault();
+
+    // Branching
+    if (event.key in ksModeCmdKeys) {
+        switch (event.key) {
             case "ArrowRight":
                 nav("R");
                 break;
-
             case "ArrowLeft":
                 nav("L");
                 break;
-
             case "ArrowUp":
                 changeJump("up");
                 break;
-
             case "ArrowDown":
                 changeJump("down");
                 break;
-
             case " " :  // spacebar
                 see();
                 break;
-            
             case "Delete":
                 forgetStay();
                 break;
-
             case "Backspace":
                 moveBackForget();
                 break;
-
             default:
-                console.error("That special key that is not implemented.");
+                console.error("Error: That special key that is not implemented.");
         }
     } 
     else if (event.key.toUpperCase() in cats) {
-        labelItem(event.key)
+        ksLabelItem(event.key)
     } 
     else {
         console.log("no actions set for that key");
@@ -182,7 +186,7 @@ function moveBackForget() {
     setTimeout(cmdIndicator,  feedbackPause, "off");
 }
 
-function labelItem( key ) {
+function ksLabelItem( key ) {
     imgArray[cur][1] = true;
     imgArray[cur][2] = key.toUpperCase();
     imgArray[cur][3] = imgArray[cur][5] = "";
@@ -236,7 +240,7 @@ function updateStatusDisplay() {
     if (mode === "ks") {
         document.getElementById("input-mode").innerText = "Keystroke mode";
     } else if (mode === "ed") {
-        document.getElementById("input-mode").innerText = "Item editor mode";
+        document.getElementById("input-mode").innerText = "Editor mode";
     } else {
         console.error("Invalid input mode.")
     }
@@ -291,7 +295,7 @@ function updateItemDisplay() {
 
 }
 
-function exportArray() {
+function exportJSON() {
 
     // convert image array to a JSON string
     var imgArrayJSON = JSON.stringify(imgArray);
@@ -300,8 +304,6 @@ function exportArray() {
     imgArrayJSON = imgArrayJSON.replace(/\[\[/g, "[\n[");   
     imgArrayJSON = imgArrayJSON.replace(/\],\[/g, "],\n[");
     imgArrayJSON = imgArrayJSON.replace(/\]\]/g, "]\n]");
-
-    // console.log(imgArrayJSON);
 
     // From the string, create a Blob for downloading
     const filedata = new Blob([imgArrayJSON], {type: "application/json" });
@@ -316,10 +318,10 @@ function exportArray() {
     if (baseFilename === "")
         baseFilename = pathArray.pop();
 
-    const filename = baseFilename + ".json";
-    console.log("filename for 'Export array': " + filename);
+    const filename = baseFilename + "_labels.json";
+    console.log("filename for 'Export JSON': " + filename);
 
-    // 
+    // Anchor to new element and initiate download
     const anchor = document.createElement("a");
     anchor.href = url;
     anchor.download = filename;
@@ -358,10 +360,10 @@ function exportCSV() {
     if (baseFilename === "")
         baseFilename = pathArray.pop();
 
-    const filename = baseFilename + ".csv";
+    const filename = baseFilename + "_labels.csv";
     console.log("filename for 'Export CSV': " + filename);
 
-    // 
+    // Anchor to new element and initiate download
     const anchor = document.createElement("a");
     anchor.href = url;
     anchor.download = filename;
@@ -370,4 +372,40 @@ function exportCSV() {
     // clean up by removing access to the object created.
     window.URL.revokeObjectURL(url);
 }
+
+function exportArray() {
+
+    // convert image array to a JSON string
+    var imgArrayJSON = JSON.stringify(imgArray);
+
+    // Prettify JSON string, to have one row per line
+    imgArrayJSON = imgArrayJSON.replace(/\[\[/g, "[\n[");   
+    imgArrayJSON = imgArrayJSON.replace(/\],\[/g, "],\n[");
+    imgArrayJSON = imgArrayJSON.replace(/\]\]/g, "]\n]");
+
+    // Add Javascript syntax
+    var imgArrayJS = "imgArray = \n";
+    imgArrayJS += imgArrayJSON;
+    imgArrayJS += "\n;";
+
+    // From the string, create a Blob for downloading
+    const filedata = new Blob([imgArrayJS], {type: "text/javascript" });
+
+    // Create URL, on the fly, for the Blob object
+    const url = window.URL.createObjectURL(filedata);
+
+    const filename = "img_arr_prog.js";
+
+    console.log("filename for 'Export array': " + filename);
+
+    // Anchor to new element and initiate download
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = filename;
+    anchor.click();
+
+    // clean up by removing access to the object created.
+    window.URL.revokeObjectURL(url);
+}
+
 
