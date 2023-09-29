@@ -12,10 +12,31 @@
 /***************************************************************************
  * Initialization steps
  * *************************************************************************/
-
 console.log("ksl logic now running...");
 
 // Initialize global variables
+
+ksModeCmdKeys = {
+    "Escape": {},
+    "ArrowRight": {},
+    "ArrowLeft": {},
+    "ArrowUp": {},
+    "ArrowDown": {},
+    " ":  {},   // spacebar
+    "Delete": {},
+    "Backspace": {},
+    "1": {},
+    "2": {}
+};
+
+edModeCmdKeys = {
+    "Escape": {},
+    " ":  {},   // spacebar
+    "Delete": {},
+    "1": {},
+    "2": {}
+};
+
 
 // total number of images in the set
 count = imgArray.length;
@@ -42,7 +63,6 @@ setTimeout(updateStatusDisplay, 1000);
 setTimeout(updateItemDisplay, 1000);  
 
 
-
 /***************************************************************************
  * Branching and execution flow function definitions
  * *************************************************************************/
@@ -54,27 +74,6 @@ setTimeout(updateItemDisplay, 1000);
 function handleKeydown(event) {
 
     console.log("key pressed: " + event.key);
-
-    const ksModeCmdKeys = {
-        "Escape": {},
-        "ArrowRight": {},
-        "ArrowLeft": {},
-        "ArrowUp": {},
-        "ArrowDown": {},
-        " ":  {},   // spacebar
-        "Delete": {},
-        "Backspace": {},
-        "1": {},
-        "2": {}
-    };
-
-    const edModeCmdKeys = {
-        "Escape": {},
-        " ":  {},   // spacebar
-        "Delete": {},
-        "1": {},
-        "2": {}
-    };
 
     // prevent browser from doing something else with command keys
     if (event.key in ksModeCmdKeys || event.key in edModeCmdKeys) 
@@ -89,17 +88,17 @@ function handleKeydown(event) {
                 case "Escape":
                     changeMode("ed1");
                     break;
-                case "ArrowRight":
-                    nav("R");
-                    break;
-                case "ArrowLeft":
-                    nav("L");
-                    break;
                 case "ArrowUp":
                     changeJump("up");
                     break;
                 case "ArrowDown":
                     changeJump("down");
+                    break;
+                case "ArrowRight":
+                    nav("R");
+                    break;
+                case "ArrowLeft":
+                    nav("L");
                     break;
                 case " " :  // spacebar
                     see();
@@ -121,7 +120,7 @@ function handleKeydown(event) {
             }
         } 
         else if (event.key.toUpperCase() in cats) {
-            ksLabelItem(event.key)
+            ksLabelItem(event.key);
         } 
         else {
             console.log("no actions set for that key in keystroke mode");
@@ -148,6 +147,12 @@ function handleKeydown(event) {
                     console.error("Error: That special key is listed, but not implemented.");
             }
         }
+        else if ( event.key.length === 1 && /[a-zA-Z]/.test(event.key)) {
+            edLabelItem(event.key);
+        }
+        else {
+            console.log("no actions set for that key in edit mode");
+        }
     }
     else {
         console.error("Error: Invalid `mode`.");
@@ -158,15 +163,39 @@ function handleKeydown(event) {
 
 
 function changeMode(newMode) {
+
+    // can't change to edit mode 2 if item type is not yet set
+    if (newMode === "ed2" && !(imgArray[cur][2] in cats)) {
+        console.log("Cannot enter edit mode 2 without a value for edit mode 1.");
+        newMode = "ed1";
+    }
+
     mode = newMode;
 
     updateStatusDisplay();
     updateItemDisplay();
 }
 
+
 /***************************************************************************
  * Keystroke mode function definitions
  * *************************************************************************/
+
+/**
+ * Changes the jump factor index up or down, within the list of allowed values
+ * 
+ * @param {string} dir - The direction of change; must be either "up" or "down".
+ */
+function changeJump(dir) {
+    if (dir == "up") {
+        console.log("trying to increase jump factor");
+        if (jfi < (jumpFactors.length - 1)) jfi++;
+    } else if (dir == "down") {
+        console.log("trying to decrease jump factor");
+        if (jfi > 0) jfi--;
+    }
+    updateStatusDisplay()
+}
 
 /**
  * Performs basic navigation through the image array.
@@ -240,7 +269,7 @@ function moveBackForget() {
     setTimeout(cmdIndicator,  feedbackPause, "off");
 }
 
-function ksLabelItem( key ) {
+function ksLabelItem(key) {
     if (key.toUpperCase() in cats) {
 
         imgArray[cur][1] = true;
@@ -282,21 +311,42 @@ function cmdIndicator(status, msg = " ") {
     }
 }
 
-function changeJump(dir) {
-    if (dir == "up") {
-        console.log("trying to increase jump factor");
-        if (jfi < (jumpFactors.length - 1)) jfi++;
-    } else if (dir == "down") {
-        console.log("trying to decrease jump factor");
-        if (jfi > 0) jfi--;
-    }
-    updateStatusDisplay()
-}
 
 /***************************************************************************
  * Edit mode function definitions
  * *************************************************************************/
 
+function edLabelItem(key) {
+    if (key.toUpperCase() in cats) {
+
+        imgArray[cur][1] = true;
+        imgArray[cur][2] = key.toUpperCase();
+        imgArray[cur][3] = imgArray[cur][5] = "";
+
+        // set the modifier, if appropriate
+        if ( key === key.toUpperCase() )
+            imgArray[cur][4] = true;
+        else 
+            imgArray[cur][4] = false;
+
+        // go ahead an display new values for the current item
+        updateItemDisplay();
+
+        // light up command indicator
+        var modNameStr = "";
+        if (imgArray[cur][4]) {
+            modNameStr = " (" + modName + ")";
+        }
+        var msg = cats[key.toUpperCase()]["name"] + modNameStr ;
+        cmdIndicator("on", msg)
+
+        // after a delay, move to the next image.
+        setTimeout(nav, feedbackPause, "R");
+    }
+    else {
+        console.error("Error: Invalid label passed to `kslLabelItem`.");
+    }
+}
 
 
 /***************************************************************************
