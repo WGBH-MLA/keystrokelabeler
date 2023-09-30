@@ -130,7 +130,7 @@ def extract(video_path, period, first_time, last_time, max_stills):
     image_array_j = image_array_j.replace("]]", "]\n]")
 
     # write JSON file in current directory
-    array_pathname = proj_dir + "img_data_init.json"
+    array_pathname = proj_dir + "img_index_init.json"
     with open(array_pathname, "w") as array_file:
         array_file.write(image_array_j)
 
