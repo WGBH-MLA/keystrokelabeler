@@ -54,7 +54,7 @@ div {
 
 .image-container {
     margin: 0 auto; /* Center the container horizontally */
-    padding: 20px 20px 20px 20px;
+    padding: 20px 20px 10px 20px;
 }
 
 div.cmd-indicator {
@@ -71,7 +71,7 @@ div.cmd-indicator {
     width: calc(100% - 26px);
     margin-top: 6px;
     margin-bottom: 0px; 
-    padding-top: 8px;
+    padding-top: 0px;
     padding-left: 22px;
     border: 2px solid transparent;
     font-size: large;
@@ -82,8 +82,8 @@ div.cmd-indicator {
     justify-content: space-between;
     width: calc(100% - 26px);
     margin-top: 6px;
-    margin-bottom: 0px; 
-    padding-top: 8px;
+    margin-bottom: 10px; 
+    padding-top: 0px;
     padding-left: 22px;
     border: 2px solid transparent;
     font-size: medium;
@@ -142,16 +142,18 @@ div.cmd-indicator {
     margin: 0 auto; /* Center horizontally */
 }
 
-.seen {
+.status-seen {
     color: blue;
     font-weight: normal;
 }
-.unseen {
+.status-unseen {
     color: gray;
     font-weight: normal;
 }
+.seen {
+    font-weight: bold;    
+}
 .labeled {
     color: green;
-    font-weight: bold;
 }
 

@@ -474,28 +474,34 @@ function updateItemDisplay() {
     document.getElementById("filename").innerText = imgArray[cur][0];
     document.getElementById("seen").innerText = imgArray[cur][1]? "SEEN" : "UNSEEN" ;
 
-    // add visual emphasis to seen elements
+    // add visual emphasis to status of seen elements
     if (imgArray[cur][1]) {
-        document.getElementById("filename").classList.remove("unseen");
-        document.getElementById("seen").classList.remove("unseen");
-        document.getElementById("filename").classList.add("seen");
-        document.getElementById("seen").classList.add("seen");
+        document.getElementById("filename").classList.remove("status-unseen");
+        document.getElementById("seen").classList.remove("status-unseen");
+        document.getElementById("filename").classList.add("status-seen");
+        document.getElementById("seen").classList.add("status-seen");
+
+        document.getElementById("item-type-label").classList.add("seen");        
+        document.getElementById("item-subtype-label").classList.add("seen");        
     } else {
-        document.getElementById("filename").classList.remove("seen");
-        document.getElementById("seen").classList.remove("seen");
-        document.getElementById("filename").classList.add("unseen");
-        document.getElementById("seen").classList.add("unseen");
+        document.getElementById("filename").classList.remove("status-seen");
+        document.getElementById("seen").classList.remove("status-seen");
+        document.getElementById("filename").classList.add("status-unseen");
+        document.getElementById("seen").classList.add("status-unseen");
+
+        document.getElementById("item-type-label").classList.remove("seen");
+        document.getElementById("item-subtype-label").classList.remove("seen");
     }
 
     // Display type-level labels
     if (imgArray[cur][2].length === 1) {
+        document.getElementById("item-type-label").classList.add("labeled");
         document.getElementById("item-type-key").innerText = cats[imgArray[cur][2]]["key"];
         document.getElementById("item-type-name").innerText = cats[imgArray[cur][2]]["name"];
-        document.getElementById("item-type-label").classList.add("labeled");
     } else {
+        document.getElementById("item-type-label").classList.remove("labeled");
         document.getElementById("item-type-key").innerText = "-";
         document.getElementById("item-type-name").innerText = "-";
-        document.getElementById("item-type-label").classList.remove("labeled");
     }
     // Display subtype-level labels
     if (imgArray[cur][3].length === 1) {
