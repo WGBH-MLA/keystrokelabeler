@@ -491,9 +491,11 @@ function updateItemDisplay() {
     if (imgArray[cur][2].length === 1) {
         document.getElementById("item-type-key").innerText = cats[imgArray[cur][2]]["key"];
         document.getElementById("item-type-name").innerText = cats[imgArray[cur][2]]["name"];
+        document.getElementById("item-type-label").classList.add("labeled");
     } else {
         document.getElementById("item-type-key").innerText = "-";
         document.getElementById("item-type-name").innerText = "-";
+        document.getElementById("item-type-label").classList.remove("labeled");
     }
     // Display subtype-level labels
     if (imgArray[cur][3].length === 1) {
@@ -501,9 +503,11 @@ function updateItemDisplay() {
             cats[imgArray[cur][2]]["subtypes"][imgArray[cur][3]]["key"];
         document.getElementById("item-subtype-name").innerText = 
             cats[imgArray[cur][2]]["subtypes"][imgArray[cur][3]]["name"];
+        document.getElementById("item-subtype-label").classList.add("labeled");
     } else {
         document.getElementById("item-subtype-key").innerText = "-";
         document.getElementById("item-subtype-name").innerText = "-";
+        document.getElementById("item-subtype-label").classList.remove("labeled");
     }
     // Display modifer
     if (imgArray[cur][4]) {

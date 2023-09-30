@@ -15,20 +15,20 @@ div {
 
 .container {
     display: flex;
-    max-width: 1100px; 
+    max-width: 1200px; 
     min-width: 800px; 
     margin: 0 auto; /* Center the container horizontally */
     background-color: #fff; 
 }
 
 .left-column {
-    flex: 75%;
+    flex: 70%;
     background-color: #f2f2f2;
     padding: 10px 20px 10px 20px;
 }
 
 .right-column {
-    flex: 25%;
+    flex: 30%;
     padding: 10px;
     background-color: #666472; 
     color:  #b6aee6;
@@ -41,7 +41,7 @@ div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: medium;
+    font-size: small;
 }
 
 .graphical-area {
@@ -144,10 +144,14 @@ div.cmd-indicator {
 
 .seen {
     color: blue;
-    font-weight: bold;
+    font-weight: normal;
 }
 .unseen {
     color: gray;
     font-weight: normal;
+}
+.labeled {
+    color: green;
+    font-weight: bold;
 }
 
