@@ -553,14 +553,7 @@ function exportJSON() {
     // Create URL, on the fly, for the Blob object
     const url = window.URL.createObjectURL(filedata);
 
-    // Construct a filename based on the image directory name
-    var pathArray = imgDir.split("/");
-    var baseFilename = pathArray.pop();
-    // handle case where the path itself ends with a slash
-    if (baseFilename === "")
-        baseFilename = pathArray.pop();
-
-    const filename = baseFilename + "_labels.json";
+    const filename = "img_labels.json";
     console.log("filename for 'Export JSON': " + filename);
 
     // Anchor to new element and initiate download
@@ -595,14 +588,7 @@ function exportCSV() {
     // Create URL, on the fly, for the Blob object
     const url = window.URL.createObjectURL(filedata);
 
-    // Construct a filename based on the image directory name
-    var pathArray = imgDir.split("/");
-    var baseFilename = pathArray.pop();
-    // handle case where the path itself ends with a slash
-    if (baseFilename === "")
-        baseFilename = pathArray.pop();
-
-    const filename = baseFilename + "_labels.csv";
+    const filename = "img_labels.csv";
     console.log("filename for 'Export CSV': " + filename);
 
     // Anchor to new element and initiate download
