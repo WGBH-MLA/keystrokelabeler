@@ -6,7 +6,7 @@ imgDir = "./images/"
 // This array defines the allowed jump factors.
 jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
 
-feedbackPause = 700 ;
+feedbackPause = 500 ;
 
 // Each top-level key in the `cats` object must be a single uppercase letter.
 cats = 
@@ -87,19 +87,19 @@ cats =
     },
     "P": {
         "key": "P",
-        "name": "Focal person; No Chyron",
+        "name": "Focal person; No chyron",
         "desc": "A frame prominently displaying a single person but without a chyron",
         "subtypes": {}
     },
     "Y": {
         "key": "Y",
-        "name": "Chyron; No single person",
+        "name": "Chyron; No focal person",
         "desc": "Text on the lower third of the screen, but without a single person most prominent",
         "subtypes": {}
     },
     "K": {
         "key": "K",
-        "name": "Ticker; No Chyron",
+        "name": "Ticker; No chyron",
         "desc": "Text appearing in a ticker or crawler, but without a traditional chyron above it",
         "subtypes": {}
     },
@@ -113,6 +113,12 @@ cats =
         "key": "M",
         "name": "Miscellaneous text",
         "desc": "An ordinary frame of a video that includes miscellaneous text",
+        "subtypes": {}
+    },
+    "F": {
+        "key": "F",
+        "name": "Filmed text",
+        "desc": "Camera footage of prominent, readable text",
         "subtypes": {}
     },
     "C": {
