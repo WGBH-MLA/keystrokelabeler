@@ -6,7 +6,7 @@ imgDir = "./images/"
 // This array defines the allowed jump factors.
 jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
 
-feedbackPause = 500 ;
+feedbackPause = 350 ;
 
 // Each top-level key in the `cats` object must be a single uppercase letter.
 cats = 
@@ -67,8 +67,8 @@ cats =
         "desc": "A frame with text that is part of the opening credits or intro sequence",
         "subtypes": {}
     },
-    "T": {
-        "key": "T",
+    "M": {
+        "key": "M",
         "name": "Main title card",
         "desc": "Title card dipslaying the title of the main program",
         "subtypes": {}
@@ -81,14 +81,20 @@ cats =
     },
     "N": {
         "key": "N",
-        "name": "Chyron and person; No ID",
+        "name": "Focal person and chyron; No ID",
         "desc": "Text on the lower third of the screen, along with a focal person, but not identifying that person",
+        "subtypes": {}
+    },
+    "E": {
+        "key": "E",
+        "name": "Focal person; extra text",
+        "desc": "A frame prominently displaying a single person, with extra text that is not a chyron",
         "subtypes": {}
     },
     "P": {
         "key": "P",
-        "name": "Focal person; No chyron",
-        "desc": "A frame prominently displaying a single person but without a chyron",
+        "name": "Focal person; No text",
+        "desc": "A frame prominently displaying a single person but without text",
         "subtypes": {}
     },
     "Y": {
@@ -109,8 +115,8 @@ cats =
         "desc": "A frame including text arranged or interspersed with graphics",
         "subtypes": {}
     },
-    "M": {
-        "key": "M",
+    "T": {
+        "key": "T",
         "name": "Miscellaneous text",
         "desc": "An ordinary frame of a video that includes miscellaneous text",
         "subtypes": {}
