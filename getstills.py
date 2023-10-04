@@ -82,8 +82,10 @@ def extract(video_path, period, first_time, last_time, max_stills):
     if video_stream is None:
         raise Exception("No video stream found in {}".format(vfilename) ) 
 
-    # get technical stats on the video stream, and calculate duration in msec
+    # get technical stats on the video stream; assumes FPS is constant
     fps = video_stream.average_rate.numerator / video_stream.average_rate.denominator
+    
+    # calculate duration in ms
     length = int((video_stream.frames / fps) * 1000)
 
     # going to loop through every frame in the video stream, starting at the beginning 
@@ -123,14 +125,20 @@ def extract(video_path, period, first_time, last_time, max_stills):
     for iname in image_list:
         image_array.append([iname, False, "", "", False, "", ""])
 
-    # convert array to a JSON string and prettify with line breaks
+    # convert array to a JSON string 
     image_array_j = json.dumps(image_array)
+
+    # prettify with line breaks
     image_array_j = image_array_j.replace("[[", "[\n[")
     image_array_j = image_array_j.replace("], [", "], \n[")
     image_array_j = image_array_j.replace("]]", "]\n]")
 
-    # write JSON file in current directory
-    array_pathname = proj_dir + "img_index_init.json"
+    # add bits to make it valid Javascript
+    image_array_j = "imgArray=\n" + image_array_j
+    image_array_j = image_array_j + "\n;"
+
+    # write Javascript file in current directory
+    array_pathname = proj_dir + "img_arr_init.js"
     with open(array_pathname, "w") as array_file:
         array_file.write(image_array_j)
 
