@@ -6,7 +6,7 @@ imgDir = "./images/"
 // This array defines the allowed jump factors.
 jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
 
-feedbackPause = 350 ;
+feedbackPause = 500 ;
 
 // Each top-level key in the `cats` object must be a single uppercase letter.
 cats = 
@@ -117,7 +117,7 @@ cats =
     },
     "T": {
         "key": "T",
-        "name": "Miscellaneous text",
+        "name": "Text, miscellaneous",
         "desc": "An ordinary frame of a video that includes miscellaneous text",
         "subtypes": {}
     },
