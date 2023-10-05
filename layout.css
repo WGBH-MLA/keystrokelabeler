@@ -10,13 +10,13 @@ body {
 }
 
 div {
-    padding: 2px;
+    padding: 0px;
 }
 
 .container {
     display: flex;
-    max-width: 1200px; 
-    min-width: 800px; 
+    max-width: 1350px; 
+    min-width: 1000px; 
     margin: 0 auto; /* Center the container horizontally */
     background-color: #fff; 
 }
@@ -29,10 +29,12 @@ div {
 
 .right-column {
     flex: 30%;
+    min-width: 320px;
+    max-width: 400px;
     padding: 10px;
-    background-color: #666472; 
-    color:  #b6aee6;
-    font-size: small;
+    background-color: #58565f; 
+    color:  #bbaeff;
+    font-size: x-small;
 }
 
 /* major block elements */
@@ -100,6 +102,19 @@ div.cmd-indicator {
     margin-top: 15px;    
 }
 
+.help-header {
+    font-size: small;
+}
+
+.help-list {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 10px;    
+    margin-bottom: 20px;    
+}
+
+
 
 /* Minor block elements */
 
@@ -119,8 +134,6 @@ div.cmd-indicator {
     margin-bottom: 10px;
 }
 
-
-
 .button {
     display: flex;
     font-size: small;
@@ -136,10 +149,23 @@ div.cmd-indicator {
     cursor: pointer;
 }
 
+.help-key {
+    width: 25%;
+    color: white;
+    text-align: right;
+}
+.help-desc {
+    width: 72%;
+    padding-left: 3%;
+}
+
+
+
  /* Minor visual tweaks */
 
  img.observing {
     margin: 0 auto; /* Center horizontally */
+    max-width: 500px;
 }
 
 .status-seen {

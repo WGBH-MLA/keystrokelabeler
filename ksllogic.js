@@ -17,44 +17,137 @@ console.log("ksl logic now running...");
 
 // Define global data structures
 ksModeCmdKeys = {
-    "Escape": {},
-    "Enter": {},
-    "ArrowRight": {},
-    "ArrowLeft": {},
-    "ArrowUp": {},
-    "ArrowDown": {},
-    " ":  {},   // spacebar
-    "Delete": {},
-    "Backspace": {},
-    "1": {},
-    "2": {}
+    "Escape": {
+        "disp": "Esc",
+        "desc": "Go to Editor mode",
+        "help": ""
+    },
+    "Enter": {
+        "disp": "Enter",
+        "desc": "Jump to next",
+        "help": ""
+    },
+    "ArrowRight": {
+        "disp": "Right arrow",
+        "desc": "Jump to next",
+        "help": ""
+    },
+    "ArrowLeft": {
+        "disp": "Left arrow",
+        "desc": "Jump to previous",
+        "help": ""
+    },
+    "ArrowUp": {
+        "disp": "Up arrow",
+        "desc": "Increase jump factor",
+        "help": ""        
+    },
+    "ArrowDown": {
+        "disp": "Down arrow",
+        "desc": "Decrease jump factor",
+        "help": ""        
+    },
+    " ":  {
+        "disp": "Spacebar",
+        "desc": "See without label, proceed",
+        "help": ""        
+    },
+    "Delete": {
+        "disp": "Delete",
+        "desc": "Unsee current item",
+        "help": ""
+    },
+    "Backspace": {
+        "disp": "Backspace",
+        "desc": "Unsee previous item",
+        "help": ""        
+    },
+    "1": {
+        "disp": "Number 1",
+        "desc": "Go to Editor mode - Type",
+        "help": ""        
+    },
+    "2": {
+        "disp": "Number 2",
+        "desc": "Go to Editor mode - Subtype", 
+        "help": ""        
+    }
 };
 edModeCmdKeys = {
-    "Escape": {},
-    "Enter": {},
-    " ":  {},   // spacebar
-    "Delete": {},
-    "ArrowUp": {},
-    "ArrowDown": {},
-    "1": {},
-    "2": {}
+    "Escape": {
+        "disp": "Esc",
+        "desc": "Leave Editor mode",
+        "help": ""
+    },
+    "Enter": {
+        "disp": "Enter",
+        "desc": "Accept editor labels, proceed",
+        "help": ""
+    },
+    " ":  {
+        "disp": "Spacebar",
+        "desc": "See without label",
+        "help": ""             
+    },
+    "Delete": {
+        "disp": "Delete",
+        "desc": "Unsee current label",
+        "help": ""
+    },
+    "ArrowRight": {
+        "disp": "Right arrow",
+        "desc": "Jump to next",
+        "help": ""
+    },
+    "ArrowLeft": {
+        "disp": "Left arrow",
+        "desc": "Jump to previous",
+        "help": ""
+    },
+    "ArrowUp": {
+        "disp": "Up arrow",
+        "desc": "Editor to higher level",
+        "help": ""        
+    },
+    "ArrowDown": {
+        "disp": "Down arrow",
+        "desc": "Editor to lower level",
+        "help": ""        
+    },
+    "1": {
+        "disp": "Number 1",
+        "desc": "Editor to Type",
+        "help": ""        
+    },
+    "2": {
+        "disp": "Number 1",
+        "desc": "Editor to Subtype",
+        "help": ""        
+    }
 };
 
 // total number of images in the set
 count = imgArray.length;
 // index of the current image in the array
-cur = 0
+cur = 0;
 // index of the last image in the array
-last = count - 1
+last = count - 1;
 
 // update unseen counts
 unseenCount = count;
 updateUnseen();
 
 // set the index for the inital jump factor
-jfi = 0
+jfi = 0;
 // mode
-mode = "ks"
+mode = "ks";
+
+// create global help object
+help = {};
+// build the help information to display
+buildHelp();
+// render help
+renderHelp();
 
 
 /***************************************************************************
@@ -83,6 +176,98 @@ document.getElementById("export-array").addEventListener("click", exportArray);
 document.getElementById("img-cnt").innerText = count;
 setTimeout(updateStatusDisplay, 1000);  
 setTimeout(updateItemDisplay, 1000);  
+
+
+/**
+ * Create HTML for the help area, based on definitions in objects
+ * 
+ */
+function buildHelp() {
+
+    var ksHelp = "";
+    var edHelp = "";
+
+    var typeKeyHelp = "";
+    var subKeyHelp = {};
+
+    var line = "";
+
+    // build keystroke mode command help
+    for (var key in ksModeCmdKeys) {
+        line = "<div class='help-key'>" +
+               ksModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               ksModeCmdKeys[key]["desc"] + "</div>";
+        ksHelp += line;
+    }
+
+    // build editor mode command help 
+    for (var key in edModeCmdKeys) {
+        line = "<div class='help-key'>" +
+               edModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               edModeCmdKeys[key]["desc"] + "</div>";
+        edHelp += line;
+    }
+
+    // build type key help
+    for (var key in cats) {
+        line = "<div class='help-key'>" +
+               cats[key]["key"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               cats[key]["name"] + "</div>";
+        typeKeyHelp += line;
+    }
+
+    // build subtype key help
+    for (var key in cats) {
+        subKeyHelp[key] = "";
+        stcats = cats[key]["subtypes"];
+        for (var stkey in stcats) {
+            line = "<div class='help-key'>" +
+                   stcats[stkey]["key"] + " : " + "</div>" +
+                   "<div class='help-desc'>" +
+                   stcats[stkey]["name"] + "</div>";
+            subKeyHelp[key] += line;
+        }
+    }
+
+    // Set properties of the global help object
+    help["ksCmds"] = ksHelp;
+    help["edCmds"] = edHelp;
+    help["typeKeys"] = typeKeyHelp;
+    help["subTypeKeys"] = subKeyHelp;
+}
+
+function renderHelp() {
+
+    // render command help
+    if (mode === "ks") {
+        document.getElementById("help-cmd-keys").innerHTML = help["ksCmds"];
+    }
+    else if (mode === "ed1" || mode === "ed2" ) {
+        document.getElementById("help-cmd-keys").innerHTML = help["edCmds"];
+    }
+    else {
+        console.error("Error: Invalid mode");
+    }
+
+    // render keycode help
+    if (mode === "ks" || mode === "ed1") {
+        document.getElementById("help-label-keys").innerHTML = help["typeKeys"];
+    }
+    else if (mode === "ed2") {
+        console.log("rendering subtype key codes");
+        tKey = imgArray[cur][2]; 
+        if (tKey in cats) {    
+            document.getElementById("help-label-keys").innerHTML = help["subTypeKeys"][tKey];
+        }
+        else {
+            document.getElementById("help-label-keys").innerHTML = "";
+        }
+    }
+}
+
 
 
 /***************************************************************************
@@ -173,6 +358,12 @@ function handleKeydown(event) {
                 case "Delete":
                     removeLabel(level, false);
                     break;
+                case "ArrowRight":
+                    nav("R");
+                    break;
+                case "ArrowLeft":
+                    nav("L");
+                    break;
                 case "ArrowUp":
                     changeMode("ed1");
                     break;
@@ -207,14 +398,15 @@ function changeMode(newMode) {
 
     // do not allow change to edit mode 2 if item type is not yet set
     if (newMode === "ed2" && !(imgArray[cur][2] in cats)) {
-        console.log("Cannot enter edit mode 2 without a value for edit mode 1.");
-        newMode = "ed1";
+        console.warn("Warning: Entering edit mode 2 without a value for edit mode 1.");
+        // newMode = "ed1";
     }
 
     mode = newMode;
 
     updateStatusDisplay();
     updateItemDisplay();
+    renderHelp();
 }
 
 
@@ -251,6 +443,7 @@ function jump(index) {
 
     updateItemDisplay();
     updateStatusDisplay();
+    renderHelp();
 }
 
 
@@ -277,6 +470,7 @@ function nav(dir) {
 
     updateItemDisplay();
     updateStatusDisplay();
+    renderHelp();
 }
 
 function see() {
@@ -498,7 +692,7 @@ function labelItem(keyStroke, level) {
 
         // First check to make sure we have a Type label at Level 1
         if (!(imgArray[cur][2] in cats)) {
-            console.Error("Trying to change subtype label without type label set.")
+            console.warn("Warning: Trying to change subtype label without type label set.")
             retVal = false;
         }
         // Then check that subtype specified is valid for the type 
