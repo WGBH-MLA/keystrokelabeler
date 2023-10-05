@@ -97,7 +97,7 @@ div.cmd-indicator {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    margin-top: 20px;    
+    margin-top: 15px;    
 }
 
 
@@ -124,13 +124,13 @@ div.cmd-indicator {
 .button {
     display: flex;
     font-size: small;
-    width: 170px;
+    width: 190px;
     height: 20px;
     background-color: lightgray;
     border: none;
     border-radius: 16px;
     padding: 4px;
-    margin: 0px 8px 8px 0px;
+    margin: 0px 8px 0px 0px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
