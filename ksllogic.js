@@ -49,7 +49,7 @@ ksModeCmdKeys = {
     },
     " ":  {
         "disp": "Spacebar",
-        "desc": "See without label, proceed",
+        "desc": "See without label; proceed",
         "help": ""        
     },
     "Delete": {
@@ -76,17 +76,17 @@ ksModeCmdKeys = {
 edModeCmdKeys = {
     "Escape": {
         "disp": "Esc",
-        "desc": "Leave Editor mode",
+        "desc": "Return to Keystroke mode",
         "help": ""
     },
     "Enter": {
         "disp": "Enter",
-        "desc": "Accept editor labels, proceed",
+        "desc": "Accept; proceed in Keystroke mode",
         "help": ""
     },
     " ":  {
         "disp": "Spacebar",
-        "desc": "See without label",
+        "desc": "See with no label",
         "help": ""             
     },
     "Delete": {
@@ -106,22 +106,22 @@ edModeCmdKeys = {
     },
     "ArrowUp": {
         "disp": "Up arrow",
-        "desc": "Editor to higher level",
+        "desc": "Edit higher label",
         "help": ""        
     },
     "ArrowDown": {
         "disp": "Down arrow",
-        "desc": "Editor to lower level",
+        "desc": "Edit lower label",
         "help": ""        
     },
     "1": {
         "disp": "Number 1",
-        "desc": "Editor to Type",
+        "desc": "Edit Type",
         "help": ""        
     },
     "2": {
         "disp": "Number 1",
-        "desc": "Editor to Subtype",
+        "desc": "Edit Subtype",
         "help": ""        
     }
 };
@@ -257,7 +257,6 @@ function renderHelp() {
         document.getElementById("help-label-keys").innerHTML = help["typeKeys"];
     }
     else if (mode === "ed2") {
-        console.log("rendering subtype key codes");
         tKey = imgArray[cur][2]; 
         if (tKey in cats) {    
             document.getElementById("help-label-keys").innerHTML = help["subTypeKeys"][tKey];
