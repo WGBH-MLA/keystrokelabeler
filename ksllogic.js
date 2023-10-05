@@ -46,15 +46,15 @@ count = imgArray.length;
 cur = 0
 // index of the last image in the array
 last = count - 1
+
+// update unseen counts
+unseenCount = count;
+updateUnseen();
+
 // set the index for the inital jump factor
 jfi = 0
 // mode
 mode = "ks"
-
-// update unseen counts
-unseenCount = count;
-firstUnseen = cur;
-updateUnseen();
 
 
 /***************************************************************************
@@ -64,7 +64,13 @@ updateUnseen();
 // Attach the key press event listener to the HTML document
 document.addEventListener("keydown", handleKeydown);
 
-// Attach functions to buttons
+// Attach functions to jump buttons
+document.getElementById("jump-first").addEventListener("click", function(){jump(0);});
+document.getElementById("jump-unseen").addEventListener("click", function(){jump(nextUnseen());});
+document.getElementById("jump-last").addEventListener("click", function(){jump(last);});
+
+
+// Attach functions to export buttons
 document.getElementById("export-JSON").addEventListener("click", exportJSON);
 document.getElementById("export-CSV").addEventListener("click", exportCSV);
 document.getElementById("export-array").addEventListener("click", exportArray);
@@ -231,6 +237,22 @@ function changeJump(dir) {
     }
     updateStatusDisplay()
 }
+
+function jump(index) {
+    if (index >= 0 && index <= last) {
+        cur = index;
+    }
+    else {
+        console.error("Error: tried to jump out of range");
+    }
+
+    // turn off command indicator (just in case it is on)
+    cmdIndicator("off")
+
+    updateItemDisplay();
+    updateStatusDisplay();
+}
+
 
 /**
  * Performs basic navigation through the image array.
@@ -509,11 +531,11 @@ function labelItem(keyStroke, level) {
  * Iterates through the image array and sets global variables about unseen 
  * items.
  * 
- * This function may take a moment if the img array is large.  
- * Use only as needed.
+ * This function may take a moment if the img array is large. Call only if 
+ * there has been an operation that might change the number of seen items.
  */
 function updateUnseen() {
-    var item = imgArray.length - 1;
+    var unseenItem = imgArray.length - 1;
     var count = 0;
     var i;
 
@@ -521,14 +543,33 @@ function updateUnseen() {
         // check whether item is unseen
         if ( !imgArray[i][1] ) {
             count++;
-            if (i < item)
-                item = i;
+            if ( (i > cur) && (i < unseenItem) )
+                unseenItem = i;
+        }
+    }
+    // set global variable
+    unseenCount = count;
+}
+
+/**
+ * Starts at the item after the current one and looks for the next unseeen.
+ * Returns the next unseen item, or the last item, if no unseen items are found.
+ * 
+ */
+function nextUnseen() {
+    var unseenItem = imgArray.length - 1;
+    var i;
+
+    for (i=cur+1; i<imgArray.length; i++) {
+
+        // check whether item is unseen
+        if ( !imgArray[i][1] && i < unseenItem ) {
+                unseenItem = i;
+                break;
         }
     }
 
-    // set global variables
-    firstUnseenItem = item;
-    unseenCount = count;
+    return unseenItem;
 }
 
 
