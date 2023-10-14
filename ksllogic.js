@@ -17,11 +17,6 @@ console.log("ksl logic now running...");
 
 // Define global data structures
 ksModeCmdKeys = {
-    "Escape": {
-        "disp": "Esc",
-        "desc": "Go to Editor mode",
-        "help": ""
-    },
     "Enter": {
         "disp": "Enter",
         "desc": "Jump to next",
@@ -62,6 +57,11 @@ ksModeCmdKeys = {
         "desc": "Unsee previous item",
         "help": ""        
     },
+    "Escape": {
+        "disp": "Esc",
+        "desc": "Go to Editor mode",
+        "help": ""
+    },
     "1": {
         "disp": "Number 1",
         "desc": "Go to Editor mode - Type",
@@ -73,6 +73,19 @@ ksModeCmdKeys = {
         "help": ""        
     }
 };
+ksModeCmdKeysOrder = [ 
+    "Enter", 
+    "ArrowRight", 
+    "ArrowLeft", 
+    "ArrowUp", 
+    "ArrowDown", 
+    " ", 
+    "Delete", 
+    "Backspace", 
+    "Escape", 
+    "1", 
+    "2"  ];
+
 edModeCmdKeys = {
     "Escape": {
         "disp": "Esc",
@@ -125,7 +138,19 @@ edModeCmdKeys = {
         "help": ""        
     }
 };
+edModeCmdKeysOrder = [ 
+    "Enter", 
+    "ArrowRight", 
+    "ArrowLeft", 
+    "ArrowUp", 
+    "ArrowDown",
+    " ", 
+    "Delete", 
+    "Escape", 
+    "1", 
+    "2"  ];
 
+    
 // total number of images in the set
 count = imgArray.length;
 // index of the current image in the array
@@ -180,20 +205,17 @@ setTimeout(updateItemDisplay, 1000);
 
 /**
  * Create HTML for the help area, based on definitions in objects
- * 
  */
 function buildHelp() {
 
     var ksHelp = "";
     var edHelp = "";
-
     var typeKeyHelp = "";
     var subKeyHelp = {};
-
     var line = "";
 
     // build keystroke mode command help
-    for (var key in ksModeCmdKeys) {
+    for (var key of ksModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                ksModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
@@ -202,7 +224,7 @@ function buildHelp() {
     }
 
     // build editor mode command help 
-    for (var key in edModeCmdKeys) {
+    for (var key of edModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                edModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
@@ -237,34 +259,6 @@ function buildHelp() {
     help["edCmds"] = edHelp;
     help["typeKeys"] = typeKeyHelp;
     help["subTypeKeys"] = subKeyHelp;
-}
-
-function renderHelp() {
-
-    // render command help
-    if (mode === "ks") {
-        document.getElementById("help-cmd-keys").innerHTML = help["ksCmds"];
-    }
-    else if (mode === "ed1" || mode === "ed2" ) {
-        document.getElementById("help-cmd-keys").innerHTML = help["edCmds"];
-    }
-    else {
-        console.error("Error: Invalid mode");
-    }
-
-    // render keycode help
-    if (mode === "ks" || mode === "ed1") {
-        document.getElementById("help-label-keys").innerHTML = help["typeKeys"];
-    }
-    else if (mode === "ed2") {
-        tKey = imgArray[cur][2]; 
-        if (tKey in cats) {    
-            document.getElementById("help-label-keys").innerHTML = help["subTypeKeys"][tKey];
-        }
-        else {
-            document.getElementById("help-label-keys").innerHTML = "";
-        }
-    }
 }
 
 
@@ -746,8 +740,7 @@ function updateUnseen() {
 
 /**
  * Starts at the item after the current one and looks for the next unseeen.
- * Returns the next unseen item, or the last item, if no unseen items are found.
- * 
+ * Returns the next unseen item, or the last item, if no unseen items are found. * 
  */
 function nextUnseen() {
     var unseenItem = imgArray.length - 1;
@@ -763,6 +756,39 @@ function nextUnseen() {
     }
 
     return unseenItem;
+}
+
+/**
+ * Displays the appropriate help HTML string according to the current mode.
+ * 
+ * (The HTML strings were already built when the page was first loaded.) 
+ */
+function renderHelp() {
+
+    // render command key help
+    if (mode === "ks") {
+        document.getElementById("help-cmd-keys").innerHTML = help["ksCmds"];
+    }
+    else if (mode === "ed1" || mode === "ed2" ) {
+        document.getElementById("help-cmd-keys").innerHTML = help["edCmds"];
+    }
+    else {
+        console.error("Error: Invalid mode");
+    }
+
+    // render labeling key help
+    if (mode === "ks" || mode === "ed1") {
+        document.getElementById("help-label-keys").innerHTML = help["typeKeys"];
+    }
+    else if (mode === "ed2") {
+        tKey = imgArray[cur][2]; 
+        if (tKey in cats) {    
+            document.getElementById("help-label-keys").innerHTML = help["subTypeKeys"][tKey];
+        }
+        else {
+            document.getElementById("help-label-keys").innerHTML = "";
+        }
+    }
 }
 
 
