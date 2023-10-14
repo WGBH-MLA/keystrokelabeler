@@ -44,7 +44,7 @@ ksModeCmdKeys = {
     },
     " ":  {
         "disp": "Spacebar",
-        "desc": "See without label; proceed",
+        "desc": "Mark seen with no label",
         "help": ""        
     },
     "Delete": {
@@ -94,17 +94,17 @@ edModeCmdKeys = {
     },
     "Enter": {
         "disp": "Enter",
-        "desc": "Accept; proceed in Keystroke mode",
+        "desc": "Accept; proceed to Keystroke mode",
         "help": ""
     },
     " ":  {
         "disp": "Spacebar",
-        "desc": "See with no label",
+        "desc": "Mark seen, with no label",
         "help": ""             
     },
     "Delete": {
         "disp": "Delete",
-        "desc": "Unsee current label",
+        "desc": "Unsee current item",
         "help": ""
     },
     "ArrowRight": {
