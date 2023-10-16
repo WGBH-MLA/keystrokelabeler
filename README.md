@@ -29,6 +29,8 @@ For details on file organization and data structures, consult `labeler_data_read
 
 You start the labeler simply by opening `labeler.html` in your web browser.
 
+You exit the labeler simply by closing the browswer window.  **Note:** *When the browser window closes, any labels you have created will be lost, unless you save your progress by exporting the array of labels.*
+
 You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
 
 ### Operation
@@ -43,6 +45,7 @@ You can save your progress by using the "Export JS array" button and saving the 
 
 **Jump factor**:  The *jump factor* is the distance, in terms of the number of items, of navigation through the set of images.  For example, if the jump factor is 5 and the current item is number 31, then proceeding forward will jump to item 36.
 
+**Buttons**:  Below the labeling area is a collection of clickable buttons which provide additional navigation features and options for saving and exporting your work.
 
 ## Contributing
 
