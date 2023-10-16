@@ -536,6 +536,7 @@ function cmdIndicator(shown, msg=" ") {
 /***************************************************************************
  * Editor mode function definitions
  * *************************************************************************/
+
 function acceptAndMove() {
 
     changeMode("ks");
@@ -715,7 +716,7 @@ function labelItem(keyStroke, level) {
 
 
 /***************************************************************************
- * Stats and display functions
+ * Stats update functions
  * *************************************************************************/
 
 /**
@@ -762,6 +763,10 @@ function nextUnseen() {
     return unseenItem;
 }
 
+/***************************************************************************
+ * Display functions
+ * *************************************************************************/
+
 /**
  * Displays the appropriate help HTML string according to the current mode.
  * 
@@ -795,12 +800,13 @@ function renderHelp() {
     }
 }
 
-
 function updateStatusDisplay() {
     if (mode === "ks") {
         document.getElementById("input-mode").innerText = "Keystroke mode";
+        document.getElementById("input-mode").classList.remove("editor-mode");
     } else if (mode.startsWith("ed")) {
         document.getElementById("input-mode").innerText = "Editor mode";
+        document.getElementById("input-mode").classList.add("editor-mode");        
     } else {
         console.error("Invalid input mode.")
     }

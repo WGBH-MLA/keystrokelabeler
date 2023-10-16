@@ -168,6 +168,10 @@ div.cmd-indicator {
     max-width: 500px;
 }
 
+.editor-mode {
+    background-color: lime;
+}
+
 .status-seen {
     color: blue;
     font-weight: normal;
