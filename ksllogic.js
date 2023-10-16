@@ -390,9 +390,10 @@ function handleKeydown(event) {
 function changeMode(newMode) {
 
     // do not allow change to edit mode 2 if item type is not yet set
+    // if specified mode is "ed2" and that's not valid, change to "ed1".
     if (newMode === "ed2" && !(imgArray[cur][2] in cats)) {
-        console.warn("Warning: Entering edit mode 2 without a value for edit mode 1.");
-        // newMode = "ed1";
+        console.warn("Warning: Tried to  edit mode 2 without a value for edit mode 1.");
+        newMode = "ed1";
     }
 
     mode = newMode;
@@ -457,6 +458,9 @@ function nav(dir) {
     } else {
         console.warn("Warning: tried to navigate out of range.");
     }
+
+    // Keep previous mode as current mode (if current mode is valid for current item)
+    changeMode(mode);
 
     // turn off command indicator
     cmdIndicator("off")
