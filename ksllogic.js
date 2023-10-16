@@ -2,7 +2,7 @@
  * ksllogic.js
  * 
  * This file contains Javascript commands and function for implementing display
- * logic and user interaction for the KeyStroke Labeler tool.
+ * logic and user interaction for the Keystroke Labeler tool.
  * 
  * It is intended to be referenced at the bottom of `labeler.html`.
  * 
