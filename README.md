@@ -31,7 +31,7 @@ You start the labeler simply by opening `labeler.html` in your web browser.
 
 You exit the labeler simply by closing the browswer window.  **Note:** *When the browser window closes, any labels you have created will be lost, unless you save your progress by exporting the array of labels.*
 
-You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
+You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as `labeler.html` and the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
 
 ### Operation
 
