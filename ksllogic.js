@@ -240,6 +240,11 @@ function buildHelp() {
                cats[key]["name"] + "</div>";
         typeKeyHelp += line;
     }
+    var modHelp = "";
+    modHelp += '<div class="help-msg">To modify a label as being "';
+    modHelp += modName; 
+    modHelp += '", hold the Shift key while pressing the label key.';
+    typeKeyHelp += modHelp;
 
     // build subtype key help
     for (var key in cats) {
