@@ -29,19 +29,21 @@ For details on file organization and data structures, consult `labeler_data_read
 
 You start the labeler simply by opening `labeler.html` in your web browser.
 
-You exit the labeler simply by closing the browswer window.  **Note:** *When the browser window closes, any labels you have created will be lost, unless you save your progress by exporting the array of labels.*
+You exit the labeler simply by closing the browser window.  **Note:** *When the browser window closes, any labels you have created will be lost, unless you save your progress by exporting the array of labels.*
 
 You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as `labeler.html` and the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
 
 ### Operation
 
-**Keyboard interaction**:  Operation is primarily driven by the keyboard.  The meanings of keys (relative to the current mode) are explained in the right sidebar.  
+**Keyboard interaction**:  Operation is primarily driven by the keyboard.  Some keys (typically alphabetical keys) signify labels.  Other keys are command keys.  The meanings of keys (relative to the current mode) are explained in the right sidebar.  
 
-**Labels**:  Each item in a collection may be given one type label and one subtype label.  Only some types have associated subtypes.  Types and subtypes are defined in `conf.js`.  Available type labels and subtype labels are displayed in the right sidebar.
+**Labels**:  Each item in a collection may be given one type label and one subtype label.  Not all types have associated subtypes.  Types and subtypes are defined in `conf.js`.  Available type labels and subtype labels are displayed in the right sidebar.  Labels are set by pressing the keyboard key that stands for that label.
 
-**Seen items**:  Labeing an item marks it as "seen".  You can also "see" and item without labeling it.  If an item is marked as seen but has no label, that is an assertion that none of the categories defined in `conf.js` applies to the item.  You can think of seen items without labels as falling into an implicit category of "none of the explicitly defined categories".  
+**Modifier flag**:  For any item that has a type label set, it can also have a modifier flag set.  When the Keystroke Labeler is used for the classification of still frames from videos, the presence of the modifier means that the still is a "transitional" frame, in that the distinguishing features of the label's category are not fully present (typically because the feature is, at the instant, appearing or disappearing).  To set a type label with the modifier flag, hold `Shift` while pressing the key for that label.
 
-**Modes**:  The laber has two main modes:  *keystroke mode* (the default) and *editor mode*.  You can switch between these modes using the `Esc` key.  There are two main differences between keystroke mode and editor mode.  First, keystroke mode automatically advances to the next item after an item is seen.  Second, keystroke mode does *not* allow application of subtype labels.  To edit and item's subtype, you must use editor mode.  
+**Seen items**:  Labeling an item marks it as "seen".  You can also "see" an item without labeling it.  If an item is marked as seen but has no label, that is an assertion that none of the categories defined in `conf.js` applies to the item.  You can think of seen items without labels as falling into an implicit category of "none of the explicitly defined categories".  
+
+**Modes**:  The labeler has two main modes:  *keystroke mode* (the default) and *editor mode*.  You can switch between these modes using the `Esc` key.  There are two main differences between keystroke mode and editor mode.  First, keystroke mode automatically advances to the next item after an item is seen.  Second, keystroke mode does *not* allow application of subtype labels.  To edit an item's subtype, you must use editor mode.  
 
 **Jump factor**:  The *jump factor* is the distance, in terms of the number of items, of navigation through the set of images.  For example, if the jump factor is 5 and the current item is number 31, then proceeding forward will jump to item 36.
 
@@ -49,7 +51,7 @@ You can save your progress by using the "Export JS array" button and saving the 
 
 ## Contributing
 
-Feel free to make a pull request.  However, if your issue or change is unrelated to work at GBH or the the CLAMS project, then it may not be prioritized.  
+Feel free to make a pull request.  However, if your issue or change is unrelated to work at GBH or the CLAMS project, then it may not be prioritized.  
 
 Regarding any ideas for significant contributions or changes, please get in touch with Owen.
 
