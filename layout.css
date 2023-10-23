@@ -175,6 +175,9 @@ div.cmd-indicator {
 .editor-mode {
     background-color: lime;
 }
+.high-jump {
+    background-color: #f76ffc; 
+}
 
 .status-seen {
     color: blue;

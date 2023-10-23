@@ -825,6 +825,11 @@ function updateStatusDisplay() {
     document.getElementById("img-num").innerText = cur + 1;
     document.getElementById("unseen-cnt").innerText = unseenCount;
     document.getElementById("jump-factor").innerText = jumpFactors[jfi];
+    if (jumpFactors[jfi] == 1) {
+        document.getElementById("jump-factor-status").classList.remove("high-jump");
+    } else {
+        document.getElementById("jump-factor-status").classList.add("high-jump");
+    }
 }
 
 function updateItemDisplay() {
