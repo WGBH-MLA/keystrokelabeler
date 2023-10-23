@@ -136,8 +136,8 @@ div.cmd-indicator {
 
 .button {
     display: flex;
-    font-size: small;
-    width: 190px;
+    font-size: x-small;
+    width: 130px;
     height: 20px;
     background-color: lightgray;
     border: none;

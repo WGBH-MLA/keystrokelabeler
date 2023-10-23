@@ -184,7 +184,8 @@ document.addEventListener("keydown", handleKeydown);
 
 // Attach functions to jump buttons
 document.getElementById("jump-first").addEventListener("click", function(){jump(0);});
-document.getElementById("jump-unseen").addEventListener("click", function(){jump(nextUnseen());});
+document.getElementById("jump-first-unseen").addEventListener("click", function(){jump(nextUnseen());});
+document.getElementById("jump-last-seen").addEventListener("click", function(){jump(lastSeen());});
 document.getElementById("jump-last").addEventListener("click", function(){jump(last);});
 
 
@@ -755,8 +756,8 @@ function updateUnseen() {
 }
 
 /**
- * Starts at the item after the current one and looks for the next unseeen.
- * Returns the next unseen item, or the last item, if no unseen items are found. * 
+ * Returns the next unseen item after the current one, or the last item, 
+ * if no unseen items are found. * 
  */
 function nextUnseen() {
     var unseenItem = imgArray.length - 1;
@@ -773,6 +774,26 @@ function nextUnseen() {
 
     return unseenItem;
 }
+
+/**
+ * Returns the last seen item in the list, i.e., the seen item with highest index.
+ * If no items have been seen, returns the first item
+ */
+function lastSeen() {
+    var last = imgArray.length - 1;
+    var lastSeen = 0;
+    var i;
+
+    for (i=last; i>0; i--) {
+        // check whether item is seen
+        if ( imgArray[i][1] ) {
+                lastSeen = i;
+                break;
+        }
+    }
+    return lastSeen;
+}
+
 
 /***************************************************************************
  * Display functions
