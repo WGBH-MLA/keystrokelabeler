@@ -23,6 +23,9 @@ and adds each still to that directory.
 Image filenames include the base filename (without the extension) of the 
 media file, the timestamp (expressed in milliseconds), and the total length 
 of the video (in milliseconds). 
+
+Caveat:  Calculation of timestamps assumes that the video has constant 
+framerate.
 """
 
 # %%
@@ -34,19 +37,21 @@ import json
 # %%
 
 def extract(video_path, period, first_time, last_time, max_stills):
-    """Performs extraction of stills from the video and creates index of extracted 
-    image files in a JSON array.
+    """Performs extraction of stills from the video and creates an index of 
+    extracted image files in a JSON array.  
+
+    Filenames have timestamps of, expressed in milliseconds, for each still.
+
+    Caveat:  Calculation of timestamps assumes that the video has constant framerate.
     """
+    
     # %% 
     """Variable assignments for testing/debugging
     video_path = "../ksl_data/test_videos/cpb-aacip-b45eb62bd60.mp4" #DEBUG
     period = 2000 #DEBUG
     first_time = 0 #DEBUG
-    #first_time = 34000
     last_time = -1 #DEBUG
-    #last_time = 48000
     max_stills = -1
-    #max_stills = 9999 #DEBUG
     """
 
     # Create directory for the project based on the filename of the media
@@ -76,7 +81,7 @@ def extract(video_path, period, first_time, last_time, max_stills):
     fcount = 0
     next_target_time = first_time
 
-    # open the video stream
+    # find the first video stream
     container = av.open(video_path)
     video_stream = next((s for s in container.streams if s.type == 'video'), None)
     if video_stream is None:
@@ -88,8 +93,9 @@ def extract(video_path, period, first_time, last_time, max_stills):
     # calculate duration in ms
     length = int((video_stream.frames / fps) * 1000)
 
+    #%%
     # going to loop through every frame in the video stream, starting at the beginning 
-    for frame in container.decode(video=0):
+    for frame in container.decode(video_stream):
         ftime = int((fcount/fps) * 1000)
 
         # print("fcount:", fcount, "; ftime:", ftime) #DEBUG
