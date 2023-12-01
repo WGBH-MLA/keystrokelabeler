@@ -97,8 +97,12 @@ def extract(video_path, period, first_time, last_time, max_stills):
     # going to loop through every frame in the video stream, starting at the beginning 
     for frame in container.decode(video_stream):
 
-        ftime = int((fcount/fps) * 1000)
-        #ftime = int(frame.time * 1000)   # Probably more accurate with variable FPS
+        # deprecated frame time calculation
+        # This calculation assumes constant FPS
+        # It also (rarely) differs from frame.time by 1msec even with constant FPS videos
+        #ftime = int((fcount/fps) * 1000)
+
+        ftime = int(frame.time * 1000)   # Probably more accurate with variable FPS
         
         # print("fcount:", fcount, "; ftime:", ftime) #DEBUG
 
