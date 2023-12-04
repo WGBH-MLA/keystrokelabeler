@@ -33,10 +33,11 @@ import sys
 import os
 import av
 import json
+import argparse
 
 # %%
 
-def extract(video_path, period, first_time, last_time, max_stills):
+def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, hard_break=False, filetype_ext="jpg", make_index=False):
     """Performs extraction of stills from the video and creates an index of 
     extracted image files in a JSON array.  
 
@@ -57,7 +58,9 @@ def extract(video_path, period, first_time, last_time, max_stills):
     # Create directory for the project based on the filename of the media
     vfilename = os.path.basename(video_path)
     fname, ext = os.path.splitext(vfilename)
-    basename = "stills_" + fname + "_" + str(period) + "ms"
+    
+    #basename = "stills_" + fname + "_" + str(period) + "ms"
+    basename = "stills_" + fname 
     proj_dir = "./" + basename + "/"
     stills_dir = proj_dir + "images/"
 
@@ -73,7 +76,11 @@ def extract(video_path, period, first_time, last_time, max_stills):
     else:
         print("Warning: Stills directory exists.  Existing stills may be overwritten.")
 
-    print("Extracting stills from", video_path, "every", period, "ms...") 
+    print("Using video from", video_path)
+    print("Starting at", first_time, "ms.")
+    if last_time != -1:
+        print("Will stop at", last_time, "ms.")
+    print("Extracting stills every", period, "ms...") 
 
     # Initialize counters for iteration
     image_list = []
@@ -107,16 +114,17 @@ def extract(video_path, period, first_time, last_time, max_stills):
         # print("fcount:", fcount, "; ftime:", ftime) #DEBUG
 
         # break the loop if we've exceeded the limits
-        if ( ( max_stills > -1 and stills_count >= max_stills ) or
-             ( last_time > -1 and ftime > last_time ) ):
+        if ( hard_break and
+             ( ( max_stills > -1 and stills_count >= max_stills ) or
+             ( last_time > -1 and ftime > last_time ) ) ):
             break
-        
+
         # Grab the first still after the target time index
         # (assuming the limits have not been exceeded.)
         if ( ( max_stills == -1 or stills_count < max_stills ) and
              ( last_time == -1 or ftime <= last_time ) and 
              ( ftime >= next_target_time ) ): 
-            ifilename =  f'{fname}_{length:08}_{ftime:08}.jpg'
+            ifilename =  f'{fname}_{length:08}_{ftime:08}' + "." + filetype_ext
             ipathname = stills_dir + ifilename
             frame.to_image().save(ipathname)
             image_list.append(ifilename)
@@ -129,32 +137,35 @@ def extract(video_path, period, first_time, last_time, max_stills):
 
     container.close()
 
-    # Create image index array file
-    print("Creating stills index...")
+    # If required, create image index array file
+    if make_index:
+        print("Creating stills index...")
 
-    # first, flesh out the list
-    image_array = []
-    for iname in image_list:
-        image_array.append([iname, False, "", "", False, "", ""])
+        # first, flesh out the list
+        image_array = []
+        for iname in image_list:
+            image_array.append([iname, False, "", "", False, "", ""])
 
-    # convert array to a JSON string 
-    image_array_j = json.dumps(image_array)
+        # convert array to a JSON string 
+        image_array_j = json.dumps(image_array)
 
-    # prettify with line breaks
-    image_array_j = image_array_j.replace("[[", "[\n[")
-    image_array_j = image_array_j.replace("], [", "], \n[")
-    image_array_j = image_array_j.replace("]]", "]\n]")
+        # prettify with line breaks
+        image_array_j = image_array_j.replace("[[", "[\n[")
+        image_array_j = image_array_j.replace("], [", "], \n[")
+        image_array_j = image_array_j.replace("]]", "]\n]")
 
-    # add bits to make it valid Javascript
-    image_array_j = "imgArray=\n" + image_array_j
-    image_array_j = image_array_j + "\n;"
+        # add bits around the JSON text to make it valid Javascript
+        image_array_j = "imgArray=\n" + image_array_j
+        image_array_j = image_array_j + "\n;"
 
-    # write Javascript file in current directory
-    array_pathname = proj_dir + "img_arr_init.js"
-    with open(array_pathname, "w") as array_file:
-        array_file.write(image_array_j)
+        # write Javascript file in current directory
+        array_pathname = proj_dir + "img_arr_init.js"
+        with open(array_pathname, "w") as array_file:
+            array_file.write(image_array_j)
 
-    print("Stills index created at " + array_pathname + ".")
+        print("Stills index created at " + array_pathname + ".")
+
+
     print("Done.")
 
 
@@ -162,42 +173,48 @@ def extract(video_path, period, first_time, last_time, max_stills):
 # %%
 def main(): 
 
-    usage = """Usage: python getstills.py <filename> [period in milliseconds]
-    If no period is specified, the default is 1000 ms.
-    To extract every frame, set a period of 0 ms."
+    app_desc = """getstills.py
+    Extracts still images from a video file.
+    Note:  All times are expressed in milliseconds.
     """
 
-    if len(sys.argv) < 2 or len(sys.argv) > 3 :
-        print("Incorrect number of arguments provided.")
-        print(usage)
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        prog='python getstills.py',
+        description=app_desc,
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument("video_path", metavar="FILE",
+        help="Path and filename for the video file")
+    parser.add_argument("-p", "--period", type=int, default=1000,
+        help="Extract stills every PERIOD ms. (To extract every frame, use a value of 0.)")
+    parser.add_argument("-s", "--start", type=int, default=0,
+        help="Begin extracting at START ms in the video.")
+    parser.add_argument("-e", "--end", type=int, default=-1,
+        help="Stop extracting at END ms in video. (Use value of -1 to go to the end of the media.)")
+    parser.add_argument("-m", "--max", type=int, default=-1,
+        help="Stop extracting after MAX stills have been saved. Use value of -1 for unliminted.")
+    parser.add_argument("-b", "--hard_break", action="store_true",
+        help="Break (instead of looping through all frames) when END time or MAX stills is reached.")
+    parser.add_argument("-t", "--type", default="jpg", choices=["jpg", "png"],
+        help="Filename extension for desired output image file type.")
+    parser.add_argument("-i", "--index", action="store_true",
+        help="Create a KeystrokeLabeler index of extracted stills")
 
-    video_path = sys.argv[1]
-    if not os.path.exists(video_path):
+    args = parser.parse_args() 
+
+    if not os.path.exists(args.video_path):
         print("Error:  Invalid file path.")
-        print(usage)
+        print("Run with '-h' for help.")
         sys.exit(1)
 
-    if len(sys.argv) == 3 :
-        try: 
-            period = int(sys.argv[2])
-        except ValueError:
-            print("Error:  The second argument must be an integer.")
-            print(usage)
-        
-        if not ( period >= 0 and period <= 86400000 ) :
-            print("Error:  Please enter a sensible value for the period in milliseconds.")
-            print(usage)
-            sys.exit(1)
-    else :
-        period = 1000
-    
-    # In future development, these could be user-supplied
-    first_time = 0
-    last_time = -1
-    max_stills = -1
+    if not ( args.period == -1 or (args.period >= 0 and args.period <= 86400000) ) :
+        print("Error:  Please enter a sensible value for the period in milliseconds.")
+        sys.exit(1)
 
-    extract(video_path, period, first_time, last_time, max_stills)
+    #print(args) #DEBUG
+
+    extract(args.video_path, args.period, args.start, args.end, 
+            args.max, args.hard_break, args.type, args.index)
 # %%
     
 
