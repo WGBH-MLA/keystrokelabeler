@@ -37,7 +37,7 @@ import argparse
 
 # %%
 
-def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, hard_break=False, filetype_ext="jpg", make_index=False):
+def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, hard_break=False, filetype_ext="jpg", prep_ksl=False):
     """Performs extraction of stills from the video and creates an index of 
     extracted image files in a JSON array.  
 
@@ -59,28 +59,34 @@ def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, 
     vfilename = os.path.basename(video_path)
     fname, ext = os.path.splitext(vfilename)
     
-    #basename = "stills_" + fname + "_" + str(period) + "ms"
     basename = "stills_" + fname 
-    proj_dir = "./" + basename + "/"
-    stills_dir = proj_dir + "images/"
+    
+    # If this is for a KSL project, create appropriate directories
+    if prep_ksl: 
+        proj_dir = "./" + basename + "/"
+        stills_dir = proj_dir + "images/"
 
-    if not os.path.exists(proj_dir):
-        print("Creating directory:", proj_dir)
-        os.mkdir(proj_dir)
+        if not os.path.exists(proj_dir):
+            print("Creating directory:", proj_dir)
+            os.mkdir(proj_dir)
+        else:
+            print("Warning: Project directory exists.  Existing data may be overwritten.")
+
+        if not os.path.exists(stills_dir):
+            print("Creating directory:", stills_dir)
+            os.mkdir(stills_dir)
+        else:
+            print("Warning: Stills directory exists.  Existing stills may be overwritten.")
     else:
-        print("Warning: Project directory exists.  Existing data may be overwritten.")
+        proj_dir = "./" 
+        stills_dir = proj_dir 
 
-    if not os.path.exists(stills_dir):
-        print("Creating directory:", stills_dir)
-        os.mkdir(stills_dir)
-    else:
-        print("Warning: Stills directory exists.  Existing stills may be overwritten.")
-
+    # Print explanatory messages.
     print("Using video from", video_path)
-    print("Starting at", first_time, "ms.")
+    print("Starting at", first_time, "ms")
     if last_time != -1:
-        print("Will stop at", last_time, "ms.")
-    print("Extracting stills every", period, "ms...") 
+        print("Will stop at", last_time, "ms")
+    print("Extracting stills every", period, "ms ...") 
 
     # Initialize counters for iteration
     image_list = []
@@ -138,7 +144,7 @@ def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, 
     container.close()
 
     # If required, create image index array file
-    if make_index:
+    if prep_ksl:
         print("Creating stills index...")
 
         # first, flesh out the list
@@ -197,8 +203,8 @@ def main():
         help="Break (instead of looping through all frames) when END time or MAX stills is reached.")
     parser.add_argument("-t", "--type", default="jpg", choices=["jpg", "png"],
         help="Filename extension for desired output image file type.")
-    parser.add_argument("-i", "--index", action="store_true",
-        help="Create a KeystrokeLabeler index of extracted stills")
+    parser.add_argument("-k", "--ksl", action="store_true",
+        help="Create directories and a KeystrokeLabeler index of extracted stills")
 
     args = parser.parse_args() 
 
@@ -214,7 +220,7 @@ def main():
     #print(args) #DEBUG
 
     extract(args.video_path, args.period, args.start, args.end, 
-            args.max, args.hard_break, args.type, args.index)
+            args.max, args.hard_break, args.type, args.ksl)
 # %%
     
 
