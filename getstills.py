@@ -86,6 +86,8 @@ def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, 
     print("Starting at", first_time, "ms")
     if last_time != -1:
         print("Will stop at", last_time, "ms")
+    if max_stills != -1:
+        print("Will stop after extracting", max_stills, "stills")
     print("Extracting stills every", period, "ms ...") 
 
     # Initialize counters for iteration
