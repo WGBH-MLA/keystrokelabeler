@@ -731,48 +731,50 @@ function labelItem(keyStroke, level) {
  * Replicates the labels for those bookend images for all the unlabeled images.
  * 
  */
-function backFillLabels() {
+function backfillLabels() {
 
+    console.log("Attempting to backfill unseen gaps...");
+    // Strategy: 
+    // Find a suitable left bookend
+    // Search for the right bookend.
+    // If the right bookend is a match, then backfill.
+    // If the right bookend is not a match, then search for a new left bookend.
     var left = 0; 
     var right;
 
     while ( left < last ) {
 
-        console.log("left: " + left);
-
-        // first, find the next seen image that has an unseen just after it
+        // Find the next left bookend (a seen image that has an unseen just after it)
         while ( left < last ) {
-            if ( imgArray[left][1]  && !imgArray[left+1][1] )
+            if ( imgArray[left][1]  && !imgArray[left+1][1] ) {
                 break;
-            else
+            }
+            else {
                 left++;
+            }
         }
+        // We have a left bookend.
 
-        // we have a left bookend.
-        // now traverse the gap and see whether we find a matching right bookend
+        // Now traverse the gap and see whether we find a matching right bookend
         right = left + 1;
         
         while ( right <= last ) {
 
-            console.log("right: " + right);
-
+            // Check if it's a right bookened.
             if ( imgArray[right][1] ) {
 
-                // if encountering a seen image, check if it's a matching bookend
+                // Check if it's a matching bookend
                 if (imgArray[left][2] === imgArray[right][2] &&
                     imgArray[left][3] === imgArray[right][3] &&
                     imgArray[left][4] === imgArray[right][4] &&
                     imgArray[left][5] === imgArray[right][5] &&
                     imgArray[left][6] === imgArray[right][6] ) {
                     
-                    // it's a matching bookend; fill in the gap of unseen images
-                    console.log("matching bookend found");
-                    console.log("left: " + left);
-                    console.log("right: " + right);
+                    // It's a matching bookend; fill in the gap of unseen images
+                    console.log("Matching bookends found;  filling between " + left + " and " + right);
                     var i;
                     var j;
                     for ( i=left+1; i<right; i++ ) {
-                        console.log("updating index: " + i);
                         for ( j=1; j<imgArray[i].length; j++) {
                             imgArray[i][j] = imgArray[left][j];
                         }
@@ -784,9 +786,14 @@ function backFillLabels() {
                 right++;
             }
         }
-        // reset search for left bookend
+        // We are at a right bookend; now reset search for left bookend
         left = right;
-    }
+
+    } // end of main while loop
+
+    updateUnseen();
+    updateItemDisplay();
+    updateStatusDisplay();
 }
 
 
