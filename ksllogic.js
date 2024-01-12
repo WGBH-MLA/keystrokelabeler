@@ -726,6 +726,71 @@ function labelItem(keyStroke, level) {
 }
 
 
+/**
+ * Finds spans of unseen images between identically labeled images.
+ * Replicates the labels for those bookend images for all the unlabeled images.
+ * 
+ */
+function backFillLabels() {
+
+    var left = 0; 
+    var right;
+
+    while ( left < last ) {
+
+        console.log("left: " + left);
+
+        // first, find the next seen image that has an unseen just after it
+        while ( left < last ) {
+            if ( imgArray[left][1]  && !imgArray[left+1][1] )
+                break;
+            else
+                left++;
+        }
+
+        // we have a left bookend.
+        // now traverse the gap and see whether we find a matching right bookend
+        right = left + 1;
+        
+        while ( right <= last ) {
+
+            console.log("right: " + right);
+
+            if ( imgArray[right][1] ) {
+
+                // if encountering a seen image, check if it's a matching bookend
+                if (imgArray[left][2] === imgArray[right][2] &&
+                    imgArray[left][3] === imgArray[right][3] &&
+                    imgArray[left][4] === imgArray[right][4] &&
+                    imgArray[left][5] === imgArray[right][5] &&
+                    imgArray[left][6] === imgArray[right][6] ) {
+                    
+                    // it's a matching bookend; fill in the gap of unseen images
+                    console.log("matching bookend found");
+                    console.log("left: " + left);
+                    console.log("right: " + right);
+                    var i;
+                    var j;
+                    for ( i=left+1; i<right; i++ ) {
+                        console.log("updating index: " + i);
+                        for ( j=1; j<imgArray[i].length; j++) {
+                            imgArray[i][j] = imgArray[left][j];
+                        }
+                    }
+                }
+                break;
+            }
+            else {
+                right++;
+            }
+        }
+        // reset search for left bookend
+        left = right;
+    }
+}
+
+
+
 
 /***************************************************************************
  * Stats update functions
@@ -780,7 +845,6 @@ function nextUnseen() {
  * If no items have been seen, returns the first item
  */
 function lastSeen() {
-    var last = imgArray.length - 1;
     var lastSeen = 0;
     var i;
 
