@@ -1,8 +1,6 @@
 # Keystroke Labeler
 A simple tool for manually categorizing images as quickly as humanly possible.
 
-![screenshot of the Keystroke Labeler interface](/docs/ksl_screenshot.png?raw=true)
-
 ## Description
 Keystroke Labeler is a simple browser-based (client-side only) application for quickly adding pre-defined labels to a set of images.
 
@@ -38,6 +36,8 @@ You exit the labeler simply by closing the browser window.  **Note:** *When the 
 You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as `labeler.html` and the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
 
 ### Labeler operation
+
+![screenshot of the Keystroke Labeler interface](/docs/ksl_screenshot.png?raw=true)
 
 **Keyboard interaction**:  Operation is primarily driven by the keyboard.  Some keys (typically alphabetical keys) signify labels.  Other keys are command keys.  The meanings of keys (relative to the current mode) are explained in the right sidebar.  
 
