@@ -23,9 +23,9 @@ If you wish to run the included Python scripts, change to that directory and do 
 
 ## Usage
 
-### Starting and restarting
+### Labeling project setup
 
-The labeler requires a collection of image files and an index.  Your collection of image files should be in a directory called `images` which is in the same directory as the HTML, JavaScript, and CSS files from this repository.  The index is in a file called `img_arr_init.js`, which can be created by the `getstills` module.
+The labeler requires a **collection of image files** and an **index**.  Your collection of image files should be in a directory called `images` which must be located in the same directory as the HTML, JavaScript, and CSS files from this repository.  The index must be in a file called `img_arr_init.js`, which can be created by the `getstills` Python module.
 
 For details on file organization and data structures, consult `labeler_data_readme.md`.
 
@@ -35,7 +35,7 @@ You exit the labeler simply by closing the browser window.  **Note:** *When the 
 
 You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as `labeler.html` and the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
 
-### Operation
+### Labeler operation
 
 **Keyboard interaction**:  Operation is primarily driven by the keyboard.  Some keys (typically alphabetical keys) signify labels.  Other keys are command keys.  The meanings of keys (relative to the current mode) are explained in the right sidebar.  
 
