@@ -1,6 +1,8 @@
 # Keystroke Labeler
 A simple tool for manually categorizing images as quickly as humanly possible.
 
+![screenshot of the Keystroke Labeler interface](/docs/ksl_screenshot.png?raw=true)
+
 ## Description
 Keystroke Labeler is a simple browser-based (client-side only) application for quickly adding pre-defined labels to a set of images.
 
@@ -27,7 +29,7 @@ If you wish to run the included Python scripts, change to that directory and do 
 
 The labeler requires a **collection of image files** and an **index**.  Your collection of image files should be in a directory called `images` which must be located in the same directory as the HTML, JavaScript, and CSS files from this repository.  The index must be in a file called `img_arr_init.js`, which can be created by the `getstills` Python module.
 
-For details on file organization and data structures, consult `labeler_data_readme.md`.
+For details on file organization and data structures, consult [labeler_data_structure.md](docs/labeler_data_structure.md). 
 
 You start the labeler simply by opening `labeler.html` in your web browser.
 
