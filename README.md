@@ -6,6 +6,8 @@ Keystroke Labeler is a simple client-side web application for quickly adding pre
 
 Also included in this repository are Python scripts for creating collections of labelable images from video files.
 
+This tool was created to support the development of scene recognition tools in the [CLAMS project](https://clams.ai/).  Scene recognition tools analyze video footage and assign labels to scenes (intervals of video playback) according to a set of established categories.  The [documentation for CLAMS scene recogntion annotations](https://github.com/clamsproject/aapb-annotations/tree/main/scene-recognition) describes how the Keystroke Labeler was used to perform manual (human) labeling of tens of thousands of images.
+
 ## Table of Contents
 - [Installation](#installation)
 - [Usage](#usage)
