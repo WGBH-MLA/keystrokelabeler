@@ -2,7 +2,7 @@
 A simple tool for manually categorizing images as quickly as humanly possible.
 
 ## Description
-Keystroke Labeler is a simple client-side web application for quickly adding pre-defined labels to a set of images.
+Keystroke Labeler is a simple browser-based (client-side only) application for quickly adding pre-defined labels to a set of images.
 
 Also included in this repository are Python scripts for creating collections of labelable images from video files.
 
