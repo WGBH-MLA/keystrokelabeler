@@ -478,9 +478,10 @@ function nav(dir) {
     renderHelp();
 }
 
+// This function marks an item as seen, but removes any label
 function see() {
     imgArray[cur][1] = true;
-    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+    imgArray[cur][2] = imgArray[cur][3] = "";
     imgArray[cur][4] = false;
 
     // go ahead an display new values for the current item
@@ -499,7 +500,7 @@ function see() {
 
 function forgetStay() {
     imgArray[cur][1] = imgArray[cur][4] = false;
-    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+    imgArray[cur][2] = imgArray[cur][3] = "";
 
     // go ahead an display new values for the current item
     updateItemDisplay();
@@ -519,7 +520,7 @@ function moveBackForget() {
     nav("L");
 
     imgArray[cur][1] = imgArray[cur][4] = false;
-    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+    imgArray[cur][2] = imgArray[cur][3] = "";
 
     // light up command indicator
     cmdIndicator("on", "&empty; &#x23F4;");
@@ -587,7 +588,7 @@ function removeLabel(level, seen) {
 
     if (level === 1) {
         imgArray[cur][1] = seen;
-        imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = "";
+        imgArray[cur][2] = imgArray[cur][3] = "";
         imgArray[cur][4] = false;  
     } 
     else if (level === 2) {
@@ -676,18 +677,19 @@ function labelItem(keyStroke, level) {
         }
         else {
             // Check to see if type label and modifier already set to this value.  
-            // If so, do nothing.
+            // If so, do nothing except marking seen
             if ( key === imgArray[cur][2] &&
                 (  ( keyStroke === key && imgArray[cur][4] === true ) ||
                     ( keyStroke != key && imgArray[cur][4] === false) ) ) {
-                console.log("Entered label is current label.  Not changing labels.");
+                console.log("Entered label is current label.  Not changing labels.  Marking seen");
+                imgArray[cur][1] = true;
             }
             // If label and/or modifier need to be changed, then change them
             else {
                 // set labels    
                 imgArray[cur][1] = true;
                 imgArray[cur][2] = key;
-                imgArray[cur][3] = imgArray[cur][5] = imgArray[cur][6] = "";
+                imgArray[cur][3] = "";
 
                 // set the modifier, if appropriate
                 if ( key === keyStroke )
@@ -979,6 +981,18 @@ function updateItemDisplay() {
     } else {
         document.getElementById("item-mod-code").innerText = "";
         document.getElementById("item-mod-name").innerText = "";
+    }
+    // Display transcript
+    if (imgArray[cur][5]) {
+        document.getElementById("item-transcript-text").innerText = imgArray[cur][5];
+    } else {
+        document.getElementById("item-transcript-text").innerText = "";
+    }
+    // Display item note
+    if (imgArray[cur][6]) {
+        document.getElementById("item-note-text").innerText = imgArray[cur][6];
+    } else {
+        document.getElementById("item-note-text").innerText = "";
     }
 
     // Focus areas relevant areas, if in editor mode

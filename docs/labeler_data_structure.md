@@ -31,7 +31,7 @@ The tabular data has seven columns, as labeled in the CSV file.
 
 4. **modifier** (bool) - indicates whether the label has the "modifier" status
 
-5. **transcript** (string) - not implemented; not used; always an empty string
+5. **transcript** (string) - displayed and saved if included in `img_arr_init.js` or `img_arr_prog.js`; not editable within labeler
 
-6. **note** (string) - not implemented; not used; always an empty string
+6. **note** (string) - displayed and saved if included in `img_arr_init.js` or `img_arr_prog.js`; not editable within labeler
 
