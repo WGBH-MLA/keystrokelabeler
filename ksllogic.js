@@ -554,15 +554,14 @@ function acceptAndMove() {
 
     changeMode("ks");
 
+    // accept labeling, i.e., mark item as seen
+    imgArray[cur][1] = true
+    
     // going to light up command indicator for a moment
     var msg;
   
-    // if not seen, use empty message
-    if (!imgArray[cur][1]) {
-        msg = "";
-    }
     // if no type label, then message just indicates seen
-    else if (imgArray[cur][2] === "" ) {
+    if (imgArray[cur][2] === "" ) {
         msg = "&#x1F441;" ;
     }
     // if there is a type label, build the appropriate message
