@@ -4,9 +4,9 @@ imgDir = "./images/"
 // The jump factor is the number of items between the current item and the next
 // or previous item when navigating.
 // This array defines the allowed jump factors.
-jumpFactors = [1, 2, 5, 15, 30, 60, 90, 120, 180, 360] ; 
+jumpFactors = [1, 5, 15, 30, 60, 120] ; 
 
-feedbackPause = 500 ;
+feedbackPause = 200 ;
 
 // Each top-level key in the `cats` object must be a single uppercase letter.
 cats = 
@@ -87,13 +87,13 @@ cats =
     },
     "E": {
         "key": "E",
-        "name": "Focal person; extra text",
+        "name": "Person focal, with Extra text",
         "desc": "A frame prominently displaying a single person, with extra text that is not a chyron",
         "subtypes": {}
     },
     "P": {
         "key": "P",
-        "name": "Focal person; No text",
+        "name": "Person focal; No text",
         "desc": "A frame prominently displaying a single person but without text",
         "subtypes": {}
     },
