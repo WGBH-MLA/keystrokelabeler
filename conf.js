@@ -81,7 +81,7 @@ cats =
     },
     "N": {
         "key": "N",
-        "name": "Focal person and chyron; No ID",
+        "name": "Person focal and chyron; No ID",
         "desc": "Text on the lower third of the screen, along with a focal person, but not identifying that person",
         "subtypes": {}
     },
