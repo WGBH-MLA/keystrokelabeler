@@ -297,7 +297,8 @@ function handleKeydown(event) {
                     changeMode("ed1");
                     break;
                 case "Enter":
-                    nav("R");
+                    //nav("R");
+                    acceptAndMove();
                     break;
                 case "ArrowUp":
                     changeJump("up");
@@ -413,7 +414,7 @@ function changeMode(newMode) {
 
 
 /***************************************************************************
- * Keystroke mode function definitions
+ * Top-level Keystroke mode and Editor mode function definitions
  * *************************************************************************/
 
 /**
@@ -546,16 +547,14 @@ function cmdIndicator(shown, msg=" ") {
     }
 }
 
-/***************************************************************************
- * Editor mode function definitions
- * *************************************************************************/
 
 function acceptAndMove() {
 
-    changeMode("ks");
-
     // accept labeling, i.e., mark item as seen
     imgArray[cur][1] = true
+
+    // update display to reflect seen status
+    updateItemDisplay()
     
     // going to light up command indicator for a moment
     var msg;
@@ -579,6 +578,7 @@ function acceptAndMove() {
 
     cmdIndicator("on", msg)
 
+    changeMode("ks");
     setTimeout(nav, feedbackPause, "R");
 }
 
