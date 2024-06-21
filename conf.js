@@ -103,6 +103,12 @@ cats =
         "desc": "Text on the lower third of the screen, but without a single person most prominent",
         "subtypes": {}
     },
+    "U": {
+        "key": "U",
+        "name": "Subtitling",
+        "desc": "Subtitles burned in to the screen image",
+        "subtypes": {}
+    },
     "K": {
         "key": "K",
         "name": "Ticker; No chyron",
