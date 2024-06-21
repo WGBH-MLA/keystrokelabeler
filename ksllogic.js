@@ -553,6 +553,14 @@ function acceptAndMove() {
     // accept labeling, i.e., mark item as seen
     imgArray[cur][1] = true
 
+    // if invalid type label (which wouldn't be displayed anyway), then set 
+    // the label to an empty string.
+    // (This handles the case where the ksl index was pre-populated with
+    // pseudo labels like "NEG".)
+    if (imgArray[cur][2].length !== 1) {
+        imgArray[cur][2] = ""
+    }
+
     // update display to reflect seen status
     updateItemDisplay()
     
