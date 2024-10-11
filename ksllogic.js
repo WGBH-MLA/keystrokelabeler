@@ -19,7 +19,7 @@ console.log("ksl logic now running...");
 ksModeCmdKeys = {
     "Enter": {
         "disp": "Enter",
-        "desc": "Jump to next",
+        "desc": "Mark seen and jump to next",
         "help": ""
     },
     "ArrowRight": {
@@ -74,11 +74,11 @@ ksModeCmdKeys = {
     }
 };
 ksModeCmdKeysOrder = [ 
-    "Enter", 
     "ArrowRight", 
     "ArrowLeft", 
     "ArrowUp", 
     "ArrowDown", 
+    "Enter", 
     " ", 
     "Delete", 
     "Backspace", 
@@ -563,6 +563,10 @@ function acceptAndMove() {
 
     // update display to reflect seen status
     updateItemDisplay()
+
+    // Update status
+    updateUnseen();
+    updateStatusDisplay();
     
     // going to light up command indicator for a moment
     var msg;
