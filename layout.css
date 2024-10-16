@@ -169,7 +169,8 @@ div.cmd-indicator {
 
  img.observing {
     margin: 0 auto; /* Center horizontally */
-    max-width: 500px;
+    max-width: 640px;
+    max-height: 360px;
 }
 
 .editor-mode {
