@@ -19,7 +19,7 @@ console.log("ksl logic now running...");
 ksModeCmdKeys = {
     "Enter": {
         "disp": "Enter",
-        "desc": "Mark seen and jump to next",
+        "desc": "Mark seen (as is) and jump to next",
         "help": ""
     },
     "ArrowRight": {
@@ -92,11 +92,6 @@ edModeCmdKeys = {
         "desc": "Return to Keystroke mode",
         "help": ""
     },
-    "Enter": {
-        "disp": "Enter",
-        "desc": "Accept; proceed to Keystroke mode",
-        "help": ""
-    },
     " ":  {
         "disp": "Spacebar",
         "desc": "Mark seen, with no label",
@@ -139,7 +134,6 @@ edModeCmdKeys = {
     }
 };
 edModeCmdKeysOrder = [ 
-    "Enter", 
     "ArrowRight", 
     "ArrowLeft", 
     "ArrowUp", 
@@ -350,9 +344,6 @@ function handleKeydown(event) {
             switch (event.key) {
                 case "Escape":
                     changeMode("ks");
-                    break;
-                case "Enter":
-                    acceptAndMove();
                     break;
                 case " ":  // spacebar
                     removeLabel(level, true);
@@ -725,6 +716,7 @@ function labelItem(keyStroke, level) {
         }
         // Set the subtype code
         else {
+            imgArray[cur][1] = true;
             imgArray[cur][3] = key;
         }
 
