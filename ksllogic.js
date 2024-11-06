@@ -99,7 +99,7 @@ edModeCmdKeys = {
     },
     "Delete": {
         "disp": "Delete",
-        "desc": "Unsee current item",
+        "desc": "Remove label",
         "help": ""
     },
     "ArrowRight": {
@@ -128,7 +128,7 @@ edModeCmdKeys = {
         "help": ""        
     },
     "2": {
-        "disp": "Number 1",
+        "disp": "Number 2",
         "desc": "Edit Subtype",
         "help": ""        
     }
@@ -138,11 +138,12 @@ edModeCmdKeysOrder = [
     "ArrowLeft", 
     "ArrowUp", 
     "ArrowDown",
+    "1", 
+    "2",
     " ", 
     "Delete", 
-    "Escape", 
-    "1", 
-    "2"  ];
+    "Escape"
+    ];
 
     
 // total number of images in the set
