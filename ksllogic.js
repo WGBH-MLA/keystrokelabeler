@@ -71,6 +71,16 @@ ksModeCmdKeys = {
         "disp": "Number 2",
         "desc": "Go to Editor mode - Subtype", 
         "help": ""        
+    },
+    "3": {
+        "disp": "Number 3",
+        "desc": "Annotate 3",
+        "help": ""        
+    },
+    "4": {
+        "disp": "Number 4",
+        "desc": "Annotate 4",
+        "help": ""        
     }
 };
 ksModeCmdKeysOrder = [ 
@@ -82,11 +92,14 @@ ksModeCmdKeysOrder = [
     " ", 
     "Delete", 
     "Backspace", 
-    "Escape", 
-    "1", 
-    "2"  ];
+    "Escape" ];
 
 edModeCmdKeys = {
+    "Enter": {
+        "disp": "Enter",
+        "desc": "Enter annotation mode (if applicable)",
+        "help": ""
+    },
     "Escape": {
         "disp": "Esc",
         "desc": "Return to Keystroke mode",
@@ -131,6 +144,16 @@ edModeCmdKeys = {
         "disp": "Number 2",
         "desc": "Edit Subtype",
         "help": ""        
+    },
+    "3": {
+        "disp": "Number 3",
+        "desc": "Annotate 3",
+        "help": ""        
+    },
+    "4": {
+        "disp": "Number 4",
+        "desc": "Annotate 4",
+        "help": ""        
     }
 };
 edModeCmdKeysOrder = [ 
@@ -138,13 +161,26 @@ edModeCmdKeysOrder = [
     "ArrowLeft", 
     "ArrowUp", 
     "ArrowDown",
-    "1", 
-    "2",
     " ", 
     "Delete", 
     "Escape"
     ];
 
+anModeCmdKeys = {
+    "Escape": {
+        "disp": "Esc",
+        "desc": "Return to Editor mode",
+        "help": ""
+    }
+};
+anModeCmdKeysOrder = [ 
+    "Escape"
+];
+    
+
+/***************************************************************************
+ * Initialize global variables
+ * *************************************************************************/
     
 // total number of images in the set
 count = imgArray.length;
@@ -199,13 +235,20 @@ setTimeout(updateStatusDisplay, 1000);
 setTimeout(updateItemDisplay, 1000);  
 
 
-/**
+/***************************************************************************
+ ###########################################################################
+ * FUNCTION DEFINITIONS
+ ###########################################################################
+ ***************************************************************************/
+
+ /**
  * Create HTML for the help area, based on definitions in objects
  */
 function buildHelp() {
 
     var ksHelp = "";
     var edHelp = "";
+    var anHelp = "";
     var typeKeyHelp = "";
     var subKeyHelp = {};
     var line = "";
@@ -257,11 +300,31 @@ function buildHelp() {
         }
     }
 
+    // key help for modes ed3 and ed4
+    edAnHelp = "<div class='help-key'>" +
+                   "Enter" + " : " + "</div>" +
+                   "<div class='help-desc'>" +
+                   "Annotate" + "</div>"; ;
+    
+    // help for annotation modes
+    for (var key of anModeCmdKeysOrder) {
+        line = "<div class='help-key'>" +
+               anModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               anModeCmdKeys[key]["desc"] + "</div>";
+        anHelp += line;
+    }
+    anKeyHelp = "<div class='help-msg'>" +
+                   "Enter your annotation text in the box." + "</div>"; ;
+
     // Set properties of the global help object
     help["ksCmds"] = ksHelp;
     help["edCmds"] = edHelp;
     help["typeKeys"] = typeKeyHelp;
     help["subTypeKeys"] = subKeyHelp;
+    help["edAnKeys"] = edAnHelp ; 
+    help["anCmds"] = anHelp;
+    help["anKeys"] = anKeyHelp;
 }
 
 
@@ -292,7 +355,6 @@ function handleKeydown(event) {
                     changeMode("ed1");
                     break;
                 case "Enter":
-                    //nav("R");
                     acceptAndMove();
                     break;
                 case "ArrowUp":
@@ -322,6 +384,12 @@ function handleKeydown(event) {
                 case "2":
                     changeMode("ed2");
                     break;
+                case "3":
+                    changeMode("an3");
+                    break;
+                case "4":
+                    changeMode("an4");
+                    break;
                 default:
                     console.error("Error: That special key is listed, but not implemented.");
             }
@@ -334,17 +402,23 @@ function handleKeydown(event) {
         }
     } 
     // Edit mode branching
-    else if ( mode === "ed1" || mode === "ed2" ) {
+    else if (["ed1", "ed2", "ed3", "ed4"].includes(mode)) {
         var level;
-        if (mode === "ed1")
-            level = 1;
-        else if (mode === "ed2")
-            level = 2;
+        var newLevel;
+        level = parseInt(mode[2])
 
         if (event.key in edModeCmdKeys) {
             switch (event.key) {
                 case "Escape":
                     changeMode("ks");
+                    break;
+                case "Enter":
+                    if (mode === "ed3") {
+                        changeMode("an3");
+                    } 
+                    else if (mode === "ed4") {
+                        changeMode("an4");
+                    }
                     break;
                 case " ":  // spacebar
                     removeLabel(level, true);
@@ -359,16 +433,32 @@ function handleKeydown(event) {
                     nav("L");
                     break;
                 case "ArrowUp":
-                    changeMode("ed1");
+                    if (level > 1) {
+                        newLevel = level - 1;
+                    } else {
+                        newLevel = level;
+                    }
+                    changeMode("ed"+newLevel)
                     break;
                 case "ArrowDown":
-                    changeMode("ed2");
+                    if (level < 4) {
+                        newLevel = level + 1;
+                    } else {
+                        newLevel = level;
+                    }
+                    changeMode("ed"+newLevel)
                     break;
-                 case "1":
+                case "1":
                     changeMode("ed1");
                     break;
                 case "2":
                     changeMode("ed2");
+                    break;
+                case "3":
+                    changeMode("an3");
+                    break;
+                case "4":
+                    changeMode("an4");
                     break;
                 default:
                     console.error("Error: That special key is listed, but not implemented.");
@@ -381,8 +471,27 @@ function handleKeydown(event) {
             console.log("no actions set for that key in edit mode");
         }
     }
+    else if ( mode === "an3" || mode === "an4" ){
+        if (event.key in anModeCmdKeys) {
+            switch (event.key) {
+                case "Escape":
+                    if (mode === "an3") {
+                        changeMode("ed3");
+                    } 
+                    else if (mode === "an4") {
+                        changeMode("ed4");
+                    }
+                    break;
+            }
+        }
+        else {
+            // Pretty much any key is valid in this mode
+            console.log(mode + " mode:" + event.key);
+        }
+
+    }
     else {
-        console.error("Error: Invalid `mode`.");
+        console.error("Error: Invalid `mode`: " + mode);
     }
 
 }
@@ -392,10 +501,12 @@ function changeMode(newMode) {
 
     // do not allow change to edit mode 2 if item type is not yet set
     // if specified mode is "ed2" and that's not valid, change to "ed1".
+    /*
     if (newMode === "ed2" && !(imgArray[cur][2] in cats)) {
         console.warn("Warning: Tried to  edit mode 2 without a value for edit mode 1.");
         newMode = "ed1";
     }
+    */
 
     mode = newMode;
 
@@ -887,11 +998,14 @@ function renderHelp() {
     if (mode === "ks") {
         document.getElementById("help-cmd-keys").innerHTML = help["ksCmds"];
     }
-    else if (mode === "ed1" || mode === "ed2" ) {
+    else if (["ed1", "ed2", "ed3", "ed4"].includes(mode)) {
         document.getElementById("help-cmd-keys").innerHTML = help["edCmds"];
     }
+    else if (mode === "an3" || mode === "an4" ) {
+        document.getElementById("help-cmd-keys").innerHTML = help["anCmds"];
+    }
     else {
-        console.error("Error: Invalid mode");
+        console.error("Error: Invalid `mode`: " + mode);
     }
 
     // render labeling key help
@@ -907,6 +1021,16 @@ function renderHelp() {
             document.getElementById("help-label-keys").innerHTML = "";
         }
     }
+    else if (mode === "ed3" || mode === "ed4") {
+        document.getElementById("help-label-keys").innerHTML = help["edAnKeys"];
+    }
+    else if (mode === "an3" || mode === "an4" ) {
+        document.getElementById("help-label-keys").innerHTML = help["anKeys"];
+    }
+    else {
+        console.error("Error: Invalid `mode`: " + mode);
+    }
+
 }
 
 function updateStatusDisplay() {
@@ -916,6 +1040,9 @@ function updateStatusDisplay() {
     } else if (mode.startsWith("ed")) {
         document.getElementById("input-mode").innerText = "Editor mode";
         document.getElementById("input-mode").classList.add("editor-mode");        
+    } else if (mode.startsWith("an")) {
+        document.getElementById("input-mode").innerText = "Annotation mode";
+        document.getElementById("input-mode").classList.remove("editor-mode");
     } else {
         console.error("Invalid input mode.")
     }
@@ -988,29 +1115,68 @@ function updateItemDisplay() {
     }
     // Display transcript
     if (imgArray[cur][5]) {
-        document.getElementById("item-transcript-text").innerText = imgArray[cur][5];
+        document.getElementById("item-ann3-text").innerText = imgArray[cur][5];
     } else {
-        document.getElementById("item-transcript-text").innerText = "";
+        document.getElementById("item-ann3-text").innerText = "";
     }
     // Display item note
     if (imgArray[cur][6]) {
-        document.getElementById("item-note-text").innerText = imgArray[cur][6];
+        document.getElementById("item-ann4-text").innerText = imgArray[cur][6];
     } else {
-        document.getElementById("item-note-text").innerText = "";
+        document.getElementById("item-ann4-text").innerText = "";
     }
 
     // Focus areas relevant areas, if in editor mode
-    if (mode === "ks") {1
-        document.getElementById("item-type-label").classList.remove("area_focus");
-        document.getElementById("item-subtype-label").classList.remove("area_focus");
+    if (mode === "ks") {
+        document.getElementById("item-type-label").classList.remove("area-focus");
+        document.getElementById("item-subtype-label").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("area-focus");
+        document.getElementById("item-ann4").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("annotation-focus");
+        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "ed1") {
-        document.getElementById("item-type-label").classList.add("area_focus");
-        document.getElementById("item-subtype-label").classList.remove("area_focus");
+        document.getElementById("item-subtype-label").classList.remove("area-focus");
+        document.getElementById("item-type-label").classList.add("area-focus");
+        document.getElementById("item-ann3").classList.remove("area-focus");
+        document.getElementById("item-ann4").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("annotation-focus");
+        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "ed2") {
-        document.getElementById("item-type-label").classList.remove("area_focus");
-        document.getElementById("item-subtype-label").classList.add("area_focus");
+        document.getElementById("item-type-label").classList.remove("area-focus");
+        document.getElementById("item-subtype-label").classList.add("area-focus");
+        document.getElementById("item-ann3").classList.remove("area-focus");
+        document.getElementById("item-ann4").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("annotation-focus");
+        document.getElementById("item-ann4").classList.remove("annotation-focus");
+    } else if (mode === "ed3") {
+        document.getElementById("item-type-label").classList.remove("area-focus");
+        document.getElementById("item-subtype-label").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.add("area-focus");
+        document.getElementById("item-ann4").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("annotation-focus");
+        document.getElementById("item-ann4").classList.remove("annotation-focus");
+    } else if (mode === "ed4") {
+        document.getElementById("item-type-label").classList.remove("area-focus");
+        document.getElementById("item-subtype-label").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("area-focus");
+        document.getElementById("item-ann4").classList.add("area-focus");
+        document.getElementById("item-ann3").classList.remove("annotation-focus");
+        document.getElementById("item-ann4").classList.remove("annotation-focus");
+    } else if (mode === "an3") {
+        document.getElementById("item-type-label").classList.remove("area-focus");
+        document.getElementById("item-subtype-label").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("area-focus");
+        document.getElementById("item-ann4").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.add("annotation-focus");
+        document.getElementById("item-ann4").classList.remove("annotation-focus");
+    } else if (mode === "an4") {
+        document.getElementById("item-type-label").classList.remove("area-focus");
+        document.getElementById("item-subtype-label").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("area-focus");
+        document.getElementById("item-ann4").classList.remove("area-focus");
+        document.getElementById("item-ann3").classList.remove("annotation-focus");
+        document.getElementById("item-ann4").classList.add("annotation-focus");
     }
-
 }
 
 /***************************************************************************
@@ -1059,7 +1225,7 @@ function exportCSV() {
     csvBody = csvBody.replace(/\]/g, "");
 
     // construct CSV-formatted string
-    var csvHeader = '"filename","seen","type label","subtype label","modifier","transcript","note"\n';
+    var csvHeader = '"filename","seen","type label","subtype label","modifier","annotation 3","annotation 4"\n';
     var imgArrayCSV = csvHeader + csvBody;
 
     // From the string, create a Blob for downloading

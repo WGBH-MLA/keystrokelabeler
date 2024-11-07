@@ -91,8 +91,11 @@ div.cmd-indicator {
     font-size: medium;
     color: gray;
 } 
-.area_focus {
+.area-focus {
     border-color: lime;
+}
+.annotation-focus {
+    border-color: sienna;
 }
 
 .button-container {
@@ -149,9 +152,8 @@ div.cmd-indicator {
     cursor: pointer;
 }
 
-.help-key {
+div.help-key {
     width: 25%;
-    color: white;
     text-align: right;
 }
 .help-desc {
@@ -180,6 +182,9 @@ div.cmd-indicator {
     background-color: #f76ffc; 
 }
 
+.help-key {
+    color: white;
+}
 .status-seen {
     color: blue;
     font-weight: normal;
