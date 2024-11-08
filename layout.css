@@ -6,10 +6,13 @@ body {
     padding: 0;
     overflow: hidden;  /* prevent scrolling of the web page */
     font-family: "PT Mono", "Noto Sans Mono", "Roboto Mono", "Liberation Mono", "Cascadia Mono", "Consolas", monospace; 
-    font-size: medium;
+    font-size: 16px;
 }
 
 div {
+    padding: 0px;
+}
+pre {
     padding: 0px;
 }
 
@@ -34,7 +37,7 @@ div {
     padding: 10px;
     background-color: #58565f; 
     color:  #bbaeff;
-    font-size: x-small;
+    font-size: 11px;
 }
 
 /* major block elements */
@@ -43,11 +46,12 @@ div {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: small;
+    font-size: 13px;
 }
 
 .graphical-area {
-    background-color: #b8c5bf;
+    background-color: gainsboro;
+    /* background-color: #b8c5bf; */
     margin: 0 auto; /* Center the container horizontally */
     justify-content: center;
     text-align: center;
@@ -56,12 +60,12 @@ div {
 
 .image-container {
     margin: 0 auto; /* Center the container horizontally */
-    padding: 20px 20px 10px 20px;
-}
+    padding: 15px 15px 10px 15px;
+ }
 
 div.cmd-indicator {
     height: 25px;
-    font-size: x-large;
+    font-size: 22px;
     color: darkgreen;
     font-weight: bold;
 }
@@ -71,24 +75,24 @@ div.cmd-indicator {
     flex-wrap: wrap;
     justify-content: space-between;
     width: calc(100% - 26px);
-    margin-top: 6px;
+    margin-top: 4px;
     margin-bottom: 0px; 
-    padding-top: 0px;
+    padding-top: 4px;
     padding-left: 22px;
     border: 2px solid transparent;
-    font-size: large;
+    font-size: 17px;
 } 
 .item-subtype-label {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: calc(100% - 26px);
-    margin-top: 6px;
-    margin-bottom: 10px; 
-    padding-top: 0px;
+    margin-top: 4px;
+    margin-bottom: 4px; 
+    padding-top: 4px;
     padding-left: 22px;
     border: 2px solid transparent;
-    font-size: medium;
+    font-size: 17px;
     color: gray;
 } 
 .area-focus {
@@ -102,11 +106,12 @@ div.cmd-indicator {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    margin-top: 15px;    
+    margin-top: 10px;    
 }
 
 .help-header {
-    font-size: small;
+    font-size: 15px;
+    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
 }
 
 .help-list {
@@ -125,11 +130,12 @@ div.cmd-indicator {
     width: 20%; 
 }
 .label-key {
-    width: 15%; 
+    width: 10%; 
 }
 .label-name {
     width: 65%; 
 }
+
 .label-level, .label-key, .label-name {
     box-sizing: border-box;
     background-color: #f2f2f2;
@@ -137,9 +143,25 @@ div.cmd-indicator {
     margin-bottom: 10px;
 }
 
+pre.label-name {
+    min-height: 85px;
+    font-size: 14px;
+    margin-top: 0px;
+    margin-bottom: 5px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.ann-area {
+    outline: none;
+    background-color: khaki; 
+    color: black;
+}
+
 .button {
     display: flex;
-    font-size: x-small;
+    font-size: 11px;
+    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
     width: 130px;
     height: 20px;
     background-color: lightgray;
@@ -153,14 +175,18 @@ div.cmd-indicator {
 }
 
 div.help-key {
+    font-size: 11px;
     width: 25%;
     text-align: right;
 }
 .help-desc {
-    width: 72%;
+    font-size: 12px;
+    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
+    width: 70%;
     padding-left: 3%;
 }
 .help-msg {
+    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
     width: 100%;
     color: white;
     padding-top: 5px;
@@ -173,6 +199,7 @@ div.help-key {
     margin: 0 auto; /* Center horizontally */
     max-width: 640px;
     max-height: 360px;
+    border: 1px solid gray;
 }
 
 .editor-mode {

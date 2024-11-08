@@ -12,49 +12,48 @@ console.log("ksl logic now running...");
 
 
 /***************************************************************************
- * Set lots of global variables
+ * Define global data structures
  * *************************************************************************/
 
-// Define global data structures
 ksModeCmdKeys = {
-    "Enter": {
-        "disp": "Enter",
-        "desc": "Mark seen (as is) and jump to next",
-        "help": ""
-    },
     "ArrowRight": {
-        "disp": "Right arrow",
+        "disp": "Right",
         "desc": "Jump to next",
         "help": ""
     },
     "ArrowLeft": {
-        "disp": "Left arrow",
+        "disp": "Left",
         "desc": "Jump to previous",
         "help": ""
     },
     "ArrowUp": {
-        "disp": "Up arrow",
+        "disp": "Up",
         "desc": "Increase jump factor",
         "help": ""        
     },
     "ArrowDown": {
-        "disp": "Down arrow",
+        "disp": "Down",
         "desc": "Decrease jump factor",
         "help": ""        
     },
+    "Enter": {
+        "disp": "Enter",
+        "desc": "Mark seen (as is); jump to next",
+        "help": ""
+    },
     " ":  {
         "disp": "Spacebar",
-        "desc": "Mark seen with no label",
+        "desc": "Remove all labels; mark seen",
         "help": ""        
     },
     "Delete": {
         "disp": "Delete",
-        "desc": "Unsee current item",
+        "desc": "Remove all labels; unsee",
         "help": ""
     },
     "Backspace": {
         "disp": "Backspace",
-        "desc": "Unsee previous item",
+        "desc": "Back up; remove all labels; unsee",
         "help": ""        
     },
     "Escape": {
@@ -95,44 +94,24 @@ ksModeCmdKeysOrder = [
     "Escape" ];
 
 edModeCmdKeys = {
-    "Enter": {
-        "disp": "Enter",
-        "desc": "Enter annotation mode (if applicable)",
-        "help": ""
-    },
-    "Escape": {
-        "disp": "Esc",
-        "desc": "Return to Keystroke mode",
-        "help": ""
-    },
-    " ":  {
-        "disp": "Spacebar",
-        "desc": "Mark seen, with no label",
-        "help": ""             
-    },
-    "Delete": {
-        "disp": "Delete",
-        "desc": "Remove label",
-        "help": ""
-    },
     "ArrowRight": {
-        "disp": "Right arrow",
+        "disp": "Right",
         "desc": "Jump to next",
         "help": ""
     },
     "ArrowLeft": {
-        "disp": "Left arrow",
+        "disp": "Left",
         "desc": "Jump to previous",
         "help": ""
     },
     "ArrowUp": {
-        "disp": "Up arrow",
-        "desc": "Edit higher label",
+        "disp": "Up",
+        "desc": "Go to higher level",
         "help": ""        
     },
     "ArrowDown": {
-        "disp": "Down arrow",
-        "desc": "Edit lower label",
+        "disp": "Down",
+        "desc": "Go to lower level",
         "help": ""        
     },
     "1": {
@@ -154,6 +133,26 @@ edModeCmdKeys = {
         "disp": "Number 4",
         "desc": "Annotate 4",
         "help": ""        
+    },
+    "Enter": {
+        "disp": "Enter",
+        "desc": "Enter annotation mode (if applicable)",
+        "help": ""
+    },
+    "Escape": {
+        "disp": "Esc",
+        "desc": "Return to Keystroke mode",
+        "help": ""
+    },
+    " ":  {
+        "disp": "Spacebar",
+        "desc": "Mark seen, with no label",
+        "help": ""             
+    },
+    "Delete": {
+        "disp": "Delete",
+        "desc": "Remove label; unsee level",
+        "help": ""
     }
 };
 edModeCmdKeysOrder = [ 
@@ -241,94 +240,6 @@ setTimeout(updateItemDisplay, 1000);
  ###########################################################################
  ***************************************************************************/
 
- /**
- * Create HTML for the help area, based on definitions in objects
- */
-function buildHelp() {
-
-    var ksHelp = "";
-    var edHelp = "";
-    var anHelp = "";
-    var typeKeyHelp = "";
-    var subKeyHelp = {};
-    var line = "";
-
-    // build keystroke mode command help
-    for (var key of ksModeCmdKeysOrder) {
-        line = "<div class='help-key'>" +
-               ksModeCmdKeys[key]["disp"] + " : " + "</div>" +
-               "<div class='help-desc'>" +
-               ksModeCmdKeys[key]["desc"] + "</div>";
-        ksHelp += line;
-    }
-
-    // build editor mode command help 
-    for (var key of edModeCmdKeysOrder) {
-        line = "<div class='help-key'>" +
-               edModeCmdKeys[key]["disp"] + " : " + "</div>" +
-               "<div class='help-desc'>" +
-               edModeCmdKeys[key]["desc"] + "</div>";
-        edHelp += line;
-    }
-
-    // build type key help
-    for (var key in cats) {
-        line = "<div class='help-key'>" +
-               cats[key]["key"] + " : " + "</div>" +
-               "<div class='help-desc'>" +
-               cats[key]["name"] + "</div>";
-        typeKeyHelp += line;
-    }
-    if (! modName == "") {
-        var modHelp = "";
-        modHelp += '<div class="help-msg">To indicate the label is "';
-        modHelp += modName; 
-        modHelp += '", hold Shift when pressing the label key.';
-        typeKeyHelp += modHelp;
-    }
-
-    // build subtype key help
-    for (var key in cats) {
-        subKeyHelp[key] = "";
-        stcats = cats[key]["subtypes"];
-        for (var stkey in stcats) {
-            line = "<div class='help-key'>" +
-                   stcats[stkey]["key"] + " : " + "</div>" +
-                   "<div class='help-desc'>" +
-                   stcats[stkey]["name"] + "</div>";
-            subKeyHelp[key] += line;
-        }
-    }
-
-    // key help for modes ed3 and ed4
-    edAnHelp = "<div class='help-key'>" +
-                   "Enter" + " : " + "</div>" +
-                   "<div class='help-desc'>" +
-                   "Annotate" + "</div>"; ;
-    
-    // help for annotation modes
-    for (var key of anModeCmdKeysOrder) {
-        line = "<div class='help-key'>" +
-               anModeCmdKeys[key]["disp"] + " : " + "</div>" +
-               "<div class='help-desc'>" +
-               anModeCmdKeys[key]["desc"] + "</div>";
-        anHelp += line;
-    }
-    anKeyHelp = "<div class='help-msg'>" +
-                   "Enter your annotation text in the box." + "</div>"; ;
-
-    // Set properties of the global help object
-    help["ksCmds"] = ksHelp;
-    help["edCmds"] = edHelp;
-    help["typeKeys"] = typeKeyHelp;
-    help["subTypeKeys"] = subKeyHelp;
-    help["edAnKeys"] = edAnHelp ; 
-    help["anCmds"] = anHelp;
-    help["anKeys"] = anKeyHelp;
-}
-
-
-
 /***************************************************************************
  * Branching and execution flow function definitions
  * *************************************************************************/
@@ -341,21 +252,19 @@ function handleKeydown(event) {
 
     console.log("key pressed: " + event.key);
 
-    // prevent browser from doing something else with command keys
-    if (event.key in ksModeCmdKeys || event.key in edModeCmdKeys) 
-        event.preventDefault();
-
     // Execution branching
 
     // KS mode braching
     if (mode === "ks") {
+
+        // prevent browser from doing something else with command keys
+        if (event.key in ksModeCmdKeys) 
+            event.preventDefault();
+        
         if (event.key in ksModeCmdKeys) {
             switch (event.key) {
                 case "Escape":
                     changeMode("ed1");
-                    break;
-                case "Enter":
-                    acceptAndMove();
                     break;
                 case "ArrowUp":
                     changeJump("up");
@@ -368,6 +277,9 @@ function handleKeydown(event) {
                     break;
                 case "ArrowLeft":
                     nav("L");
+                    break;
+                case "Enter":
+                    acceptAndMove();
                     break;
                 case " " :  // spacebar
                     see();
@@ -403,29 +315,17 @@ function handleKeydown(event) {
     } 
     // Edit mode branching
     else if (["ed1", "ed2", "ed3", "ed4"].includes(mode)) {
+
+        // prevent browser from doing something else with command keys
+        if (event.key in edModeCmdKeys) 
+            event.preventDefault();
+
         var level;
         var newLevel;
         level = parseInt(mode[2])
 
         if (event.key in edModeCmdKeys) {
             switch (event.key) {
-                case "Escape":
-                    changeMode("ks");
-                    break;
-                case "Enter":
-                    if (mode === "ed3") {
-                        changeMode("an3");
-                    } 
-                    else if (mode === "ed4") {
-                        changeMode("an4");
-                    }
-                    break;
-                case " ":  // spacebar
-                    removeLabel(level, true);
-                    break;
-                case "Delete":
-                    removeLabel(level, false);
-                    break;
                 case "ArrowRight":
                     nav("R");
                     break;
@@ -460,6 +360,23 @@ function handleKeydown(event) {
                 case "4":
                     changeMode("an4");
                     break;
+                case "Enter":
+                    if (mode === "ed3") {
+                        changeMode("an3");
+                    } 
+                    else if (mode === "ed4") {
+                        changeMode("an4");
+                    }
+                    break;
+                case " ":  // spacebar
+                    removeLabel(level, true);
+                    break;
+                case "Delete":
+                    removeLabel(level, false);
+                    break;
+                case "Escape":
+                    changeMode("ks");
+                    break;
                 default:
                     console.error("Error: That special key is listed, but not implemented.");
             }
@@ -476,9 +393,11 @@ function handleKeydown(event) {
             switch (event.key) {
                 case "Escape":
                     if (mode === "an3") {
+                        endAnnotation();
                         changeMode("ed3");
                     } 
                     else if (mode === "an4") {
+                        endAnnotation();
                         changeMode("ed4");
                     }
                     break;
@@ -486,7 +405,6 @@ function handleKeydown(event) {
         }
         else {
             // Pretty much any key is valid in this mode
-            console.log(mode + " mode:" + event.key);
         }
 
     }
@@ -513,11 +431,62 @@ function changeMode(newMode) {
     updateStatusDisplay();
     updateItemDisplay();
     renderHelp();
+
+    // set up editable element
+    if (mode === 'an3' || mode === 'an4') {
+        var preEl;
+        if ( mode === 'an3' ) {
+            preEl = document.getElementById("item-ann3-text");
+        }
+        else if ( mode === 'an4' ) {
+            preEl = document.getElementById("item-ann4-text");
+        }
+        preEl.spellcheck = 'false';
+        preEl.autocomplete = 'false';
+        preEl.autocorrect = 'false';
+        preEl.autocapitalize = 'false';
+
+        preEl.contentEditable = 'true';
+        preEl.classList.add('ann-area');
+        preEl.focus();
+    }
+}
+
+/***************************************************************************
+ * General navigation function
+ * *************************************************************************/
+/**
+ * Performs basic navigation through the image array.
+ * 
+ * @param {string} dir - The direction of navigation; must be either "L" or "R".
+ */
+function nav(dir) {
+
+    // navigate by adjusting current image according to navigation factor
+    if (dir === "R" && ((cur + jumpFactors[jfi]) <= last)) {
+        console.log("navigating right");
+        cur += jumpFactors[jfi];
+    } else if (dir === "L" && ((cur - jumpFactors[jfi]) >= 0)) {
+        console.log("navigating left");
+        cur -= jumpFactors[jfi];
+    } else {
+        console.warn("Warning: tried to navigate out of range.");
+    }
+
+    // Keep previous mode as current mode (if current mode is valid for current item)
+    changeMode(mode);
+
+    // turn off command indicator
+    cmdIndicator("off")
+
+    updateItemDisplay();
+    updateStatusDisplay();
+    renderHelp();
 }
 
 
 /***************************************************************************
- * Top-level Keystroke mode and Editor mode function definitions
+ * Top-level Keystroke mode function definitions
  * *************************************************************************/
 
 /**
@@ -552,105 +521,7 @@ function jump(index) {
     renderHelp();
 }
 
-
-/**
- * Performs basic navigation through the image array.
- * 
- * @param {string} dir - The direction of navigation; must be either "L" or "R".
- */
-function nav(dir) {
-
-    // navigate by adjusting current image according to navigation factor
-    if (dir === "R" && ((cur + jumpFactors[jfi]) <= last)) {
-        console.log("navigating right");
-        cur += jumpFactors[jfi];
-    } else if (dir === "L" && ((cur - jumpFactors[jfi]) >= 0)) {
-        console.log("navigating left");
-        cur -= jumpFactors[jfi];
-    } else {
-        console.warn("Warning: tried to navigate out of range.");
-    }
-
-    // Keep previous mode as current mode (if current mode is valid for current item)
-    changeMode(mode);
-
-    // turn off command indicator
-    cmdIndicator("off")
-
-    updateItemDisplay();
-    updateStatusDisplay();
-    renderHelp();
-}
-
-// This function marks an item as seen, but removes any label
-function see() {
-    imgArray[cur][1] = true;
-    imgArray[cur][2] = imgArray[cur][3] = "";
-    imgArray[cur][4] = false;
-
-    // go ahead an display new values for the current item
-    updateItemDisplay();
-
-    // Update status
-    updateUnseen();
-    updateStatusDisplay();
-
-    // light up command indicator
-    cmdIndicator("on", "&#x1F441;")
-
-    // after a delay, move to the next image.
-    setTimeout(nav, feedbackPause, "R");
-}
-
-function forgetStay() {
-    imgArray[cur][1] = imgArray[cur][4] = false;
-    imgArray[cur][2] = imgArray[cur][3] = "";
-
-    // go ahead an display new values for the current item
-    updateItemDisplay();
-
-    // Update status
-    updateUnseen();
-    updateStatusDisplay();
-
-    // light up command indicator
-    cmdIndicator("on", "&empty;")
-
-    // after a delay, turn off the command indicator.
-    setTimeout(cmdIndicator, feedbackPause, "off");
-}
-
-function moveBackForget() {
-    nav("L");
-
-    imgArray[cur][1] = imgArray[cur][4] = false;
-    imgArray[cur][2] = imgArray[cur][3] = "";
-
-    // light up command indicator
-    cmdIndicator("on", "&empty; &#x23F4;");
-
-    // go ahead an display new values for the current item
-    updateItemDisplay();
-
-    // Update status
-    updateUnseen();
-    updateStatusDisplay();
-
-    // after a delay, turn off the command indicator.
-    setTimeout(cmdIndicator,  feedbackPause, "off");
-}
-
-function cmdIndicator(shown, msg=" ") {
-    if (shown === "off") {
-        document.getElementById("indicator-msg").innerHTML = " ";
-    } else if (shown === "on" ) {
-        document.getElementById("indicator-msg").innerHTML = msg;
-    } else {
-        console.error("Bad `shown` argument passed to cmdIndicator.")
-    }
-}
-
-
+// Mark as seen, as is, do some validattion, update display, and move along
 function acceptAndMove() {
 
     // accept labeling, i.e., mark item as seen
@@ -698,37 +569,77 @@ function acceptAndMove() {
 }
 
 
-function removeLabel(level, seen) {
+// Marks an item as seen, but removes any labels or annotations, moves ahead
+function see() {
+    imgArray[cur][1] = true;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = imgArray[cur][6] = "";
+    imgArray[cur][4] = false;
 
-    if (level === 1) {
-        imgArray[cur][1] = seen;
-        imgArray[cur][2] = imgArray[cur][3] = "";
-        imgArray[cur][4] = false;  
-    } 
-    else if (level === 2) {
-        imgArray[cur][3] = "";
-    }
-    else 
-        console.error("Error: Invalid label level for removal.");
-
-    // Display updated values for the current item
+    // go ahead an display new values for the current item
     updateItemDisplay();
 
     // Update status
     updateUnseen();
     updateStatusDisplay();
+
+    // light up command indicator
+    cmdIndicator("on", "&#x1F441;")
+
+    // after a delay, move to the next image.
+    setTimeout(nav, feedbackPause, "R");
+}
+
+// Removes all labels and annotations, marks unseen
+function forgetStay() {
+    imgArray[cur][1] = false;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = imgArray[cur][6] = "";
+    imgArray[cur][4] = false;
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // Update status
+    updateUnseen();
+    updateStatusDisplay();
+
+    // light up command indicator
+    cmdIndicator("on", "&empty;")
+
+    // after a delay, turn off the command indicator.
+    setTimeout(cmdIndicator, feedbackPause, "off");
 }
 
 
-/***************************************************************************
- * Labeling functions
- * *************************************************************************/
+function moveBackForget() {
+    nav("L");
+
+    imgArray[cur][1] = false;
+    imgArray[cur][2] = imgArray[cur][3] = imgArray[cur][5] = imgArray[cur][6] = "";
+    imgArray[cur][4] = false;
+
+    // light up command indicator
+    cmdIndicator("on", "&empty; &#x23F4;");
+
+    // go ahead an display new values for the current item
+    updateItemDisplay();
+
+    // Update status
+    updateUnseen();
+    updateStatusDisplay();
+
+    // after a delay, turn off the command indicator.
+    setTimeout(cmdIndicator,  feedbackPause, "off");
+}
+
 
 function ksLabelItem(key) {
 
     var success = labelItem(key, 1);
 
     if (success) {
+
+        // Mark seen
+        imgArray[cur][1] = true;
 
         // Display updated values for the current item
         updateItemDisplay();
@@ -750,11 +661,75 @@ function ksLabelItem(key) {
     
 }
 
+
+/***************************************************************************
+ * Top-level Editor mode function definitions
+ * *************************************************************************/
+function removeLabel(level, seen) {
+
+    if (seen) {
+        if (level === 1) {
+            imgArray[cur][2] = imgArray[cur][3] = "";
+            imgArray[cur][4] = false;  
+        } 
+        else if (level === 2) {
+            imgArray[cur][3] = "";
+        }
+        else if (level === 3) {
+            imgArray[cur][5] = "";
+        }
+        else if (level === 4) {
+            imgArray[cur][6] = "";
+        }
+
+        // mark seen
+        imgArray[cur][1] = true;            
+    }
+    else {
+        if (level === 1) {
+            imgArray[cur][2] = imgArray[cur][3] = "";
+            imgArray[cur][4] = false;  
+        } 
+        else if (level === 2) {
+            imgArray[cur][3] = "";
+        }
+        else if (level === 3) {
+            imgArray[cur][5] = "";
+        }
+        else if (level === 4) {
+            imgArray[cur][6] = "";
+        }
+
+        // if all labels now empty, mark unseen
+        if ( imgArray[cur][2] === "" &&
+             imgArray[cur][3] === "" &&
+             imgArray[cur][4] === false &&
+             imgArray[cur][5] === "" &&
+             imgArray[cur][6] === "" 
+            ) {
+            imgArray[cur][1] = false;            
+        }
+    }
+
+
+    // Display updated values for the current item
+    updateItemDisplay();
+
+    // Update status
+    updateUnseen();
+    updateStatusDisplay();
+}
+
+
 function edLabelItem(key, level) {
 
     var success = labelItem(key, level);
 
     if (success) {
+
+        // Mark seen
+        imgArray[cur][1] = true;
+
         // Display updated values for the current item
         updateItemDisplay();
 
@@ -764,6 +739,10 @@ function edLabelItem(key, level) {
     }
 }
 
+
+/***************************************************************************
+ * Low-level labeling function
+ * *************************************************************************/
 /**
  * Applies a label to the current item.
  * 
@@ -796,12 +775,10 @@ function labelItem(keyStroke, level) {
                 (  ( keyStroke === key && imgArray[cur][4] === true ) ||
                     ( keyStroke != key && imgArray[cur][4] === false) ) ) {
                 console.log("Entered label is current label.  Not changing labels.  Marking seen");
-                imgArray[cur][1] = true;
             }
             // If label and/or modifier need to be changed, then change them
             else {
                 // set labels    
-                imgArray[cur][1] = true;
                 imgArray[cur][2] = key;
                 imgArray[cur][3] = "";
 
@@ -828,25 +805,60 @@ function labelItem(keyStroke, level) {
         }
         // Set the subtype code
         else {
-            imgArray[cur][1] = true;
             imgArray[cur][3] = key;
         }
-
     } 
     else {
-        console.error("Error:  Labeling beyond level 2 not implemented.");
+        console.error("Error: Cannot label beyond level 2.");
         retVal = false;
     }
 
     return retVal;
+}
+
+/***************************************************************************
+ * Annotation mode exit and save
+ * *************************************************************************/
+function endAnnotation() {
+    var preEl;
+    var elText;
+    var arrSlot;
+
+    if ( mode === 'an3' ) {
+        preEl = document.getElementById("item-ann3-text");
+        arrSlot = 5;
+    }
+    else if ( mode === 'an4' ) {
+        preEl = document.getElementById("item-ann4-text");
+        arrSlot = 6;
+    }
+
+    // turn off interface 
+    preEl.contentEditable = 'false';
+    preEl.classList.remove('ann-area');
+
+    // get value of element
+    // (note that `innerText` worked more reliably than `textContent`
+    elText = preEl.innerText.trimEnd();
+    
+    // save text value
+    imgArray[cur][arrSlot] = elText;
+
+    // mark element as seen
+    if (elText != "") {
+        imgArray[cur][1] = true;
+    }
 
 }
 
 
+/***************************************************************************
+ * Extra special bulk labeling functions
+ * *************************************************************************/
+
 /**
  * Finds spans of unseen images between identically labeled images.
  * Replicates the labels for those bookend images for all the unlabeled images.
- * 
  */
 function backfillLabels() {
 
@@ -914,8 +926,6 @@ function backfillLabels() {
 }
 
 
-
-
 /***************************************************************************
  * Stats update functions
  * *************************************************************************/
@@ -960,7 +970,6 @@ function nextUnseen() {
                 break;
         }
     }
-
     return unseenItem;
 }
 
@@ -1033,6 +1042,18 @@ function renderHelp() {
 
 }
 
+
+function cmdIndicator(shown, msg=" ") {
+    if (shown === "off") {
+        document.getElementById("indicator-msg").innerHTML = " ";
+    } else if (shown === "on" ) {
+        document.getElementById("indicator-msg").innerHTML = msg;
+    } else {
+        console.error("Bad `shown` argument passed to cmdIndicator.")
+    }
+}
+
+
 function updateStatusDisplay() {
     if (mode === "ks") {
         document.getElementById("input-mode").innerText = "Keystroke mode";
@@ -1058,6 +1079,7 @@ function updateStatusDisplay() {
 }
 
 function updateItemDisplay() {
+    // display the image to be labeled
     document.getElementById("item-image").src = imgDir + imgArray[cur][0];
 
     // set text of the status bar
@@ -1105,7 +1127,7 @@ function updateItemDisplay() {
         document.getElementById("item-subtype-name").innerText = "-";
         document.getElementById("item-subtype-label").classList.remove("labeled");
     }
-    // Display modifer
+    // Display modifier
     if (imgArray[cur][4]) {
         document.getElementById("item-mod-code").innerText = "*";
         document.getElementById("item-mod-name").innerText = "(" + modName + ")";
@@ -1113,71 +1135,42 @@ function updateItemDisplay() {
         document.getElementById("item-mod-code").innerText = "";
         document.getElementById("item-mod-name").innerText = "";
     }
-    // Display transcript
+    // Display annotation 3
     if (imgArray[cur][5]) {
         document.getElementById("item-ann3-text").innerText = imgArray[cur][5];
     } else {
         document.getElementById("item-ann3-text").innerText = "";
     }
-    // Display item note
+    // Display annotation 3
     if (imgArray[cur][6]) {
         document.getElementById("item-ann4-text").innerText = imgArray[cur][6];
     } else {
         document.getElementById("item-ann4-text").innerText = "";
     }
 
-    // Focus areas relevant areas, if in editor mode
-    if (mode === "ks") {
-        document.getElementById("item-type-label").classList.remove("area-focus");
-        document.getElementById("item-subtype-label").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("area-focus");
-        document.getElementById("item-ann4").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("annotation-focus");
-        document.getElementById("item-ann4").classList.remove("annotation-focus");
-    } else if (mode === "ed1") {
-        document.getElementById("item-subtype-label").classList.remove("area-focus");
+    // Add visual empahsis to areas relevant areas, 
+    // if in editor mode or annotation mode
+    document.getElementById("item-type-label").classList.remove("area-focus");
+    document.getElementById("item-subtype-label").classList.remove("area-focus");
+    document.getElementById("item-ann3").classList.remove("area-focus");
+    document.getElementById("item-ann4").classList.remove("area-focus");
+    document.getElementById("item-ann3").classList.remove("annotation-focus");
+    document.getElementById("item-ann4").classList.remove("annotation-focus");
+    if (mode === "ed1") {
         document.getElementById("item-type-label").classList.add("area-focus");
-        document.getElementById("item-ann3").classList.remove("area-focus");
-        document.getElementById("item-ann4").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("annotation-focus");
-        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "ed2") {
-        document.getElementById("item-type-label").classList.remove("area-focus");
         document.getElementById("item-subtype-label").classList.add("area-focus");
-        document.getElementById("item-ann3").classList.remove("area-focus");
-        document.getElementById("item-ann4").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("annotation-focus");
-        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "ed3") {
-        document.getElementById("item-type-label").classList.remove("area-focus");
-        document.getElementById("item-subtype-label").classList.remove("area-focus");
         document.getElementById("item-ann3").classList.add("area-focus");
-        document.getElementById("item-ann4").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("annotation-focus");
-        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "ed4") {
-        document.getElementById("item-type-label").classList.remove("area-focus");
-        document.getElementById("item-subtype-label").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("area-focus");
         document.getElementById("item-ann4").classList.add("area-focus");
-        document.getElementById("item-ann3").classList.remove("annotation-focus");
-        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "an3") {
-        document.getElementById("item-type-label").classList.remove("area-focus");
-        document.getElementById("item-subtype-label").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("area-focus");
-        document.getElementById("item-ann4").classList.remove("area-focus");
         document.getElementById("item-ann3").classList.add("annotation-focus");
-        document.getElementById("item-ann4").classList.remove("annotation-focus");
     } else if (mode === "an4") {
-        document.getElementById("item-type-label").classList.remove("area-focus");
-        document.getElementById("item-subtype-label").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("area-focus");
-        document.getElementById("item-ann4").classList.remove("area-focus");
-        document.getElementById("item-ann3").classList.remove("annotation-focus");
         document.getElementById("item-ann4").classList.add("annotation-focus");
     }
 }
+
 
 /***************************************************************************
  * Export function definitions
@@ -1282,4 +1275,96 @@ function exportArray() {
     window.URL.revokeObjectURL(url);
 }
 
+
+/***************************************************************************
+ * HTML building functions
+ * *************************************************************************/
+
+ /**
+ * Create HTML for the help area, based on definitions in objects
+ */
+ function buildHelp() {
+
+    var ksHelp = "";
+    var edHelp = "";
+    var anHelp = "";
+    var typeKeyHelp = "";
+    var subKeyHelp = {};
+    var edAnHelp = "";
+    var anKeyHelp = "";
+    var line = "";
+
+    // build keystroke mode command help
+    for (var key of ksModeCmdKeysOrder) {
+        line = "<div class='help-key'>" +
+               ksModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               ksModeCmdKeys[key]["desc"] + "</div>";
+        ksHelp += line;
+    }
+
+    // build editor mode command help 
+    for (var key of edModeCmdKeysOrder) {
+        line = "<div class='help-key'>" +
+               edModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               edModeCmdKeys[key]["desc"] + "</div>";
+        edHelp += line;
+    }
+
+    // build type key help
+    for (var key in cats) {
+        line = "<div class='help-key'>" +
+               cats[key]["key"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               cats[key]["name"] + "</div>";
+        typeKeyHelp += line;
+    }
+    if (! modName == "") {
+        var modHelp = "";
+        modHelp += '<div class="help-msg">To indicate the label is "';
+        modHelp += modName; 
+        modHelp += '", hold `Shift` when pressing the label key.';
+        typeKeyHelp += modHelp;
+    }
+
+    // build subtype key help
+    for (var key in cats) {
+        subKeyHelp[key] = "";
+        stcats = cats[key]["subtypes"];
+        for (var stkey in stcats) {
+            line = "<div class='help-key'>" +
+                   stcats[stkey]["key"] + " : " + "</div>" +
+                   "<div class='help-desc'>" +
+                   stcats[stkey]["name"] + "</div>";
+            subKeyHelp[key] += line;
+        }
+    }
+
+    // key help for modes ed3 and ed4
+    edAnHelp = "<div class='help-key'>" +
+                   "Enter" + " : " + "</div>" +
+                   "<div class='help-desc'>" +
+                   "Annotate" + "</div>"; ;
+    
+    // help for annotation modes
+    for (var key of anModeCmdKeysOrder) {
+        line = "<div class='help-key'>" +
+               anModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               anModeCmdKeys[key]["desc"] + "</div>";
+        anHelp += line;
+    }
+    anKeyHelp = "<div class='help-msg'>" +
+                   "Enter your annotation text in the box." + "</div>"; ;
+
+    // Set properties of the global help object
+    help["ksCmds"] = ksHelp;
+    help["edCmds"] = edHelp;
+    help["typeKeys"] = typeKeyHelp;
+    help["subTypeKeys"] = subKeyHelp;
+    help["edAnKeys"] = edAnHelp ; 
+    help["anCmds"] = anHelp;
+    help["anKeys"] = anKeyHelp;
+}
 
