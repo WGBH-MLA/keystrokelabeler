@@ -1218,7 +1218,7 @@ function exportCSV() {
     csvBody = csvBody.replace(/\]/g, "");
 
     // construct CSV-formatted string
-    var csvHeader = '"filename","seen","type label","subtype label","modifier","annotation 3","annotation 4"\n';
+    var csvHeader = '"filename","seen","type-label","subtype-label","modifier","note-3","note-4"\n';
     var imgArrayCSV = csvHeader + csvBody;
 
     // From the string, create a Blob for downloading
@@ -1356,7 +1356,7 @@ function exportArray() {
         anHelp += line;
     }
     anKeyHelp = "<div class='help-msg'>" +
-                   "Enter your annotation text in the box." + "</div>"; ;
+                   "To add an annotation, enter text in the box." + "</div>"; ;
 
     // Set properties of the global help object
     help["ksCmds"] = ksHelp;

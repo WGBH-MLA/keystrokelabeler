@@ -2,9 +2,9 @@
 A simple tool for manually categorizing images as quickly as humanly possible.
 
 ## Description
-Keystroke Labeler is a simple browser-based (client-side only) application for quickly adding pre-defined labels to a set of images.
+Keystroke Labeler is a simple, browser-based application for quickly adding pre-defined labels to a set of images.  The application runs locally and does not require a web server.  The only dependency is a modern JavaScript-enabled browswer, like Firefox, Chrome, or Safari.
 
-Also included in this repository are Python scripts for creating collections of labelable images from video files.
+Also included in this repository are Python scripts for conveniently creating collections of labelable images from video files.  
 
 This tool was created to support the development of scene recognition tools in the [CLAMS project](https://clams.ai/).  Scene recognition tools analyze video footage and assign labels to scenes (intervals of video playback) according to a set of established categories.  The [documentation for CLAMS scene recogntion annotations](https://github.com/clamsproject/aapb-annotations/tree/main/scene-recognition) describes how the Keystroke Labeler was used to perform manual (human) labeling of tens of thousands of images.
 
@@ -29,11 +29,11 @@ The labeler requires a **collection of image files** and an **index**.  Your col
 
 For details on file organization and data structures, consult [labeler_data_structure.md](docs/labeler_data_structure.md). 
 
-You start the labeler simply by opening `labeler.html` in your web browser.
+You start the labeler simply by opening the `labeler.html` file in your web browser.
 
-You exit the labeler simply by closing the browser window.  **Note:** *When the browser window closes, any labels you have created will be lost, unless you save your progress by exporting the array of labels.*
+You exit the labeler simply by closing the browser window.  **Note:** *When the browser window closes, any labels you have created will be lost, unless you save your progress.*
 
-You can save your progress by using the "Export JS array" button and saving the file `img_arr_prog.js` in the same directory as `labeler.html` and the other JavaScript files.  The next time you load `labeler.html` from that directory, your previously entered labels will be registered by the labeler.
+You can save your progress by using the "Save progress" button and saving the file `img_arr_prog.js` in the same directory as `labeler.html` and `img_arr_init.js`.  The next time you load `labeler.html` from that directory, your previously entered labels will be loaded into the labeler.
 
 ### Labeler operation
 
@@ -47,7 +47,11 @@ You can save your progress by using the "Export JS array" button and saving the 
 
 **Seen items**:  Labeling an item marks it as "seen".  You can also "see" an item without labeling it.  If an item is marked as seen but has no label, that is an assertion that none of the categories defined in `conf.js` applies to the item.  You can think of seen items without labels as falling into an implicit category of "none of the explicitly defined categories".  
 
-**Modes**:  The labeler has two main modes:  *keystroke mode* (the default) and *editor mode*.  You can switch between these modes using the `Esc` key.  There are two main differences between keystroke mode and editor mode.  First, keystroke mode automatically advances to the next item after an item is seen.  Second, keystroke mode does *not* allow application of subtype labels.  To edit an item's subtype, you must use editor mode.  
+**Modes**:  The labeler has three main modes:  *keystroke mode* (the default), *editor mode*, and *Annotation mode*.  
+
+You can switch between Keystroke mode and editor mode by pressing the `Esc` key.  There are two main differences between keystroke mode and editor mode.  First, keystroke mode automatically advances to the next item after an item is seen.  Second, keystroke mode does *not* allow application of subtype labels.  To edit an item's subtype, you must use editor mode.  
+
+You center annotation mode by selecting one of the annotation (or "Note") areas from editor mode, and then pressing the `Enter` key.
 
 **Jump factor**:  The *jump factor* is the distance, in terms of the number of items, of navigation through the set of images.  For example, if the jump factor is 5 and the current item is number 31, then proceeding forward will jump to item 36.
 

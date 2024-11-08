@@ -130,10 +130,10 @@ div.cmd-indicator {
     width: 20%; 
 }
 .label-key {
-    width: 10%; 
+    width: 7%; 
 }
 .label-name {
-    width: 65%; 
+    width: 68%; 
 }
 
 .label-level, .label-key, .label-name {
@@ -149,7 +149,8 @@ pre.label-name {
     margin-top: 0px;
     margin-bottom: 5px;
     margin-left: 0px;
-    margin-right: 0px;
+    margin-right: 1%;
+    width: 67%;
 }
 
 .ann-area {
@@ -189,7 +190,7 @@ div.help-key {
     font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
     width: 100%;
     color: white;
-    padding-top: 5px;
+    padding-top: 8px;
 }
 
 
