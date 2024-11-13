@@ -4,6 +4,12 @@ A simple tool for manually categorizing images as quickly as humanly possible.
 ## Description
 Keystroke Labeler is a simple, browser-based application for quickly adding pre-defined labels to a set of images.  The application runs locally and does not require a web server.  The only dependency is a modern JavaScript-enabled browswer, like Firefox, Chrome, or Safari.
 
+Primary design goals:
+- Record human judgments at maximum speed via keyboard-only interaction and minimization of unnecessary keystrokes
+- Support both simple and complex, multi-level annotation, without sacrificing speed for the simple case
+- Allow arbitrary configuration of category and subcategory labels
+- Ensure responsiveness by allowing fully local execution (with no network calls)
+
 Also included in this repository are Python scripts for conveniently creating collections of labelable images from video files.  
 
 This tool was created to support the development of scene recognition tools in the [CLAMS project](https://clams.ai/).  Scene recognition tools analyze video footage and assign labels to scenes (intervals of video playback) according to a set of established categories.  The [documentation for CLAMS scene recogntion annotations](https://github.com/clamsproject/aapb-annotations/tree/main/scene-recognition) describes how the Keystroke Labeler was used to perform manual (human) labeling of tens of thousands of images.
@@ -47,7 +53,7 @@ You can save your progress by using the "Save progress" button and saving the fi
 
 **Seen items**:  Labeling an item marks it as "seen".  You can also "see" an item without labeling it.  If an item is marked as seen but has no label, that is an assertion that none of the categories defined in `conf.js` applies to the item.  You can think of seen items without labels as falling into an implicit category of "none of the explicitly defined categories".  
 
-**Modes**:  The labeler has three main modes:  *keystroke mode* (the default), *editor mode*, and *Annotation mode*.  
+**Modes**:  The labeler has three main modes:  **keystroke mode** (the default), **editor mode**, and **annotation mode**.  
 
 You can switch between Keystroke mode and editor mode by pressing the `Esc` key.  There are two main differences between keystroke mode and editor mode.  First, keystroke mode automatically advances to the next item after an item is seen.  Second, keystroke mode does *not* allow application of subtype labels.  To edit an item's subtype, you must use editor mode.  
 
