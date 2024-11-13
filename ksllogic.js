@@ -834,6 +834,9 @@ function endAnnotation() {
         preEl = document.getElementById("item-ann4-text");
         arrSlot = 6;
     }
+    else {
+        return;
+    }
 
     // turn off interface 
     preEl.contentEditable = 'false';
@@ -1181,6 +1184,16 @@ function updateItemDisplay() {
 
 function exportJSON() {
 
+    // make sure annotation has been saved
+    if (mode === "an3") {
+        endAnnotation();
+        changeMode("ed3");
+    } 
+    else if (mode === "an4") {
+        endAnnotation();
+        changeMode("ed4");
+    }
+
     // convert image array to a JSON string
     var imgArrayJSON = JSON.stringify(imgArray);
 
@@ -1209,6 +1222,16 @@ function exportJSON() {
 }
 
 function exportCSV() {
+
+    if (mode === "an3") {
+        endAnnotation();
+        changeMode("ed3");
+    } 
+    else if (mode === "an4") {
+        endAnnotation();
+        changeMode("ed4");
+    }
+
     // convert image array to a JSON string
     var imgArrayJSON = JSON.stringify(imgArray);
 
@@ -1244,6 +1267,15 @@ function exportCSV() {
 }
 
 function exportArray() {
+
+    if (mode === "an3") {
+        endAnnotation();
+        changeMode("ed3");
+    } 
+    else if (mode === "an4") {
+        endAnnotation();
+        changeMode("ed4");
+    }
 
     // convert image array to a JSON string
     var imgArrayJSON = JSON.stringify(imgArray);
