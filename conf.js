@@ -1,15 +1,15 @@
 // This value may be overridden if it is also set in img_arr_init.js
-imgDir = "./images/"
+let imgDir = "./images/"
 
 // The jump factor is the number of items between the current item and the next
 // or previous item when navigating.
 // This array defines the allowed jump factors.
-jumpFactors = [1, 5, 15, 30, 60, 120] ; 
+let jumpFactors = [1, 5, 15, 30, 60, 120] ; 
 
-feedbackPause = 200 ;
+let feedbackPause = 200 ;
 
 // Each top-level key in the `cats` object must be a single uppercase letter.
-cats = 
+let cats = 
 {
     "B": {
         "key": "B",
@@ -149,6 +149,6 @@ cats =
 }
 ;
 
-modCode = "T" ; 
-modName = "transitional" ;
-modDesc = "The frame occurs during an interval of transition between frame types." ;
+let modCode = "T" ; 
+let modName = "transitional" ;
+let modDesc = "The frame occurs during an interval of transition between frame types." ;

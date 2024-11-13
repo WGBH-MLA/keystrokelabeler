@@ -4,3 +4,8 @@ images/
 kslvenv/
 .tmp*
 img_*
+package*.json
+node_modules/
+eslint.config.mjs
+.eslintrc.json
+.vscode/

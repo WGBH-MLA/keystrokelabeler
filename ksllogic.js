@@ -15,7 +15,9 @@ console.log("ksl logic now running...");
  * Define global data structures
  * *************************************************************************/
 
-ksModeCmdKeys = {
+/* global imgDir, jumpFactors, feedbackPause, cats, modCode, modName, modDesc, imgArray */
+
+let ksModeCmdKeys = {
     "ArrowRight": {
         "disp": "Right",
         "desc": "Jump to next",
@@ -82,7 +84,7 @@ ksModeCmdKeys = {
         "help": ""        
     }
 };
-ksModeCmdKeysOrder = [ 
+let ksModeCmdKeysOrder = [ 
     "ArrowRight", 
     "ArrowLeft", 
     "ArrowUp", 
@@ -93,7 +95,7 @@ ksModeCmdKeysOrder = [
     "Backspace", 
     "Escape" ];
 
-edModeCmdKeys = {
+let edModeCmdKeys = {
     "ArrowRight": {
         "disp": "Right",
         "desc": "Jump to next",
@@ -155,7 +157,7 @@ edModeCmdKeys = {
         "help": ""
     }
 };
-edModeCmdKeysOrder = [ 
+let edModeCmdKeysOrder = [ 
     "ArrowRight", 
     "ArrowLeft", 
     "ArrowUp", 
@@ -165,14 +167,14 @@ edModeCmdKeysOrder = [
     "Escape"
     ];
 
-anModeCmdKeys = {
+let anModeCmdKeys = {
     "Escape": {
         "disp": "Esc",
         "desc": "Return to Editor mode",
         "help": ""
     }
 };
-anModeCmdKeysOrder = [ 
+let anModeCmdKeysOrder = [ 
     "Escape"
 ];
     
@@ -182,23 +184,23 @@ anModeCmdKeysOrder = [
  * *************************************************************************/
     
 // total number of images in the set
-count = imgArray.length;
+let count = imgArray.length;
 // index of the current image in the array
-cur = 0;
+let cur = 0;
 // index of the last image in the array
-last = count - 1;
+let last = count - 1;
 
 // update unseen counts
-unseenCount = count;
+let unseenCount = count;
 updateUnseen();
 
 // set the index for the inital jump factor
-jfi = 0;
+let jfi = 0;
 // mode
-mode = "ks";
+let mode = "ks";
 
 // create global help object
-help = {};
+let help = {};
 // build the help information to display
 buildHelp();
 // render help
@@ -1002,6 +1004,7 @@ function lastSeen() {
  * (The HTML strings were already built when the page was first loaded.) 
  */
 function renderHelp() {
+    var tKey;
 
     // render command key help
     if (mode === "ks") {
@@ -1293,9 +1296,10 @@ function exportArray() {
     var edAnHelp = "";
     var anKeyHelp = "";
     var line = "";
+    var key;
 
     // build keystroke mode command help
-    for (var key of ksModeCmdKeysOrder) {
+    for (key of ksModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                ksModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
@@ -1304,7 +1308,7 @@ function exportArray() {
     }
 
     // build editor mode command help 
-    for (var key of edModeCmdKeysOrder) {
+    for (key of edModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                edModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
@@ -1313,7 +1317,7 @@ function exportArray() {
     }
 
     // build type key help
-    for (var key in cats) {
+    for (key in cats) {
         line = "<div class='help-key'>" +
                cats[key]["key"] + " : " + "</div>" +
                "<div class='help-desc'>" +
@@ -1329,7 +1333,8 @@ function exportArray() {
     }
 
     // build subtype key help
-    for (var key in cats) {
+    var stcats;
+    for (key in cats) {
         subKeyHelp[key] = "";
         stcats = cats[key]["subtypes"];
         for (var stkey in stcats) {
@@ -1348,7 +1353,7 @@ function exportArray() {
                    "Annotate" + "</div>"; ;
     
     // help for annotation modes
-    for (var key of anModeCmdKeysOrder) {
+    for (key of anModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                anModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
