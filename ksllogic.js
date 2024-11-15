@@ -854,6 +854,12 @@ function endAnnotation() {
         imgArray[cur][1] = true;
     }
 
+    // Display updated values for the current item
+    updateItemDisplay();
+
+    // Update status
+    updateUnseen();
+    updateStatusDisplay();
 }
 
 
