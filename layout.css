@@ -1,12 +1,19 @@
+/************************************************* 
+ * Import fonts from Google
+ */
+ @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-/* Main elements */
+/************************************************* 
+ * Rules
+ */
+
+ /* Main elements */
 
 body {
     margin: 0;
     padding: 0;
     overflow: hidden;  /* prevent scrolling of the web page */
-    font-family: "PT Mono", "Noto Sans Mono", "Roboto Mono", "Liberation Mono", "Cascadia Mono", "Consolas", monospace; 
-    font-size: 16px;
+    font-family: "IBM Plex Mono", "Liberation Mono", monospace; 
 }
 
 div {
@@ -14,12 +21,13 @@ div {
 }
 pre {
     padding: 0px;
+    font-family: "IBM Plex Mono", "Liberation Mono", monospace; 
 }
-
 .container {
     display: flex;
-    max-width: 1350px; 
+    max-width: 1450px; 
     min-width: 1000px; 
+    max-height: 940px;
     margin: 0 auto; /* Center the container horizontally */
     background-color: #fff; 
 }
@@ -27,93 +35,115 @@ pre {
 .left-column {
     flex: 70%;
     background-color: #f2f2f2;
-    padding: 10px 20px 10px 20px;
+    padding: 7px 15px 7px 20px;
 }
-
 .right-column {
     flex: 30%;
     min-width: 320px;
-    max-width: 400px;
-    padding: 10px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    /* justify-content: space-between; */
+    padding: 7px 10px 7px 10px;
     background-color: #58565f; 
-    color:  #bbaeff;
+    color:  #cdc3ff;
     font-size: 11px;
 }
 
 /* major block elements */
 
-.status-line {
+.status-header, .status-line {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 13px;
+    font-size: 14px;
 }
-
+.status-line {
+    font-size: 11px;
+}
 .graphical-area {
     background-color: gainsboro;
     /* background-color: #b8c5bf; */
     margin: 0 auto; /* Center the container horizontally */
     justify-content: center;
     text-align: center;
-    padding: 10px;
+    padding: 10px 10px 4px 10px;    
 }
-
 .image-container {
     margin: 0 auto; /* Center the container horizontally */
-    padding: 15px 15px 10px 15px;
+    padding: 0px;
  }
-
 div.cmd-indicator {
-    height: 25px;
-    font-size: 22px;
+    height: 18px;
+    font-size: 16px;
     color: darkgreen;
     font-weight: bold;
 }
-
 .item-type-label {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: calc(100% - 26px);
-    margin-top: 4px;
-    margin-bottom: 0px; 
+    margin: 0px;
+    margin-top: 2px;
     padding-top: 4px;
     padding-left: 22px;
     border: 2px solid transparent;
-    font-size: 17px;
+    font-size: 16px;
 } 
 .item-subtype-label {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: calc(100% - 26px);
-    margin-top: 4px;
-    margin-bottom: 4px; 
-    padding-top: 4px;
+    margin: 0px;
+    padding-top: 3px;
     padding-left: 22px;
     border: 2px solid transparent;
-    font-size: 17px;
+    font-size: 16px;
     color: gray;
 } 
-.area-focus {
-    border-color: lime;
-}
-.annotation-focus {
-    border-color: sienna;
-}
-
-.button-container {
-    display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    margin-top: 10px;    
+.head-area {
+    width: 19%;
+    white-space: nowrap;
+    font-size: 14px;
 }
 
+.label-level {
+    width: 18%; 
+}
+.label-key {
+    width: 7%; 
+}
+.label-name {
+    width: 70%; 
+}
+.label-level, .label-key, .label-name {
+    box-sizing: border-box;
+    background-color: #f2f2f2;
+    padding: 0px;
+    margin-bottom: 5px;
+}
+pre.label-name {
+    outline: none;
+    width: 69%;
+    min-height: 100px;
+    max-height: 200px; 
+    line-height: 15px;
+    font-size: 13px;
+    margin-top: 0px;
+    margin-bottom: 3px;
+    margin-left: 0px;
+    margin-right: 1%;
+    padding: 1px;
+}
+.help-container {
+    min-height: 700px;
+}
 .help-header {
     font-size: 15px;
-    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
+    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
 }
-
 .help-list {
     display: flex;
     flex-wrap: wrap;
@@ -121,101 +151,92 @@ div.cmd-indicator {
     margin-top: 10px;    
     margin-bottom: 20px;    
 }
-
-
-
-/* Minor block elements */
-
-.label-level {
-    width: 20%; 
+div.help-key {
+    font-size: 12px;
+    width: 28%;
+    text-align: right;
 }
-.label-key {
-    width: 7%; 
-}
-.label-name {
-    width: 68%; 
-}
-
-.label-level, .label-key, .label-name {
-    box-sizing: border-box;
-    background-color: #f2f2f2;
-    padding: 0px;
-    margin-bottom: 10px;
-}
-
-pre.label-name {
-    min-height: 85px;
-    font-size: 14px;
-    margin-top: 0px;
-    margin-bottom: 5px;
-    margin-left: 0px;
-    margin-right: 1%;
+.help-desc {
+    font-size: 12px;
+    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
     width: 67%;
+    padding-left: 3%;
 }
-
-.ann-area {
-    outline: none;
-    background-color: khaki; 
-    color: black;
+.help-msg {
+    font-size: 12px;
+    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    width: 100%;
+    color: white;
+    padding-top: 8px;
 }
-
+.button-container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 5px;    
+}
 .button {
     display: flex;
     font-size: 11px;
-    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
-    width: 130px;
+    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    width: 120px;
     height: 20px;
-    background-color: lightgray;
+    background-color: gray;
+    color: black;
     border: none;
-    border-radius: 16px;
-    padding: 4px;
+    border-radius: 8px;
+    padding: 0px;
     margin: 0px 8px 0px 0px;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 }
 
-div.help-key {
-    font-size: 11px;
-    width: 25%;
-    text-align: right;
-}
-.help-desc {
-    font-size: 12px;
-    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
-    width: 70%;
-    padding-left: 3%;
-}
-.help-msg {
-    font-family: "PT Sans", "Noto Sans", "Roboto", "Liberation Sans", sans-serif ; 
-    width: 100%;
-    color: white;
-    padding-top: 8px;
+
+/*
+ * To support entering tons of text without GUI gore
+ */
+.scrollable {
+    overflow-y: auto;
+    overflow-x: hidden;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 
- /* Minor visual tweaks */
+/* Minor visual tweaks */
 
- img.observing {
+.ann-area {
+    background-color: khaki; 
+    color: black;
+}
+img.observing {
     margin: 0 auto; /* Center horizontally */
     max-width: 640px;
     max-height: 360px;
     border: 1px solid gray;
 }
-
+.area-focus {
+    border-color: lime;
+}
+.annotation-focus {
+    border-color: sienna;
+}
 .editor-mode {
-    background-color: lime;
+/*    background-color: lime; */
 }
 .high-jump {
     background-color: #f76ffc; 
 }
-
+.right {
+    text-align: right;
+}
 .help-key {
     color: white;
 }
 .status-seen {
     color: blue;
-    font-weight: normal;
+    font-weight: bold;
 }
 .status-unseen {
     color: gray;

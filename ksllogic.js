@@ -841,6 +841,7 @@ function endAnnotation() {
     // turn off interface 
     preEl.contentEditable = 'false';
     preEl.classList.remove('ann-area');
+    preEl.scrollTop = 0;
 
     // get value of element
     // (note that `innerText` worked more reliably than `textContent`
@@ -1106,7 +1107,6 @@ function updateItemDisplay() {
         document.getElementById("seen").classList.add("status-seen");
 
         document.getElementById("item-type-label").classList.add("seen");        
-        document.getElementById("item-subtype-label").classList.add("seen");        
     } else {
         document.getElementById("filename").classList.remove("status-seen");
         document.getElementById("seen").classList.remove("status-seen");
@@ -1114,7 +1114,6 @@ function updateItemDisplay() {
         document.getElementById("seen").classList.add("status-unseen");
 
         document.getElementById("item-type-label").classList.remove("seen");
-        document.getElementById("item-subtype-label").classList.remove("seen");
     }
 
     // Display type-level labels
@@ -1148,26 +1147,29 @@ function updateItemDisplay() {
         document.getElementById("item-mod-name").innerText = "";
     }
     // Display annotation 3
-    if (imgArray[cur][5]) {
-        document.getElementById("item-ann3-text").innerText = imgArray[cur][5];
+    if (imgArray[cur][5]) {    
+        document.getElementById("item-ann3-text").innerText = imgArray[cur][5];        
     } else {
         document.getElementById("item-ann3-text").innerText = "";
     }
-    // Display annotation 3
+    // Display annotation 4
     if (imgArray[cur][6]) {
         document.getElementById("item-ann4-text").innerText = imgArray[cur][6];
     } else {
         document.getElementById("item-ann4-text").innerText = "";
     }
 
-    // Add visual empahsis to areas relevant areas, 
-    // if in editor mode or annotation mode
+    // Add visual empahsis to areas relevant areas, if in editor mode or annotation mode
+
+    // first remove focus styles
     document.getElementById("item-type-label").classList.remove("area-focus");
     document.getElementById("item-subtype-label").classList.remove("area-focus");
     document.getElementById("item-ann3").classList.remove("area-focus");
     document.getElementById("item-ann4").classList.remove("area-focus");
     document.getElementById("item-ann3").classList.remove("annotation-focus");
     document.getElementById("item-ann4").classList.remove("annotation-focus");
+
+    // then re-add focus styles
     if (mode === "ed1") {
         document.getElementById("item-type-label").classList.add("area-focus");
     } else if (mode === "ed2") {
@@ -1385,7 +1387,7 @@ function exportArray() {
     }
 
     // key help for modes ed3 and ed4
-    edAnHelp = "<div class='help-key'>" +
+    edAnKeyHelp = "<div class='help-key'>" +
                    "Enter" + " : " + "</div>" +
                    "<div class='help-desc'>" +
                    "Annotate" + "</div>"; ;
@@ -1404,10 +1406,10 @@ function exportArray() {
     // Set properties of the global help object
     help["ksCmds"] = ksHelp;
     help["edCmds"] = edHelp;
+    help["anCmds"] = anHelp;
     help["typeKeys"] = typeKeyHelp;
     help["subTypeKeys"] = subKeyHelp;
-    help["edAnKeys"] = edAnHelp ; 
-    help["anCmds"] = anHelp;
+    help["edAnKeys"] = edAnKeyHelp ; 
     help["anKeys"] = anKeyHelp;
 }
 

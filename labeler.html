@@ -9,14 +9,21 @@
 <body>
     <div class="container">
         <div class="left-column">
+            <div class="status-header">
+                <div class='head-area'><span id='input-mode'>Keystroke Labeler</span></div>
+                <div class='head-area right' id="jump-factor-status">Jump: <span id="jump-factor">X</span>x</div>
+                <div class='head-area right'>Total: <span id='img-cnt'>X</span></div>
+                <div class='head-area right'>Unseen: <span id='unseen-cnt'>X</span></div>
+                <div class='head-area right'>Item # <span id='img-num'>X</span></div>
+            </div>
             <div class="status-line">
-                <div><span id='input-mode'>Keystroke Labeler</span></div>
-                <div>Item: <span id='img-num'>X</span> of <span id='img-cnt'>X</span></div>
-                <div>Unseen: <span id='unseen-cnt'>X</span></div>
-                <div id="jump-factor-status">Jump factor: <span id="jump-factor">X</span></div>
+                <div><span id='filename'>X</span></div>
+                <div><span id="seen">X</span></div>               
             </div>
 
+
             <div class="graphical-area">
+   
                 <div class="image-container">
                     <img id='item-image' class="observing" src="https://owencking.net/ksl/welcome.jpg" />
                 </div>
@@ -44,60 +51,62 @@
             <div class="item-subtype-label" id="item-ann3">
                 <div class="label-level">3. Note:</div>
                 <div class="label-key"></div>
-                <pre class="label-name ann" id="item-ann3-text" spellcheck="false">X</pre>
+                <pre class="label-name ann scrollable" id="item-ann3-text" spellcheck="false">X</pre>
             </div>
             <div class="item-subtype-label" id="item-ann4">
                 <div class="label-level">4. Note:</div>
                 <div class="label-key"></div>
-                <pre class="label-name ann" id="item-ann4-text" spellcheck="false">X</pre>
+                <pre class="label-name ann scrollable" id="item-ann4-text" spellcheck="false">X</pre>
             </div>
 
-            <div class="status-line">
-                <div><span id='filename'>X</span></div>
-                <div><span id="seen">X</span></div>               
-            </div>
-
-            <div class="button-container">
-                <div class="button" id="jump-first">
-                    <span>Jump first</span>
-                </div>
-                <div class="button" id="jump-first-unseen">
-                    <span>Jump next unseen</span>
-                </div>
-                <div class="button" id="jump-last-seen">
-                    <span>Jump last seen</span>
-                </div>
-                <div class="button" id="jump-last">
-                    <span>Jump end</span>
-                </div>
-            </div>
-
-            <div class="button-container">
-                <div class="button" id="export-JSON">
-                    <span>Export JSON</span>
-                </div>
-                <div class="button" id="export-CSV">
-                    <span>Export CSV</span>
-                </div>
-                <div class="button" id="export-array">
-                    <span>Save progress</span>
-                </div>
-            </div>
         </div>
 
-
         <div class="right-column">
-            <div class="help-header">
-                Command keys
+            <div class="help-container">
+                <div class="help-header">
+                    Command keys
+                </div>
+                <div class="help-list" id="help-cmd-keys">
+                    -
+                </div>
+                <div class="help-header">
+                    Labeling keys
+                </div>
+                <div class="help-list" id="help-label-keys">
+                    -
+                </div>
             </div>
-            <div class="help-list" id="help-cmd-keys">
-                -
-            </div>
-            <div class="help-header">
-                Labeling keys
-            </div>
-            <div class="help-list" id="help-label-keys">
-                -
+            <div id="right-buttons">
+                <div class="button-container">
+                    <div class="button" id="jump-first">
+                        <span>Jump first</span>
+                    </div>
+                    <div class="button" id="jump-last">
+                        <span>Jump end</span>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <div class="button" id="jump-first-unseen">
+                        <span>Jump next unseen</span>
+                    </div>
+                    <div class="button" id="jump-last-seen">
+                        <span>Jump last seen</span>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <div class="button" id="export-JSON">
+                        <span>Export JSON</span>
+                    </div>
+                    <div class="button" id="export-CSV">
+                        <span>Export CSV</span>
+                    </div>
+                </div>
+                <div class="button-container">
+                    <div class="button" id="export-array">
+                        <span>Save progress</span>
+                    </div>
+                </div>
+    
             </div>
         </div>
     </div>
