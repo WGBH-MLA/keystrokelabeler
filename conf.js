@@ -6,7 +6,9 @@ let imgDir = "./images/"
 // This array defines the allowed jump factors.
 let jumpFactors = [1, 5, 15, 30, 60, 120] ; 
 
-let feedbackPause = 200 ;
+// The feedbackPause is the number of milliseconds to register key entry
+// in keystroke mode, before advancing to the next item.
+let feedbackPause = 300 ;
 
 // Each top-level key in the `cats` object must be a single uppercase letter.
 let cats = 
@@ -146,8 +148,7 @@ let cats =
         "subtypes": {}
     }
 
-}
-;
+};
 
 let modCode = "T" ; 
 let modName = "transitional" ;
