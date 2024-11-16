@@ -31,13 +31,21 @@ framerate.
 # %%
 import sys
 import os
-import av
 import json
 import argparse
 
+import av
+
 # %%
 
-def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, hard_break=False, filetype_ext="jpg", prep_ksl=False):
+def extract( video_path, 
+             period=1000, 
+             first_time=0, 
+             last_time=-1, 
+             max_stills=-1, 
+             hard_break=False, 
+             filetype_ext="jpg", 
+             prep_ksl=False):
     """Performs extraction of stills from the video and creates an index of 
     extracted image files in a JSON array.  
 
@@ -47,14 +55,6 @@ def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, 
     """
     
     # %% 
-    """Variable assignments for testing/debugging
-    video_path = "../ksl_data/test_videos/cpb-aacip-b45eb62bd60.mp4" #DEBUG
-    period = 2000 #DEBUG
-    first_time = 0 #DEBUG
-    last_time = -1 #DEBUG
-    max_stills = -1
-    """
-
     # Create directory for the project based on the filename of the media
     vfilename = os.path.basename(video_path)
     fname, ext = os.path.splitext(vfilename)
@@ -104,7 +104,7 @@ def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, 
 
     # get technical stats on the video stream; assumes FPS is constant
     fps = video_stream.average_rate.numerator / video_stream.average_rate.denominator
-    
+   
     # calculate duration in ms
     length = int((video_stream.frames / fps) * 1000)
 
@@ -118,7 +118,7 @@ def extract(video_path, period=1000, first_time=0, last_time=-1, max_stills=-1, 
         #ftime = int((fcount/fps) * 1000)
 
         ftime = int(frame.time * 1000)   # Probably more accurate with variable FPS
-        
+       
         # print("fcount:", fcount, "; ftime:", ftime) #DEBUG
 
         # break the loop if we've exceeded the limits
