@@ -167,10 +167,21 @@ let edModeCmdKeysOrder = [
     "Escape"
     ];
 
+let edModeLabKeys = {
+    "Enter": {
+        "disp": "Enter",
+        "desc": "Add or edit note",
+        "help": ""
+    }
+};
+let edModeLabKeysOrder = [
+    "Enter"
+];
+
 let anModeCmdKeys = {
     "Escape": {
         "disp": "Esc",
-        "desc": "Return to Editor mode",
+        "desc": "Save and return to Editor mode",
         "help": ""
     }
 };
@@ -1046,8 +1057,11 @@ function renderHelp() {
     else if (mode === "ed3" || mode === "ed4") {
         document.getElementById("help-label-keys").innerHTML = help["edAnKeys"];
     }
-    else if (mode === "an3" || mode === "an4" ) {
-        document.getElementById("help-label-keys").innerHTML = help["anKeys"];
+    else if (mode === "an3" ) {
+        document.getElementById("help-label-keys").innerHTML = help["an3Keys"];
+    }
+    else if (mode === "an4" ) {
+        document.getElementById("help-label-keys").innerHTML = help["an4Keys"];
     }
     else {
         console.error("Error: Invalid `mode`: " + mode);
@@ -1328,88 +1342,103 @@ function exportArray() {
  */
  function buildHelp() {
 
-    var ksHelp = "";
-    var edHelp = "";
-    var anHelp = "";
-    var typeKeyHelp = "";
-    var subKeyHelp = {};
-    var edAnHelp = "";
-    var anKeyHelp = "";
-    var line = "";
     var key;
+    var line = "";
 
-    // build keystroke mode command help
+    var ksCmds = "";
+    var edCmds = "";
+    var anCmds = "";
+
+    // Build keystroke mode command help
     for (key of ksModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                ksModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
                ksModeCmdKeys[key]["desc"] + "</div>";
-        ksHelp += line;
+        ksCmds += line;
     }
-
-    // build editor mode command help 
+    // Build editor mode command help 
     for (key of edModeCmdKeysOrder) {
         line = "<div class='help-key'>" +
                edModeCmdKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
                edModeCmdKeys[key]["desc"] + "</div>";
-        edHelp += line;
+        edCmds += line;
+    }
+    // Build annotation mode command help 
+    for (key of anModeCmdKeysOrder) {
+        line = "<div class='help-key'>" +
+               anModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               "<div class='help-desc'>" +
+               anModeCmdKeys[key]["desc"] + "</div>";
+        anCmds += line;
     }
 
-    // build type key help
+
+    var typeKeys = "";
+    var subTypeKeys = {};
+
+    // Build type key help
     for (key in cats) {
         line = "<div class='help-key'>" +
                cats[key]["key"] + " : " + "</div>" +
                "<div class='help-desc'>" +
                cats[key]["name"] + "</div>";
-        typeKeyHelp += line;
+        typeKeys += line;
     }
     if (! modName == "") {
         var modHelp = "";
         modHelp += '<div class="help-msg">To indicate the label is "';
         modHelp += modName; 
-        modHelp += '", hold `Shift` when pressing the label key.';
-        typeKeyHelp += modHelp;
+        modHelp += '", hold <span class="help-key">`Shift`</span> when pressing the label key.';
+        typeKeys += modHelp;
     }
-
-    // build subtype key help
+    // Build subtype key help
     var stcats;
     for (key in cats) {
-        subKeyHelp[key] = "";
+        subTypeKeys[key] = "";
         stcats = cats[key]["subtypes"];
         for (var stkey in stcats) {
             line = "<div class='help-key'>" +
                    stcats[stkey]["key"] + " : " + "</div>" +
                    "<div class='help-desc'>" +
                    stcats[stkey]["name"] + "</div>";
-            subKeyHelp[key] += line;
+            subTypeKeys[key] += line;
         }
     }
 
-    // key help for modes ed3 and ed4
-    edAnKeyHelp = "<div class='help-key'>" +
-                   "Enter" + " : " + "</div>" +
-                   "<div class='help-desc'>" +
-                   "Annotate" + "</div>"; ;
-    
-    // help for annotation modes
-    for (key of anModeCmdKeysOrder) {
+    // Build "labeling" keys help for annotation areas in Editor mode
+    var edAnKeys = "";
+    for (key of edModeLabKeysOrder) {
         line = "<div class='help-key'>" +
-               anModeCmdKeys[key]["disp"] + " : " + "</div>" +
+               edModeLabKeys[key]["disp"] + " : " + "</div>" +
                "<div class='help-desc'>" +
-               anModeCmdKeys[key]["desc"] + "</div>";
-        anHelp += line;
+               edModeLabKeys[key]["desc"] + "</div>";
+        edAnKeys += line;
     }
-    anKeyHelp = "<div class='help-msg'>" +
-                   "To add an annotation, enter text in the box." + "</div>"; ;
+
+    var an3Keys = "";
+    var an4Keys = "";
+    var anMsg = "<div class='help-msg'>To annotate, enter text in the box.</div>";
+
+    an3Keys += anMsg;
+    an3Keys += "<div class='help-msg'>";
+    an3Keys += an3Guidance;
+    an3Keys += "</div>";
+
+    an4Keys += anMsg;
+    an4Keys += "<div class='help-msg'>";
+    an4Keys += an4Guidance;
+    an4Keys += "</div>";
 
     // Set properties of the global help object
-    help["ksCmds"] = ksHelp;
-    help["edCmds"] = edHelp;
-    help["anCmds"] = anHelp;
-    help["typeKeys"] = typeKeyHelp;
-    help["subTypeKeys"] = subKeyHelp;
-    help["edAnKeys"] = edAnKeyHelp ; 
-    help["anKeys"] = anKeyHelp;
+    help["ksCmds"] = ksCmds;
+    help["edCmds"] = edCmds;
+    help["anCmds"] = anCmds;
+    help["typeKeys"] = typeKeys;
+    help["subTypeKeys"] = subTypeKeys;
+    help["edAnKeys"] = edAnKeys ; 
+    help["an3Keys"] = an3Keys;
+    help["an4Keys"] = an4Keys;
 }
 

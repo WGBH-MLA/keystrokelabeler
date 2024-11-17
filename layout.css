@@ -1,7 +1,7 @@
 /************************************************* 
  * Import fonts from Google
  */
- @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+ @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
 
 /************************************************* 
  * Rules
@@ -48,6 +48,9 @@ pre {
     background-color: #58565f; 
     color:  #cdc3ff;
     font-size: 11px;
+}
+.help-container {
+    min-height: 700px;
 }
 
 /* major block elements */
@@ -113,10 +116,10 @@ div.cmd-indicator {
     width: 18%; 
 }
 .label-key {
-    width: 7%; 
+    width: 5%; 
 }
 .label-name {
-    width: 70%; 
+    width: 72%; 
 }
 .label-level, .label-key, .label-name {
     box-sizing: border-box;
@@ -126,8 +129,8 @@ div.cmd-indicator {
 }
 pre.label-name {
     outline: none;
-    width: 69%;
-    min-height: 100px;
+    width: 71%;
+    min-height: 120px;
     max-height: 200px; 
     line-height: 15px;
     font-size: 13px;
@@ -137,12 +140,10 @@ pre.label-name {
     margin-right: 1%;
     padding: 1px;
 }
-.help-container {
-    min-height: 700px;
-}
 .help-header {
     font-size: 15px;
-    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    font-family: "IBM Plex Sans", "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    color: white;
 }
 .help-list {
     display: flex;
@@ -151,23 +152,26 @@ pre.label-name {
     margin-top: 10px;    
     margin-bottom: 20px;    
 }
-div.help-key {
+.help-key {
+    color: white;
     font-size: 12px;
+    font-family: "IBM Plex Mono", "Liberation Mono", monospace; 
+}
+div.help-key {
     width: 28%;
     text-align: right;
 }
 .help-desc {
     font-size: 12px;
-    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    font-family: "IBM Plex Sans", "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
     width: 67%;
     padding-left: 3%;
 }
 .help-msg {
     font-size: 12px;
-    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    font-family: "IBM Plex Sans", "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
     width: 100%;
-    color: white;
-    padding-top: 8px;
+    padding: 5px 0px 5px 15px;
 }
 .button-container {
     display: flex;
@@ -178,7 +182,7 @@ div.help-key {
 .button {
     display: flex;
     font-size: 11px;
-    font-family: "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
+    font-family: "IBM Plex Sans", "Roboto", "Noto Sans", "Liberation Sans", sans-serif ; 
     width: 120px;
     height: 20px;
     background-color: gray;
@@ -230,9 +234,6 @@ img.observing {
 }
 .right {
     text-align: right;
-}
-.help-key {
-    color: white;
 }
 .status-seen {
     color: blue;

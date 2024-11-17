@@ -1,15 +1,41 @@
-// This value may be overridden if it is also set in img_arr_init.js
+/**
+ * conf.js
+ * 
+ * This file assigns values to global variables that configure the Keystroke
+ * Labeler application.
+ * 
+ * In particular, it defines the labels and their meanings (as to be displayed
+ * in the help panel of the application).
+ * 
+ * It also defines useful configuration options.
+ * 
+ * Values of variables are intended to be set by users according to the categories
+ * involved in their labeling project.
+ * 
+ * Hence, the data in this file constitutes metadata for the labeling project.
+ * It is recommended to keep a copy of the `conf.js` file used in a particular 
+ * labeling project with the dataset produced.
+ * 
+ */
+
+
+// The `imgDir` is the path to the directory where the images to be labeled 
+// are stored.  
+// If a relative path is used, it must be relative to the location of the main
+// labeler.html file.
+// (This value may be overridden if it is also set in the img_arr_init.js file.)
 let imgDir = "./images/"
 
+// The `jumpFactors` array defines the allowed jump factors.
 // The jump factor is the number of items between the current item and the next
 // or previous item when navigating.
-// This array defines the allowed jump factors.
 let jumpFactors = [1, 5, 15, 30, 60, 120] ; 
 
-// The feedbackPause is the number of milliseconds to register key entry
+// The `feedbackPause` is the number of milliseconds to register key entry
 // in keystroke mode, before advancing to the next item.
 let feedbackPause = 300 ;
 
+// The `cats` dictionary defines all labels for the labeling project.
 // Each top-level key in the `cats` object must be a single uppercase letter.
 let cats = 
 {
@@ -150,6 +176,15 @@ let cats =
 
 };
 
-let modCode = "T" ; 
+// The `modeName` and `modeDes` define the meaning of the label modifier that 
+// can be triggered by holding the shift key with top-level type labels.
 let modName = "transitional" ;
 let modDesc = "The frame occurs during an interval of transition between frame types." ;
+
+// The `an3Guidance` and `an4Guidance` are strings of HTML that will be displayed
+// when in the relevant annotation modes.
+// (To provide complex, formatted HTML, it may be useful to write additional JavaScript
+// code to build up the strings.)
+let an3Guidance = "";
+let an4Guidance = "";
+
