@@ -1318,7 +1318,9 @@ function exportArray() {
     // Create URL, on the fly, for the Blob object
     const url = window.URL.createObjectURL(filedata);
 
-    const filename = "img_arr_prog.js";
+    // Define the name of the JS file for progress saving
+    // Get the name from the HTML element that attempts to load it
+    const filename = document.getElementById('prog-js').getAttribute('src')
 
     console.log("filename for 'Export array': " + filename);
 
