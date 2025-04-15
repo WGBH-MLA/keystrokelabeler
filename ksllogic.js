@@ -1253,6 +1253,10 @@ function exportJSON() {
 function fixCSVStringValue(value) {
   let escapedValue = String(value);
   if (typeof value === 'string') {
+    // Escape newline and carriage return characters  
+    escapedValue = escapedValue.replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+    
+    // Properly handle doublequote marks
     // (1) wrap the whole string in doublequotes, 
     // (2) escape internal doublequotes by doubling/repeating them
     escapedValue = `"${escapedValue.replace(/"/g, '""')}"`;
