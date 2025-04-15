@@ -63,6 +63,10 @@ You center annotation mode by selecting one of the annotation (or "Note") areas 
 
 **Buttons**:  Below the labeling area is a collection of clickable buttons which provide additional navigation features and options for saving and exporting your work.
 
+## Known issues
+
+There is a [known issue](https://github.com/WGBH-MLA/keystrokelabeler/issues/3) that, when using Chrome (or Chromium-based browsers such as Edge), editing an annotation with linebreaks sometimes results in extra linebreaks.  Using Firefox or Safari is recommended.
+
 ## Contributing
 
 Feel free to make a pull request.  However, if your issue or change is unrelated to work at GBH or the CLAMS project, then it may not be prioritized.  
