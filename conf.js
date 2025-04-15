@@ -185,6 +185,9 @@ let modDesc = "The frame occurs during an interval of transition between frame t
 // when in the relevant annotation modes.
 // (To provide complex, formatted HTML, it may be useful to write additional JavaScript
 // code to build up the strings.)
-let an3Guidance = "";
-let an4Guidance = "";
+let an3Guidance = 
+``;
+
+let an4Guidance = 
+``;
 

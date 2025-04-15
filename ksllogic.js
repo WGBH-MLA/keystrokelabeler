@@ -1243,6 +1243,24 @@ function exportJSON() {
     window.URL.revokeObjectURL(url);
 }
 
+
+/** 
+ * Fixes string values for inclusion in CSV.
+ * Escapes newline and carriage return characters.
+ * Adds surrounding quotes and escapes interior quotes.
+ * 
+ */
+function fixCSVStringValue(value) {
+  let escapedValue = String(value);
+  if (typeof value === 'string') {
+    // (1) wrap the whole string in doublequotes, 
+    // (2) escape internal doublequotes by doubling/repeating them
+    escapedValue = `"${escapedValue.replace(/"/g, '""')}"`;
+  }
+  return escapedValue;
+}
+
+
 function exportCSV() {
 
     if (mode === "an3") {
@@ -1254,16 +1272,17 @@ function exportCSV() {
         changeMode("ed4");
     }
 
-    // convert image array to a JSON string
-    var imgArrayJSON = JSON.stringify(imgArray);
-
-    // add line breaks
-    var csvBody = imgArrayJSON.replace(/\],\[/g, "],\n[");
-    
-    // remove square brackets and commas between rows
-    csvBody = csvBody.replace(/\[/g, "");   
-    csvBody = csvBody.replace(/\],/g, "");
-    csvBody = csvBody.replace(/\]/g, "");
+    // Construct body of CSV table
+    var csvRows = [];
+    for ( let i = 0; i < imgArray.length; i++ ) {
+        const row = imgArray[i];
+        let fixedRow = [];
+        for ( let j = 0; j < row.length; j++ ) {
+            fixedRow.push( fixCSVStringValue(row[j]) );
+        }
+        csvRows.push( fixedRow.join(',') );
+    }
+    csvBody = csvRows.join('\n');
 
     // construct CSV-formatted string
     var csvHeader = '"filename","seen","type-label","subtype-label","modifier","note-3","note-4"\n';

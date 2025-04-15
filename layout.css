@@ -157,6 +157,9 @@ pre.label-name {
     font-size: 12px;
     font-family: "IBM Plex Mono", "Liberation Mono", monospace; 
 }
+.help-em {
+    color: white;
+}
 div.help-key {
     width: 28%;
     text-align: right;
