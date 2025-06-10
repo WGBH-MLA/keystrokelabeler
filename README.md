@@ -31,7 +31,7 @@ If you wish to run the included Python scripts, change to that directory and do 
 
 ### Labeling project setup
 
-The labeler requires a **collection of image files** and an **index**.  Your collection of image files should be in a directory called `images` which must be located in the same directory as the HTML, JavaScript, and CSS files from this repository.  The index must be in a file called `img_arr_init.js`, which can be created by the `getstills` Python module.
+The labeler requires a **collection of image files** and an **index**.  Your collection of image files should be in a directory called `images` which must be located in the same directory as the HTML, JavaScript, and CSS files from this repository.  The index must be in a file called `img_arr_init.js`, which can be created from a directory of images by the `make_ksl_index` Python module, or created while extracting stills from a video with the `getstills` module.  (Run either of these modules with `-h` for additional instructions.)
 
 For details on file organization and data structures, consult [labeler_data_structure.md](docs/labeler_data_structure.md). 
 
